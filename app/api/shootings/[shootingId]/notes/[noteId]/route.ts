@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/app/lib/prisma"; // ok, ça fonctionne maintenant
 
-const prisma = new PrismaClient();
 const userId = "b225a7f0-93fe-491a-a907-08b83e27178e";
 
 // PATCH /api/shootings/[shootingId]/notes/[noteId]

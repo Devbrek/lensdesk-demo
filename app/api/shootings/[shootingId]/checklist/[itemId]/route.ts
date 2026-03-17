@@ -1,43 +1,79 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/app/lib/prisma";
 
-const prisma = new PrismaClient();
-const userId = "b225a7f0-93fe-491a-a907-08b83e27178e";
+// GET → récupérer un item précis
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { shootingId: string; itemId: string } },
+) {
+  try {
+    const { itemId } = params;
 
-// PATCH /api/shootings/[shootingId]/checklist/[itemId]
+    const item = await prisma.checklistItem.findUnique({
+      where: { id: itemId },
+    });
+
+    if (!item)
+      return NextResponse.json({ error: "Item non trouvé" }, { status: 404 });
+
+    return NextResponse.json(item);
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+  }
+}
+
+// PATCH → mettre à jour un item
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { shootingId: string; itemId: string } },
 ) {
   try {
-    const { shootingId, itemId } = params;
+    const { itemId } = params;
+
     const body = await req.json();
-    const { checked } = body;
+    const { label, checked } = body;
 
-    if (checked === undefined)
-      return NextResponse.json({ error: "checked requis" }, { status: 400 });
+    const data: any = {};
+    if (label !== undefined) data.label = label;
+    if (checked !== undefined) data.checked = checked;
 
-    // Vérifier que le shooting appartient bien à l'utilisateur
-    const shooting = await prisma.shooting.findFirst({
-      where: { id: shootingId, userId },
-    });
-    if (!shooting)
-      return NextResponse.json(
-        { error: "Shooting non trouvé" },
-        { status: 404 },
-      );
-
-    const updatedItem = await prisma.checklistItem.updateMany({
-      where: { id: itemId, shootingId },
-      data: { checked },
+    const updatedItem = await prisma.checklistItem.update({
+      where: { id: itemId },
+      data,
     });
 
-    if (updatedItem.count === 0)
-      return NextResponse.json({ error: "Item non trouvé" }, { status: 404 });
-
-    return NextResponse.json({ message: "Checklist mise à jour ✅" });
+    return NextResponse.json({
+      message: "Checklist item mis à jour ✅",
+      item: updatedItem,
+    });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur serveur ou item non trouvé" },
+      { status: 500 },
+    );
+  }
+}
+
+// DELETE → supprimer un item
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: { shootingId: string; itemId: string } },
+) {
+  try {
+    const { itemId } = params;
+
+    const deleted = await prisma.checklistItem.delete({
+      where: { id: itemId },
+    });
+
+    return NextResponse.json({ message: "Item supprimé ✅", item: deleted });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      { error: "Erreur serveur ou item non trouvé" },
+      { status: 500 },
+    );
   }
 }
