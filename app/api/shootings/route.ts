@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
         location,
         date: date ? new Date(date) : undefined,
         status: status || "draft",
-        user: { connect: { id: "b225a7f0-93fe-491a-a907-08b83e27178e" } }, // <- ici
+        user: { connect: { id: "83a83cf9-9ced-478b-9edb-b05042845329" } }, // <- ici
       },
       include: { checklist: true, notes: true },
     });

@@ -11,6 +11,7 @@ export async function GET(
 
     const item = await prisma.checklistItem.findUnique({
       where: { id: itemId },
+      include: { inventoryItem: true }, // inclut l’inventaire
     });
 
     if (!item)
@@ -23,14 +24,13 @@ export async function GET(
   }
 }
 
-// PATCH → mettre à jour un item
+// PATCH → modifier label ou cocher/décocher
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { shootingId: string; itemId: string } },
 ) {
   try {
     const { itemId } = params;
-
     const body = await req.json();
     const { label, checked } = body;
 

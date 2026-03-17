@@ -37,12 +37,13 @@ model ChecklistItem {
   id      String  @id @default(cuid())
   label   String
   checked Boolean @default(false)
-
+  type       String        @default("materiel") // "action" ou "materiel"
   shootingId String
   shooting   Shooting @relation(fields: [shootingId], references: [id])
 
   inventoryItemId String? // facultatif
   inventoryItem   InventoryItem? @relation(fields: [inventoryItemId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model Note {

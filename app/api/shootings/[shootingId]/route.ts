@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 
 // ID unique de ton frère
-const userId = "b225a7f0-93fe-491a-a907-08b83e27178e";
+const userId = "83a83cf9-9ced-478b-9edb-b05042845329";
 
 // GET /api/shootings/[shootingId] → récupérer un shooting précis
 export async function GET(

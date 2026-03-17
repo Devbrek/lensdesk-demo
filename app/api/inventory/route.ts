@@ -4,7 +4,7 @@ import { prisma } from "@/app/lib/prisma";
 // GET /api/inventory → récupérer tous les items d'un utilisateur
 export async function GET(req: NextRequest) {
   try {
-    const userId = "b225a7f0-93fe-491a-a907-08b83e27178e"; // à remplacer par session/auth
+    const userId = "83a83cf9-9ced-478b-9edb-b05042845329"; // à remplacer par session/auth
     const items = await prisma.inventoryItem.findMany({
       where: { userId },
     });
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
 // POST /api/inventory → créer un nouvel item
 export async function POST(req: NextRequest) {
   try {
-    const userId = "b225a7f0-93fe-491a-a907-08b83e27178e"; // à remplacer par session/auth
+    const userId = "83a83cf9-9ced-478b-9edb-b05042845329"; // à remplacer par session/auth
     const body = await req.json();
     const { label, type } = body;
 

@@ -4,7 +4,7 @@ import { prisma } from "@/app/lib/prisma";
 // GET /api/inventory → récupérer tous les items d'un utilisateur
 export async function GET(_req: NextRequest) {
   try {
-    const userId = "b225a7f0-93fe-491a-a907-08b83e27178e"; // à remplacer par l'user actuel
+    const userId = "83a83cf9-9ced-478b-9edb-b05042845329"; // à remplacer par l'user actuel
     const items = await prisma.inventoryItem.findMany({
       where: { userId },
       orderBy: { createdAt: "desc" },
@@ -20,7 +20,7 @@ export async function GET(_req: NextRequest) {
 // POST /api/inventory → créer un nouvel item
 export async function POST(req: NextRequest) {
   try {
-    const userId = "b225a7f0-93fe-491a-a907-08b83e27178e"; // à remplacer par l'user actuel
+    const userId = "83a83cf9-9ced-478b-9edb-b05042845329"; // à remplacer par l'user actuel
     const body = await req.json();
     const { label, type } = body;
 
@@ -88,22 +88,21 @@ export async function PATCH(
 
 // DELETE /api/inventory/[itemId] → supprimer un item
 export async function DELETE(
-  _req: NextRequest,
-  context: { params: { itemId: string } },
+  req: NextRequest,
+  { params }: { params: { itemId: string } },
 ) {
   try {
-    const { itemId } = context.params;
+    const { itemId } = await params;
+
+    console.log("DELETE itemId reçu :", itemId);
 
     const deleted = await prisma.inventoryItem.delete({
       where: { id: itemId },
     });
 
-    return NextResponse.json({
-      message: "Inventory item supprimé ✅",
-      item: deleted,
-    });
+    return NextResponse.json({ message: "Item supprimé ✅", item: deleted });
   } catch (err) {
-    console.error(err);
+    console.error("Erreur DELETE inventoryItem :", err);
     return NextResponse.json(
       { error: "Erreur serveur ou item non trouvé" },
       { status: 500 },
