@@ -34,7 +34,7 @@ export async function POST(
   try {
     const { shootingId } = await context.params;
     const body = await req.json();
-    const { label, inventoryItemId, type } = body;
+    const { label, inventoryItemId, priority, type } = body;
 
     if (!label && !inventoryItemId) {
       return NextResponse.json(
@@ -58,6 +58,7 @@ export async function POST(
       const inventoryItem = await prisma.inventoryItem.findUnique({
         where: { id: inventoryItemId },
       });
+      if (priority !== undefined) data.priority = priority;
       if (!inventoryItem) {
         return NextResponse.json(
           { error: "Item d’inventaire introuvable" },

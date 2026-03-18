@@ -38,6 +38,8 @@ model ChecklistItem {
   label   String
   checked Boolean @default(false)
   type       String        @default("materiel") // "action" ou "materiel"
+  priority         Int?           // facultatif, utilisé pour les actions
+
   shootingId String
   shooting   Shooting @relation(fields: [shootingId], references: [id])
 

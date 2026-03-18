@@ -32,11 +32,12 @@ export async function PATCH(
   try {
     const { itemId } = params;
     const body = await req.json();
-    const { label, checked } = body;
+    const { label, checked, priority } = body;
 
     const data: any = {};
     if (label !== undefined) data.label = label;
     if (checked !== undefined) data.checked = checked;
+    if (priority !== undefined) data.priority = priority;
 
     const updatedItem = await prisma.checklistItem.update({
       where: { id: itemId },
