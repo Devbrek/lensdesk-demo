@@ -4,10 +4,10 @@ import { prisma } from "@/app/lib/prisma";
 // GET → récupérer un item précis
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { shootingId: string; itemId: string } },
+  context: { params: Promise<{ shootingId: string; itemId: string }> },
 ) {
   try {
-    const { itemId } = params;
+    const { shootingId, itemId } = await context.params;
 
     const item = await prisma.checklistItem.findUnique({
       where: { id: itemId },
@@ -27,10 +27,10 @@ export async function GET(
 // PATCH → modifier label ou cocher/décocher
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { shootingId: string; itemId: string } },
+  context: { params: Promise<{ itemId: string }> },
 ) {
   try {
-    const { itemId } = params;
+    const { itemId } = await context.params;
     const body = await req.json();
     const { label, checked, priority } = body;
 
@@ -60,10 +60,10 @@ export async function PATCH(
 // DELETE → supprimer un item
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { shootingId: string; itemId: string } },
+  context: { params: Promise<{ shootingId: string; itemId: string }> },
 ) {
   try {
-    const { itemId } = params;
+    const { itemId } = await context.params;
 
     const deleted = await prisma.checklistItem.delete({
       where: { id: itemId },
