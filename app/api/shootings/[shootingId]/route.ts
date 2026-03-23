@@ -7,10 +7,10 @@ const userId = "83a83cf9-9ced-478b-9edb-b05042845329";
 // GET /api/shootings/[shootingId] → récupérer un shooting précis
 export async function GET(
   req: NextRequest,
-  { params }: { params: { shootingId: string } },
+  context : { params: Promise<{ shootingId: string }> },
 ) {
   try {
-    const { shootingId } = params;
+    const { shootingId } = await context.params;
 
     const shooting = await prisma.shooting.findFirst({
       where: { id: shootingId, userId },
