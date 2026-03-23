@@ -1,7 +1,5 @@
-// app/api/login/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
-import bcrypt from "bcryptjs"; // pour hashage sécurisé des mots de passe
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,33 +7,21 @@ export async function POST(req: NextRequest) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { error: "Email et mot de passe requis" },
+        { error: "Email et mot de passe nécessaires" },
         { status: 400 },
       );
     }
 
-    // Chercher l'utilisateur en base
     const user = await prisma.user.findUnique({ where: { email } });
 
-    if (!user) {
+    if (!user || user.password !== password) {
       return NextResponse.json(
-        { error: "Utilisateur non trouvé" },
-        { status: 404 },
-      );
-    }
-
-    // Vérifier le mot de passe
-    const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) {
-      return NextResponse.json(
-        { error: "Mot de passe incorrect" },
+        { error: "Email ou mot de passe incorrect" },
         { status: 401 },
       );
     }
 
-    // Succès → retourner un token ou les infos utilisateur
     return NextResponse.json({
-      message: "Connexion réussie",
       user: { id: user.id, email: user.email, name: user.name },
     });
   } catch (err) {

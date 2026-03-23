@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -8,7 +8,8 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       const res = await fetch("/api/login", {
         method: "POST",
@@ -27,8 +28,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-cover bg-center flex items-center justify-center bg-[url('/abuzone.jpg')]">
-      <div className="bg-black/70 p-10 rounded-xl shadow-lg w-full max-w-md flex flex-col items-center gap-8">
+    <div className="min-h-screen bg-cover bg-center flex items-center justify-center ">
+      <div className="bg-black/70 p-10 border-white border-2 rounded-xl shadow-lg w-full max-w-md flex flex-col items-center gap-8">
         <h1 className="text-white text-5xl font-bold text-center">
           ABUZONE <br /> CHECKER
         </h1>
