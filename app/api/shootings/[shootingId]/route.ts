@@ -33,10 +33,10 @@ export async function GET(
 // PATCH /api/shootings/[shootingId] → mettre à jour un shooting
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { shootingId: string } },
+  context: { params: Promise<{ shootingId: string }> },
 ) {
   try {
-    const { shootingId } = params;
+    const { shootingId } = await context.params;
     const body = await req.json();
     const { title, description, location, date, status } = body;
 
@@ -68,10 +68,10 @@ export async function PATCH(
 // DELETE /api/shootings/[shootingId] → supprimer un shooting
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { shootingId: string } },
+  context: { params: Promise<{ shootingId: string }> },
 ) {
   try {
-    const { shootingId } = params;
+    const { shootingId } = await context.params;
 
     const deleted = await prisma.shooting.deleteMany({
       where: { id: shootingId, userId },
