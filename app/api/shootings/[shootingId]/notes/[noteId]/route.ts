@@ -6,10 +6,10 @@ const userId = "b225a7f0-93fe-491a-a907-08b83e27178e";
 // PATCH /api/shootings/[shootingId]/notes/[noteId]
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { shootingId: string; noteId: string } },
+  context: { params: Promise<{ shootingId: string; noteId: string }> },
 ) {
   try {
-    const { shootingId, noteId } = params;
+    const { shootingId, noteId } = await context.params;
     const body = await req.json();
     const { content } = body;
 
@@ -43,10 +43,10 @@ export async function PATCH(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { shootingId: string; noteId: string } },
+  context: { params: Promise<{ shootingId: string; noteId: string }> },
 ) {
   try {
-    const { shootingId, noteId } = params;
+    const { shootingId, noteId } = await context.params;
 
     const deleted = await prisma.note.deleteMany({
       where: { id: noteId, shootingId },

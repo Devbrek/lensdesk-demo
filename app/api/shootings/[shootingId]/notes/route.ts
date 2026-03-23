@@ -7,10 +7,10 @@ const userId = "b225a7f0-93fe-491a-a907-08b83e27178e";
 // POST /api/shootings/[shootingId]/notes
 export async function POST(
   req: NextRequest,
-  { params }: { params: { shootingId: string } },
+  context: { params: Promise<{ shootingId: string }> },
 ) {
   try {
-    const { shootingId } = params;
+    const { shootingId } = await context.params;
     const body = await req.json();
     const { content } = body;
 
