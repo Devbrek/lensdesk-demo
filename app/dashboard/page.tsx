@@ -32,7 +32,7 @@ const Dashboard = () => {
         {/* Carte Inventaire */}
         <div
           onClick={() => router.push("/inventory")}
-          className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase"
+          className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs "
         >
           Inventaire
         </div>
@@ -40,7 +40,7 @@ const Dashboard = () => {
         {/* Carte Shootings */}
         <div
           onClick={() => router.push("/shootings")}
-          className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase"
+          className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs"
         >
           Shootings
         </div>

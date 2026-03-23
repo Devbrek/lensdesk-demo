@@ -89,10 +89,10 @@ export async function PATCH(
 // DELETE /api/inventory/[itemId] → supprimer un item
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { itemId: string } },
+  context: { params: Promise<{ itemId: string }> },
 ) {
   try {
-    const { itemId } = await params;
+    const { itemId } = await context.params;
 
     console.log("DELETE itemId reçu :", itemId);
 

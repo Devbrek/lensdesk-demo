@@ -66,7 +66,12 @@ export default function NewShootingPage() {
           className="bg-white/10 p-3"
         />
 
-        <button onClick={handleCreate}>Créer</button>
+        <button
+          onClick={handleCreate}
+          className="w-full bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition"
+        >
+          Créer
+        </button>
       </div>
     </div>
   );

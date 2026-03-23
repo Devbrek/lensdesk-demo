@@ -101,10 +101,10 @@ export default function ShootingsPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-5 ">
+    <div className="min-h-screen flex flex-col items-center justify-center  p-5 ">
       <h1 className="text-5xl font-bold mb-8 text-white">SHOOTINGS</h1>
 
-      <div className="w-full max-w-3xl flex flex-col gap-4 text-black">
+      <div className="w-full max-w-3xl flex flex-col gap-4 text-black bg-black/70 backdrop-blur-xs p-10 rounded-xl border-3 border-white ">
         {loading ? (
           <p>Chargement...</p>
         ) : shootings.length === 0 ? (
@@ -113,7 +113,7 @@ export default function ShootingsPage() {
           shootings.map((shooting) => (
             <div
               key={shooting.id}
-              className="flex flex-col justify-between items-center bg-white p-3"
+              className="flex flex-col justify-between items-center bg-white p-3 rounded-xl"
             >
               <div className="pb-4">
                 <p className="font-bold">{shooting.title}</p>
@@ -152,7 +152,7 @@ export default function ShootingsPage() {
           onClick={() => router.push("/shootings/new")}
           className="flex justify-center items-center gap-2 mt-4"
         >
-          <img src="/icons/add.svg" className="w-6 h-6" alt="add" />
+          <img src="/icons/add.svg" className="w-10 h-10" alt="add" />
         </button>
       </div>
 
@@ -160,13 +160,13 @@ export default function ShootingsPage() {
       <div className="flex gap-5 mt-10">
         <button
           onClick={() => router.push("/inventory")}
-          className="bg-white px-6 py-3 text-black"
+          className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
         >
           Inventaire
         </button>
         <button
           onClick={() => router.push("/dashboard")}
-          className="bg-white px-6 py-3 text-black"
+          className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
         >
           Dashboard
         </button>

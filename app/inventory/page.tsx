@@ -82,10 +82,10 @@ export default function InventoryPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-5  text-white">
+    <div className="min-h-screen flex flex-col items-center p-5 justify-center   text-white">
       <h1 className="text-5xl font-bold mb-8 text-white">INVENTAIRE</h1>
 
-      <div className="w-full max-w-3xl p-5 flex flex-col gap-4 text-black bg-white/20">
+      <div className="w-full max-w-3xl p-10 flex flex-col gap-4 text-black bg-black/40 border-3 border-white backdrop-blur-xs rounded-xl">
         {loading ? (
           <p>Chargement...</p>
         ) : items.length === 0 ? (
@@ -142,13 +142,13 @@ export default function InventoryPage() {
       <div className="flex gap-5 mt-10">
         <button
           onClick={() => router.push("/shootings")}
-          className="bg-white px-6 py-3 text-black"
+          className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
         >
           Shootings
         </button>
         <button
           onClick={() => router.push("/dashboard")}
-          className="bg-white px-6 py-3 text-black"
+          className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
         >
           Accueil
         </button>
