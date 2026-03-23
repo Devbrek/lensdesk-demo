@@ -14,7 +14,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body>{children}</body>
+      <body
+        className="bg-cover bg-center min-h-screen flex items-center justify-center "
+        style={{
+          backgroundImage: "url('/abuzone.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          minHeight: "100vh",
+        }}
+      >
+        {children}
+      </body>
     </html>
   );
 }
