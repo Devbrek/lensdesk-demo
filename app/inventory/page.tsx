@@ -14,7 +14,6 @@ export default function InventoryPage() {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Chargement des items depuis l'API
   const fetchInventory = async () => {
     try {
       const res = await fetch("/api/inventory");
@@ -31,11 +30,9 @@ export default function InventoryPage() {
     fetchInventory();
   }, []);
 
-  // Ajouter un item
   const handleAddItem = async () => {
     const label = prompt("Nom du nouvel item :");
     const type = prompt("Type de l'item : appareil, objectif, accessoire ...");
-
     if (!label || !type) return;
 
     try {
@@ -51,14 +48,11 @@ export default function InventoryPage() {
     }
   };
 
-  // Modifier un item
   const handleEditItem = async (id: string) => {
     const item = items.find((i) => i.id === id);
     if (!item) return;
-
     const newLabel = prompt("Modifier le nom :", item.label);
     const newType = prompt("Modifier le type :", item.type);
-
     if (!newLabel || !newType) return;
 
     try {
@@ -77,14 +71,10 @@ export default function InventoryPage() {
     }
   };
 
-  // Supprimer un item
   const handleDeleteItem = async (id: string) => {
     if (!confirm("Voulez-vous vraiment supprimer cet item ?")) return;
-
     try {
-      await fetch(`/api/inventory/${id}`, {
-        method: "DELETE",
-      });
+      await fetch(`/api/inventory/${id}`, { method: "DELETE" });
       setItems(items.filter((i) => i.id !== id));
     } catch (err) {
       console.error("Erreur lors de la suppression :", err);
@@ -92,10 +82,10 @@ export default function InventoryPage() {
   };
 
   return (
-    <div className="min-h-screen   flex flex-col items-center p-5">
+    <div className="min-h-screen flex flex-col items-center p-5  text-white">
       <h1 className="text-5xl font-bold mb-8 text-white">INVENTAIRE</h1>
 
-      <div className="w-full max-w-3xl  p-5 flex flex-col gap-4">
+      <div className="w-full max-w-3xl p-5 flex flex-col gap-4 text-black bg-white/20">
         {loading ? (
           <p>Chargement...</p>
         ) : items.length === 0 ? (
@@ -104,51 +94,63 @@ export default function InventoryPage() {
           items.map((item) => (
             <div
               key={item.id}
-              className="flex justify-between items-center bg-white/40  p-3"
+              className="flex justify-between items-center bg-white/70 p-3 "
             >
               <div>
                 <p className="font-bold">{item.label}</p>
                 <p className="text-sm text-black">{item.type}</p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-5">
+                {/* Modifier */}
                 <button
                   onClick={() => handleEditItem(item.id)}
-                  className="bg-white text-black px-3 py-1  "
+                  className="hover:opacity-80"
                 >
-                  Modifier
+                  <img
+                    src="/icons/pencil.svg"
+                    alt="Modifier"
+                    className="w-6 h-6"
+                  />
                 </button>
+
+                {/* Supprimer */}
                 <button
                   onClick={() => handleDeleteItem(item.id)}
-                  className="bg-red-500 text-white px-3 py-1  hover:bg-red-600"
+                  className="hover:opacity-80"
                 >
-                  Supprimer
+                  <img
+                    src="/icons/del.svg"
+                    alt="Supprimer"
+                    className="w-6 h-6"
+                  />
                 </button>
               </div>
             </div>
           ))
         )}
-        {/* Bouton ajouter */}
+
+        {/* Ajouter */}
         <button
           onClick={handleAddItem}
-          className="mt-4 bg-green-500 px-3 py-2 rounded hover:bg-green-600 text-black font-bold"
+          className="mt-4 flex items-center justify-center  text-black font-bold gap-2"
         >
-          + Ajouter un item
+          <img src="/icons/add.svg" alt="Ajouter" className="w-10 h-10" />
         </button>
       </div>
 
-      {/* Navigation en bas */}
+      {/* Navigation */}
       <div className="flex gap-5 mt-10">
         <button
           onClick={() => router.push("/shootings")}
-          className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-white px-6 py-3 text-black"
         >
-          Aller sur Shootings
+          Shootings
         </button>
         <button
           onClick={() => router.push("/dashboard")}
-          className="bg-gray-500 px-4 py-2 rounded hover:bg-gray-600"
+          className="bg-white px-6 py-3 text-black"
         >
-          Retour Dashboard
+          Accueil
         </button>
       </div>
     </div>
