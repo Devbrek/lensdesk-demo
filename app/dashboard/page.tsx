@@ -16,10 +16,10 @@ const Dashboard = () => {
       <div className="flex justify-center p-5">
         <button
           onClick={handleLogout}
-          className="text-white hover:cursor-pointer flex items-center gap-2 text-2xl"
+          className="transition-all text-black hover:cursor-pointer flex items-center gap-2 text-2xl bg-white p-5 rounded-full hover:bg-white/50 backdrop-blur-sm"
         >
           {/* Icône avant le texte */}
-          <img src="/icons/logout.svg" alt="Logout" className="w-10 h-10" />
+          <img src="/icons/logoutb.svg" alt="Logout" className="w-10 h-10" />
           Se déconnecter
         </button>
       </div>

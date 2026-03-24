@@ -17,7 +17,7 @@ export default function RootLayout({
       <body
         className="bg-cover bg-center min-h-screen flex items-center justify-center "
         style={{
-          backgroundImage: "url('/abuzone.jpg')",
+          backgroundImage: "url('/abuzone2.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           minHeight: "100vh",

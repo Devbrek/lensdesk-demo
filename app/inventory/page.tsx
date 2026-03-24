@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Navbar from "../components/Navbar";
 
 interface InventoryItem {
   id: string;
@@ -96,6 +97,9 @@ export default function InventoryPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center p-5 justify-center text-white">
+      <header>
+        <Navbar />
+      </header>
       <h1 className="text-5xl font-bold mb-8 text-white">INVENTAIRE</h1>
 
       <div className="w-full max-w-3xl p-10 flex flex-col gap-4 text-black bg-black/40 border-3 border-white backdrop-blur-xs rounded-xl">

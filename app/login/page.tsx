@@ -30,12 +30,16 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-cover bg-center flex items-center justify-center ">
       <div className="bg-black/70 p-10 border-white border-2 rounded-xl shadow-lg w-full max-w-md flex flex-col items-center gap-8 backdrop-blur-xs">
-        <h1 className="text-white text-5xl font-bold text-center">
-          ABUZONE <br /> CHECKER
-        </h1>
+        <img
+          src="/icons/logo2.png"
+          alt="logo"
+          className=" p-3 w-fit"
+        />
 
         <form className="w-full flex flex-col gap-4">
-          <h2 className="text-white text-2xl font-semibold mb-2">CONNEXION</h2>
+          <h2 className="text-white text-2xl font-semibold mb-2 text-center">
+            CONNEXION
+          </h2>
           <input
             type="email"
             placeholder="Email"
