@@ -102,7 +102,7 @@ export default function InventoryPage() {
       </header>
       <h1 className="text-5xl font-bold mb-8 text-white">INVENTAIRE</h1>
 
-      <div className="w-full max-w-3xl p-10 flex flex-col gap-4 text-black bg-black/40 border-3 border-white backdrop-blur-xs rounded-xl">
+      <div className="w-full max-w-3xl p-10 flex flex-col gap-4 text-black bg-white/40  backdrop-blur-xs rounded-xl">
         {loading ? (
           <p>Chargement...</p>
         ) : items.length === 0 ? (
@@ -111,17 +111,17 @@ export default function InventoryPage() {
           items.map((item) => (
             <div
               key={item.id}
-              className="flex justify-between items-center bg-white/70 p-3"
+              className="flex flex-col gap-5 justify-between items-center bg-white/70 p-3"
             >
               {editingId === item.id ? (
                 <div className="flex flex-col flex-1 gap-2">
                   <input
-                    className="p-1 border rounded"
+                    className="p-1  rounded bg-white/80"
                     value={editLabel}
                     onChange={(e) => setEditLabel(e.target.value)}
                   />
                   <input
-                    className="p-1 border rounded"
+                    className="p-1  rounded bg-white/80"
                     value={editType}
                     onChange={(e) => setEditType(e.target.value)}
                   />

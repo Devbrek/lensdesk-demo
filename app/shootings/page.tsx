@@ -50,7 +50,7 @@ export default function ShootingsPage() {
     <div className="min-h-screen flex flex-col items-center justify-center  p-5 ">
       <h1 className="text-5xl font-bold mb-8 text-white">SHOOTINGS</h1>
 
-      <div className="w-full max-w-3xl flex flex-col gap-4 text-black bg-black/70 backdrop-blur-xs p-10 rounded-xl border-3 border-white ">
+      <div className="  flex flex-col gap-4 text-black bg-white/70 backdrop-blur-xs p-10 rounded-xl  border-white ">
         {loading ? (
           <p>Chargement...</p>
         ) : shootings.length === 0 ? (

@@ -49,7 +49,7 @@ const Navbar = () => {
           >
             Shootings
           </li>
-          <li onClick={() => handleLogout} className="cursor-pointer">
+          <li onClick={() => handleLogout()} className="cursor-pointer">
             Se deconnecter
           </li>
         </ul>
@@ -114,7 +114,7 @@ const Navbar = () => {
         </button>
         <button
           className="uppercase mt-20 items-center justify-center flex flex-col gap-3"
-          onClick={() => handleLogout}
+          onClick={() => handleLogout()}
         >
           <img src="/icons/logout.svg" alt="logout" className="w-12" />
           Se deconnecter

@@ -31,19 +31,17 @@ export default function EditShootingPage() {
   if (!shooting) return <p className="text-white">Chargement...</p>;
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center justify-center  p-5">
-      <h1 className="text-4xl font-bold mb-10 text-center">
-        Modification du shooting de : {shooting.title}
-      </h1>
+    <div className="min-h-screen text-white flex flex-col items-center justify-center p-5">
+      <h1 className="text-4xl font-bold mb-10 text-center">{shooting.title}</h1>
 
-      <div className="flex flex-col  w-full max-w-md bg-black/70 p-10 rounded-xl border-3 border-white">
-        <h2 className="text-xl   ">Titre</h2>
+      <div className="flex flex-col  w-full max-w-md bg-white/70 backdrop-blur-xs p-10 rounded-xl text-black">
+        <h2 className="text-xl pb-3">Titre</h2>
         <input
           value={shooting.title}
           onChange={(e) => setShooting({ ...shooting, title: e.target.value })}
           className="bg-white/80 p-3 text-black mb-5"
         />
-        <h2 className="text-xl   ">Description</h2>
+        <h2 className="text-xl  pb-3 ">Description</h2>
         <input
           value={shooting.description || ""}
           onChange={(e) =>
@@ -51,14 +49,14 @@ export default function EditShootingPage() {
           }
           className="bg-white/80 p-3 text-black mb-5"
         />
-        <h2 className="text-xl   ">Date</h2>
+        <h2 className="text-xl  pb-3 ">Date</h2>
         <input
           type="date"
           value={shooting.date?.split("T")[0] || ""}
           onChange={(e) => setShooting({ ...shooting, date: e.target.value })}
           className="bg-white/80 p-3 text-black mb-5"
         />
-        <h2 className="text-xl   ">Lieu</h2>
+        <h2 className="text-xl  pb-3 ">Lieu</h2>
         <input
           value={shooting.location || ""}
           onChange={(e) =>

@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className="bg-cover bg-center min-h-screen flex items-center justify-center "
+        className="bg-cover bg-center min-h-screen flex items-center justify-center  "
         style={{
           backgroundImage: "url('/abuzone2.jpg')",
           backgroundSize: "cover",
