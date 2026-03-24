@@ -2,28 +2,15 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import Navbar from "../components/Navbar";
 
 const Dashboard = () => {
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem("user"); // supprime le user
-    router.push("/login"); // redirige vers login
-  };
-
   return (
-    <div className="min-h-screen bg-cover bg-center flex items-center justify-center flex-col">
-      <div className="flex justify-center p-5">
-        <button
-          onClick={handleLogout}
-          className="transition-all text-black hover:cursor-pointer flex items-center gap-2 text-2xl bg-white p-5 rounded-full hover:bg-white/50 backdrop-blur-sm"
-        >
-          {/* Icône avant le texte */}
-          <img src="/icons/logoutb.svg" alt="Logout" className="w-10 h-10" />
-          Se déconnecter
-        </button>
-      </div>
 
+    <div className="min-h-screen bg-cover bg-center flex items-center justify-center flex-col">
+      <header><Navbar/></header>
       <h1 className="text-white text-5xl md:text-7xl font-bold text-center">
         ACCUEIL
       </h1>
