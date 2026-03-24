@@ -25,7 +25,7 @@ export default function EditShootingPage() {
       body: JSON.stringify(shooting),
     });
 
-    router.push(`/shootings/${id}`);
+    router.push(`/shootings/`);
   };
 
   if (!shooting) return <p className="text-white">Chargement...</p>;

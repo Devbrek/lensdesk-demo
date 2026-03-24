@@ -137,7 +137,7 @@ export default function MaterielPage() {
           >
             {/* TEXTE */}
             <span
-              className={`flex-1 ${item.checked ? "line-through opacity-50 " : ""}`}
+              className={`flex-1 transition-all duration-200 ${item.checked ? "line-through opacity-50 " : ""}`}
             >
               {item.label}
             </span>
@@ -164,6 +164,7 @@ export default function MaterielPage() {
           <input
             type="text"
             placeholder="Ajouter un nouvel item..."
+            maxLength={30}
             className="flex-1 px-3 py-2 rounded text-white border-white border "
             value={newItemLabel}
             onChange={(e) => setNewItemLabel(e.target.value)}
