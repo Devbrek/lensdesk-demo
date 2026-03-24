@@ -30,49 +30,51 @@ export default function ShootingDetailPage() {
   if (!shooting) return <p className="text-white">Shooting introuvable</p>;
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center justify-center p-5 gap-3">
-      {/* HEADER */}
-      <div className="bg-black/70 text-center items-center justify-center p-5 rounded-xl backdrop-blur-xs flex flex-col gap-2">
-        <h1 className="text-4xl font-bold ">Shooting : {shooting.title}</h1>
+    <div className="min-h-screen text-white flex flex-col items-center justify-center p-5 gap-3  ">
+      <div className="bg-white/80 p-5 rounded-xl">
+        {/* HEADER */}
+        <div className="text-center text-black items-center justify-center p-5 rounded-xl backdrop-blur-xs flex flex-col gap-2 ">
+          <h1 className="text-4xl font-bold "> {shooting.title}</h1>
 
-        <p className="text-white">
-          Date :{" "}
-          {shooting.date
-            ? new Date(shooting.date).toLocaleDateString()
-            : "Pas de date"}
-        </p>
-        <p className="text-white ">
-          Lieu : {shooting.location || "Pas de lieu"}
-        </p>
-      </div>
-
-      {/* BLOCS */}
-      <div className="w-full max-w-4xl flex flex-col gap-6">
-        {/* MATERIEL */}
-        <div
-          onClick={() => router.push(`/shootings/${id}/materiel`)}
-          className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs "
-        >
-          <h2>MATÉRIEL</h2>
+          <p className="text-black">
+            Date :{" "}
+            {shooting.date
+              ? new Date(shooting.date).toLocaleDateString()
+              : "Pas de date"}
+          </p>
+          <p className="text-black ">
+            Lieu : {shooting.location || "Pas de lieu"}
+          </p>
         </div>
 
-        {/* ACTIONS */}
-        <div
-          onClick={() => router.push(`/shootings/${id}/actions`)}
-          className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs "
-        >
-          <h2>ACTIONS</h2>
-        </div>
-      </div>
+        {/* BLOCS */}
+        <div className="w-full max-w-4xl flex flex-col gap-6">
+          {/* MATERIEL */}
+          <div
+            onClick={() => router.push(`/shootings/${id}/materiel`)}
+            className="cursor-pointer py-15 px-20 bg-black/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs "
+          >
+            <h2>MATÉRIEL</h2>
+          </div>
 
-      {/* NAV */}
-      <div className="mt-10">
-        <button
-          onClick={() => router.push("/shootings")}
-          className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
-        >
-          Retour
-        </button>
+          {/* ACTIONS */}
+          <div
+            onClick={() => router.push(`/shootings/${id}/actions`)}
+            className="cursor-pointer py-15 px-20 bg-black/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs "
+          >
+            <h2>ACTIONS</h2>
+          </div>
+        </div>
+
+        {/* NAV */}
+        <div className="mt-10">
+          <button
+            onClick={() => router.push("/shootings")}
+            className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase w-15"
+          >
+            Retour
+          </button>
+        </div>
       </div>
     </div>
   );

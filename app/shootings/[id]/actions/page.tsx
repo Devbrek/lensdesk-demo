@@ -63,7 +63,7 @@ export default function ActionPage() {
       <h1 className="text-4xl font-bold mb-10 text-center">ACTIONS</h1>
 
       {/* CHECKLIST ACTIONS */}
-      <div className="bg-black/70 p-10 border-white border-2 rounded-xl shadow-lg w-full max-w-md flex flex-col items-center gap-5 backdrop-blur-xs">
+      <div className="bg-black/70 p-10  rounded-xl shadow-lg w-full max-w-md flex flex-col items-center gap-5 backdrop-blur-xs">
         {items.map((item) => (
           <div
             key={item.id}
