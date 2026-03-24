@@ -30,25 +30,27 @@ export default function ShootingDetailPage() {
   if (!shooting) return <p className="text-white">Shooting introuvable</p>;
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center p-5">
+    <div className="min-h-screen text-white flex flex-col items-center justify-center p-5 gap-3">
       {/* HEADER */}
-      <h1 className="text-4xl font-bold mb-2">{shooting.title}</h1>
+      <div className="bg-black/70 text-center items-center justify-center p-5 rounded-xl backdrop-blur-xs flex flex-col gap-2">
+        <h1 className="text-4xl font-bold ">Shooting : {shooting.title}</h1>
 
-      <p className="text-white/70">
-        {shooting.date
-          ? new Date(shooting.date).toLocaleDateString()
-          : "Pas de date"}
-      </p>
-
-      <p className="text-white/70 mb-10">
-        {shooting.location || "Pas de lieu"}
-      </p>
+        <p className="text-white">
+          Date :{" "}
+          {shooting.date
+            ? new Date(shooting.date).toLocaleDateString()
+            : "Pas de date"}
+        </p>
+        <p className="text-white ">
+          Lieu : {shooting.location || "Pas de lieu"}
+        </p>
+      </div>
 
       {/* BLOCS */}
       <div className="w-full max-w-4xl flex flex-col gap-6">
         {/* MATERIEL */}
-        <div className="bg-white/10 p-5">
-          <h2 className="text-2xl mb-4">MATÉRIEL</h2>
+        <div className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs ">
+          <h2>MATÉRIEL</h2>
 
           {shooting.checklist
             ?.filter((item: any) => item.type === "materiel")
@@ -60,8 +62,8 @@ export default function ShootingDetailPage() {
         </div>
 
         {/* ACTIONS */}
-        <div className="bg-white/10 p-5">
-          <h2 className="text-2xl mb-4">ACTIONS</h2>
+        <div className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs ">
+          <h2>ACTIONS</h2>
 
           {shooting.checklist
             ?.filter((item: any) => item.type === "action")
