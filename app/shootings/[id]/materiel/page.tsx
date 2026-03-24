@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+
+import { useParams, useRouter } from "next/navigation";
 
 export default function MaterielPage() {
+  const router = useRouter();
   const { id } = useParams();
 
   const [items, setItems] = useState<any[]>([]);
@@ -175,6 +177,12 @@ export default function MaterielPage() {
           </button>
         </div>
       </div>
+      <button
+        onClick={() => router.push("/shootings")}
+        className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
+      >
+        Retour
+      </button>
     </div>
   );
 }

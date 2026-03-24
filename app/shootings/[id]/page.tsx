@@ -54,14 +54,6 @@ export default function ShootingDetailPage() {
           className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs "
         >
           <h2>MATÉRIEL</h2>
-
-          {shooting.checklist
-            ?.filter((item: any) => item.type === "materiel")
-            .map((item: any) => (
-              <p key={item.id}>
-                {item.checked ? "✔️" : "⬜"} {item.label}
-              </p>
-            ))}
         </div>
 
         {/* ACTIONS */}
@@ -70,14 +62,6 @@ export default function ShootingDetailPage() {
           className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs "
         >
           <h2>ACTIONS</h2>
-
-          {shooting.checklist
-            ?.filter((item: any) => item.type === "action")
-            .map((item: any) => (
-              <p key={item.id}>
-                {item.checked ? "✔️" : "⬜"} {item.label}
-              </p>
-            ))}
         </div>
       </div>
 
