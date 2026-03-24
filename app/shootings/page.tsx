@@ -31,62 +31,6 @@ export default function ShootingsPage() {
     fetchShootings();
   }, []);
 
-  // CREATE
-  const handleAdd = async () => {
-    const title = prompt("Nom du shooting :");
-    const description = prompt("Description (optionnelle) :");
-
-    if (!title) return;
-
-    try {
-      const res = await fetch("/api/shootings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description }),
-      });
-
-      const newShooting = await res.json();
-      setShootings([...shootings, newShooting]);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // EDIT
-  const handleEdit = async (id: string) => {
-    const shooting = shootings.find((s) => s.id === id);
-    if (!shooting) return;
-
-    const newTitle = prompt("Modifier le titre :", shooting.title);
-    const newDesc = prompt(
-      "Modifier la description :",
-      shooting.description || "",
-    );
-
-    if (!newTitle) return;
-
-    try {
-      await fetch(`/api/shootings/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: newTitle,
-          description: newDesc,
-        }),
-      });
-
-      setShootings(
-  shootings.map((s) =>
-    s.id === id
-      ? {
-          ...s,
-          title: newTitle,
-          description: newDesc || undefined, // ✅ FIX
-        }
-      : s
-  )
-);
-
   // DELETE
   const handleDelete = async (id: string) => {
     if (!confirm("Supprimer ce shooting ?")) return;
