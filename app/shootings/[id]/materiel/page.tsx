@@ -135,7 +135,7 @@ export default function MaterielPage() {
           >
             {/* TEXTE */}
             <span
-              className={`flex-1 ${item.checked ? "line-through opacity-50" : ""}`}
+              className={`flex-1 ${item.checked ? "line-through opacity-50 " : ""}`}
             >
               {item.label}
             </span>
