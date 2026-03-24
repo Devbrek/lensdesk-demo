@@ -31,42 +31,45 @@ export default function EditShootingPage() {
   if (!shooting) return <p className="text-white">Chargement...</p>;
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center p-5">
-      <h1 className="text-4xl font-bold mb-10">MODIFIER SHOOTING</h1>
+    <div className="min-h-screen text-white flex flex-col items-center justify-center  p-5">
+      <h1 className="text-4xl font-bold mb-10 text-center">
+        Modification du shooting de : {shooting.title}
+      </h1>
 
-      <div className="flex flex-col gap-4 w-full max-w-md ">
+      <div className="flex flex-col  w-full max-w-md bg-black/70 p-10 rounded-xl border-3 border-white">
+        <h2 className="text-xl   ">Titre</h2>
         <input
           value={shooting.title}
           onChange={(e) => setShooting({ ...shooting, title: e.target.value })}
-          className="bg-white/80 p-3 text-black"
+          className="bg-white/80 p-3 text-black mb-5"
         />
-
+        <h2 className="text-xl   ">Description</h2>
         <input
           value={shooting.description || ""}
           onChange={(e) =>
             setShooting({ ...shooting, description: e.target.value })
           }
-          className="bg-white/80 p-3 text-black"
+          className="bg-white/80 p-3 text-black mb-5"
         />
-
+        <h2 className="text-xl   ">Date</h2>
         <input
           type="date"
           value={shooting.date?.split("T")[0] || ""}
           onChange={(e) => setShooting({ ...shooting, date: e.target.value })}
-          className="bg-white/80 p-3 text-black"
+          className="bg-white/80 p-3 text-black mb-5"
         />
-
+        <h2 className="text-xl   ">Lieu</h2>
         <input
           value={shooting.location || ""}
           onChange={(e) =>
             setShooting({ ...shooting, location: e.target.value })
           }
-          className="bg-white/80 p-3 text-black"
+          className="bg-white/80 p-3 text-black mb-10"
         />
 
         <button
           onClick={handleUpdate}
-          className="bg-white px-6 py-3 text-black"
+          className="bg-white px-6 py-3 text-black "
         >
           Enregistrer
         </button>
