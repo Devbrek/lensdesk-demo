@@ -115,11 +115,13 @@ export default function InventoryPage() {
             >
               {editingId === item.id ? (
                 <div className="flex flex-col flex-1 gap-2">
+                  <h3>Nom</h3>
                   <input
                     className="p-1  rounded bg-white/80"
                     value={editLabel}
                     onChange={(e) => setEditLabel(e.target.value)}
                   />
+                  <h3>Type</h3>
                   <input
                     className="p-1  rounded bg-white/80"
                     value={editType}
