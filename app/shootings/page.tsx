@@ -76,14 +76,16 @@ export default function ShootingsPage() {
       });
 
       setShootings(
-        shootings.map((s) =>
-          s.id === id ? { ...s, title: newTitle, description: newDesc } : s,
-        ),
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  shootings.map((s) =>
+    s.id === id
+      ? {
+          ...s,
+          title: newTitle,
+          description: newDesc || undefined, // ✅ FIX
+        }
+      : s
+  )
+);
 
   // DELETE
   const handleDelete = async (id: string) => {
