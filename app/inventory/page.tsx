@@ -194,22 +194,6 @@ export default function InventoryPage() {
           <img src="/icons/add.svg" alt="Ajouter" className="w-10 h-10" />
         </button>
       </div>
-
-      {/* Navigation */}
-      <div className="flex gap-5 mt-10">
-        <button
-          onClick={() => router.push("/shootings")}
-          className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
-        >
-          Shootings
-        </button>
-        <button
-          onClick={() => router.push("/dashboard")}
-          className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
-        >
-          Dashboard
-        </button>
-      </div>
     </div>
   );
 }
