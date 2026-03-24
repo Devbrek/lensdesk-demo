@@ -79,7 +79,7 @@ export default function ShootingDetailPage() {
       <div className="mt-10">
         <button
           onClick={() => router.push("/shootings")}
-          className="bg-white px-6 py-3 text-black"
+          className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
         >
           Retour
         </button>

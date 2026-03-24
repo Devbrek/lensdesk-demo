@@ -69,7 +69,7 @@ export default function EditShootingPage() {
 
         <button
           onClick={handleUpdate}
-          className="bg-white px-6 py-3 text-black "
+          className="w-fit m-auto px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
         >
           Enregistrer
         </button>
