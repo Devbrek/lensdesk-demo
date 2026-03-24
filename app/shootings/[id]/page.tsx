@@ -49,7 +49,10 @@ export default function ShootingDetailPage() {
       {/* BLOCS */}
       <div className="w-full max-w-4xl flex flex-col gap-6">
         {/* MATERIEL */}
-        <div className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs ">
+        <div
+          onClick={() => router.push(`/shootings/${id}/materiel`)}
+          className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs "
+        >
           <h2>MATÉRIEL</h2>
 
           {shooting.checklist
@@ -62,7 +65,10 @@ export default function ShootingDetailPage() {
         </div>
 
         {/* ACTIONS */}
-        <div className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs ">
+        <div
+          onClick={() => router.push(`/shootings/${id}/actions`)}
+          className="cursor-pointer py-20 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs "
+        >
           <h2>ACTIONS</h2>
 
           {shooting.checklist
