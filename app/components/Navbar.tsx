@@ -24,9 +24,12 @@ const Navbar = () => {
   return (
     <nav className="flex py-5 w-screen justify-between px-5 absolute z-10 top-0 left-0 items-center">
       {/* LOGO */}
-      <div className="text-white flex gap-3">
+      <button
+        className="text-white flex gap-3"
+        onClick={() => handleNav("/dashboard")}
+      >
         <img src="/icons/logo2.png" alt="logo" className="w-30" />
-      </div>
+      </button>
 
       {/* MENU DESKTOP */}
       <div className="hidden md:block bg-white/10 px-5 py-3 rounded-full border-2 border-white text-white uppercase font-bold">
