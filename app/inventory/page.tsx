@@ -113,13 +113,13 @@ export default function InventoryPage() {
                 <div className="flex flex-col ">
                   <h3>Nom</h3>
                   <input
-                    className="p-1 rounded bg-white/80"
+                    className="p-1 rounded border"
                     value={editLabel}
                     onChange={(e) => setEditLabel(e.target.value)}
                   />
                   <h3>Type</h3>
                   <input
-                    className="p-1  rounded bg-white/80"
+                    className="p-1  rounded border"
                     value={editType}
                     onChange={(e) => setEditType(e.target.value)}
                   />
@@ -185,19 +185,19 @@ export default function InventoryPage() {
           ))
         )}
 
-<div className="flex gap-8 justify-center mt-2">
-        <button
-          onClick={handleAddItem}
-          className=" flex items-center justify-center text-black font-bold "
-        >
-          <img src="/icons/add.svg" alt="Ajouter" className="w-7 " />
-        </button>
+        <div className="flex gap-8 justify-center mt-2">
           <button
-          onClick={() => router.push("/dashboard")}
-          className="flex justify-center items-center "
-        >
-          <img src="/icons/cross.svg" className="w-5" alt="add" />
-        </button>
+            onClick={handleAddItem}
+            className=" flex items-center justify-center text-black font-bold "
+          >
+            <img src="/icons/add.svg" alt="Ajouter" className="w-7 " />
+          </button>
+          <button
+            onClick={() => router.push("/dashboard")}
+            className="flex justify-center items-center "
+          >
+            <img src="/icons/ok.svg" className="w-7" alt="ok" />
+          </button>
         </div>
       </div>
     </div>
