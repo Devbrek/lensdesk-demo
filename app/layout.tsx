@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import LayoutWrapper from "./components/LayoutWrapper";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "AbuzOne Checker",
@@ -14,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={cn("font-sans", geist.variable)}>
       <body
         className="bg-cover bg-center min-h-screen flex items-center justify-center bg-no-repeat"
         style={{
