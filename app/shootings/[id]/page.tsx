@@ -30,19 +30,17 @@ export default function ShootingDetailPage() {
   if (!shooting) return <p className="text-white">Shooting introuvable</p>;
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center justify-center p-5 gap-3  ">
-      <div className="bg-white/80 p-5 rounded-xl">
-        {/* HEADER */}
-        <div className="text-center text-black items-center justify-center p-5 rounded-xl backdrop-blur-xs flex flex-col gap-2 ">
-          <h1 className="text-4xl font-bold "> {shooting.title}</h1>
-
-          <p className="text-black">
+    <div className="min-h-screen text-white flex flex-col items-center justify-center p-5   ">
+      <div className="w-screen md:w-full max-w-3xl p-5 flex flex-col gap-2 text-white bg-black/70 backdrop-blur-xs rounded-xl text-center">
+        <div>
+          <h1 className="text-white text-2xl mb-2">Shooting : {shooting.title}</h1>
+          <p className="text-white">
             Date :{" "}
             {shooting.date
               ? new Date(shooting.date).toLocaleDateString()
               : "Pas de date"}
           </p>
-          <p className="text-black ">
+          <p className="text-white ">
             Lieu : {shooting.location || "Pas de lieu"}
           </p>
         </div>
@@ -52,29 +50,28 @@ export default function ShootingDetailPage() {
           {/* MATERIEL */}
           <div
             onClick={() => router.push(`/shootings/${id}/materiel`)}
-            className="cursor-pointer py-15 px-20 bg-black/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs "
+            className="cursor-pointer py-11 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs flex-col gap-3"
           >
+            <img src="/icons/materiel.svg" alt="materiel" className="w-8" />
             <h2>MATÉRIEL</h2>
           </div>
 
           {/* ACTIONS */}
           <div
             onClick={() => router.push(`/shootings/${id}/actions`)}
-            className="cursor-pointer py-15 px-20 bg-black/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs "
+            className="cursor-pointer py-11 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs flex-col"
           >
+            <img src="/icons/actions.svg" alt="actions" className="w-8" />
             <h2>ACTIONS</h2>
           </div>
         </div>
+      </div>
 
-        {/* NAV */}
-        <div className="mt-10">
-          <button
-            onClick={() => router.push("/shootings")}
-            className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase w-15"
-          >
-            Retour
+      {/* NAV */}
+      <div className="mt-10">
+         <button onClick={() => router.push("/shootings")} className="w-10  ">
+            <img src="/icons/ok.svg" alt="ok" />
           </button>
-        </div>
       </div>
     </div>
   );

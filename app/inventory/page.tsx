@@ -97,7 +97,7 @@ export default function InventoryPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center p-5 justify-center text-white">
-      <div className="w-full max-w-3xl p-5 flex flex-col gap-2 text-black bg-black/70 backdrop-blur-xs rounded-xl">
+      <div className="w-screen md:w-full max-w-3xl p-5 flex flex-col gap-2 text-black bg-black/70 backdrop-blur-xs rounded-xl">
         <h1 className="text-3xl font-bold mb-5 text-white ">INVENTAIRE</h1>
         {loading ? (
           <p>Chargement...</p>

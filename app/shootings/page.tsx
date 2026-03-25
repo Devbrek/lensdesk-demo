@@ -48,7 +48,7 @@ export default function ShootingsPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center  p-5 ">
-      <div className="w-full max-w-3xl p-5 flex flex-col gap-2 text-black bg-black/70 backdrop-blur-xs rounded-xl">
+      <div className="w-screen md:w-full max-w-3xl p-5 flex flex-col gap-2 text-black bg-black/70 backdrop-blur-xs rounded-xl">
         <h1 className="text-3xl font-bold mb-8 text-white">SHOOTINGS</h1>
         {loading ? (
           <p>Chargement...</p>
@@ -58,9 +58,9 @@ export default function ShootingsPage() {
           shootings.map((shooting) => (
             <div
               key={shooting.id}
-              className="flex px-2  py-1 rounded gap-3 justify-between items-center bg-white"
+              className="flex px-2  py-1 rounded gap-3 justify-around items-center bg-white"
             >
-              <div className="pb-4">
+              <div className="py-2">
                 <p className="font-bold">{shooting.title}</p>
                 {shooting.description && (
                   <p className="text-sm text-gray-900">
@@ -77,7 +77,7 @@ export default function ShootingsPage() {
                   <img src="/icons/pencil.svg" className="w-4" alt="edit" />
                 </button>
 
-                {/* DELETE */}
+               
                 <button onClick={() => handleDelete(shooting.id)}>
                   <img src="/icons/del.svg" className="w-3" alt="delete" />
                 </button>

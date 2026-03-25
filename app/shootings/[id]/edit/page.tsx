@@ -32,45 +32,47 @@ export default function EditShootingPage() {
 
   return (
     <div className="min-h-screen text-white flex flex-col items-center justify-center p-5">
-      <h1 className="text-4xl font-bold mb-10 text-center">{shooting.title}</h1>
+      <div className="w-screen md:w-full max-w-3xl p-5 flex flex-col gap-2 text-white bg-black/70 backdrop-blur-xs rounded-xl">
+        <h1 className="text-4xl font-bold  text-center">{shooting.title}</h1>
 
-      <div className="flex flex-col  w-full max-w-md bg-white/70 backdrop-blur-xs p-10 rounded-xl text-black">
-        <h2 className="text-xl pb-3">Titre</h2>
+        <h2 className=" ">Titre</h2>
         <input
           value={shooting.title}
           onChange={(e) => setShooting({ ...shooting, title: e.target.value })}
-          className="bg-white/80 p-3 text-black mb-5"
+          className="bg-white/80 p-3 text-black mb-2"
         />
-        <h2 className="text-xl  pb-3 ">Description</h2>
+        <h2 className=" ">Description</h2>
         <input
           value={shooting.description || ""}
           onChange={(e) =>
             setShooting({ ...shooting, description: e.target.value })
           }
-          className="bg-white/80 p-3 text-black mb-5"
+          className="bg-white/80 p-3 text-black mb-2"
         />
-        <h2 className="text-xl  pb-3 ">Date</h2>
+        <h2 className="  ">Date</h2>
         <input
           type="date"
           value={shooting.date?.split("T")[0] || ""}
           onChange={(e) => setShooting({ ...shooting, date: e.target.value })}
-          className="bg-white/80 p-3 text-black mb-5"
+          className="bg-white/80 p-3 text-black mb-2"
         />
-        <h2 className="text-xl  pb-3 ">Lieu</h2>
+        <h2 className=" ">Lieu</h2>
         <input
           value={shooting.location || ""}
           onChange={(e) =>
             setShooting({ ...shooting, location: e.target.value })
           }
-          className="bg-white/80 p-3 text-black mb-10"
+          className="bg-white/80 p-3 text-black mb-5"
         />
 
-        <button
-          onClick={handleUpdate}
-          className="w-fit m-auto px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
-        >
-          Enregistrer
-        </button>
+        <div className="flex justify-center gap-8">
+          <button onClick={() => handleUpdate()} className="w-7  ">
+            <img src="/icons/ok.svg" alt="ok" />
+          </button>
+          <button onClick={() => router.push("/shootings")} className="w-6 ">
+            <img src="/icons/cross.svg" alt="cross" />
+          </button>
+        </div>
       </div>
     </div>
   );
