@@ -34,44 +34,56 @@ export default function NewShootingPage() {
   };
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center p-5">
-      <h1 className="text-4xl font-bold mb-10">NOUVEAU SHOOTING</h1>
+    <div className="min-h-screen  flex flex-col items-center justify-center p-5">
+      <div className="w-full max-w-3xl p-5 flex flex-col gap-2  bg-black/70 backdrop-blur-xs rounded-xl">
+        <h1 className="text-3xl font-bold mb-8  text-white">
+          NOUVEAU SHOOTING
+        </h1>
 
-      <div className="flex flex-col gap-4 w-full max-w-md">
-        <input
-          placeholder="Titre"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="bg-white/10 p-3"
-        />
+        <div className="flex flex-col gap-4 w-full max-w-md text-black">
+          <input
+            placeholder="Titre"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="bg-white/70 p-3 text-black"
+          />
 
-        <input
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="bg-white/10 p-3"
-        />
+          <input
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="bg-white/70 p-3 text-black"
+          />
 
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="bg-white/10 p-3"
-        />
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="bg-white/70 p-3 text-black"
+          />
 
-        <input
-          placeholder="Lieu"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="bg-white/10 p-3"
-        />
+          <input
+            placeholder="Lieu"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="bg-white/70 p-3 text-black"
+          />
 
-        <button
-          onClick={handleCreate}
-          className="w-full bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition"
+<div className="flex justify-center gap-8 mt-4">
+           <button
+          onClick={() => handleCreate()}
+          className="flex justify-center items-center "
         >
-          Créer
+          <img src="/icons/checked.svg" className="w-6" alt="add" />
         </button>
+           <button
+          onClick={() => router.push("/shootings")}
+          className="flex justify-center items-center "
+        >
+          <img src="/icons/cross.svg" className="w-5" alt="add" />
+        </button>
+        </div>
+        </div>
       </div>
     </div>
   );

@@ -97,12 +97,8 @@ export default function InventoryPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center p-5 justify-center text-white">
-      <header>
-        <Navbar />
-      </header>
-      <h1 className="text-5xl font-bold mb-8 text-white">INVENTAIRE</h1>
-
-      <div className="w-full max-w-3xl p-10 flex flex-col gap-4 text-black bg-white/40  backdrop-blur-xs rounded-xl">
+      <div className="w-full max-w-3xl p-5 flex flex-col gap-2 text-black bg-black/70 backdrop-blur-xs rounded-xl">
+        <h1 className="text-3xl font-bold mb-5 text-white ">INVENTAIRE</h1>
         {loading ? (
           <p>Chargement...</p>
         ) : items.length === 0 ? (
@@ -111,13 +107,13 @@ export default function InventoryPage() {
           items.map((item) => (
             <div
               key={item.id}
-              className="flex flex-col gap-5 justify-between items-center bg-white/70 p-3"
+              className="flex px-2  py-1 rounded gap-3 justify-between items-center bg-white "
             >
               {editingId === item.id ? (
-                <div className="flex flex-col flex-1 gap-2">
+                <div className="flex flex-col ">
                   <h3>Nom</h3>
                   <input
-                    className="p-1  rounded bg-white/80"
+                    className="p-1 rounded bg-white/80"
                     value={editLabel}
                     onChange={(e) => setEditLabel(e.target.value)}
                   />
@@ -135,7 +131,7 @@ export default function InventoryPage() {
                 </div>
               )}
 
-              <div className="flex gap-5 ms-3">
+              <div className="flex gap-7 ms-3">
                 {editingId === item.id ? (
                   <>
                     <button
@@ -168,7 +164,7 @@ export default function InventoryPage() {
                       <img
                         src="/icons/pencil.svg"
                         alt="Modifier"
-                        className="w-6 h-6"
+                        className="w-4 "
                       />
                     </button>
 
@@ -179,7 +175,7 @@ export default function InventoryPage() {
                       <img
                         src="/icons/del.svg"
                         alt="Supprimer"
-                        className="w-6 h-6"
+                        className="w-3"
                       />
                     </button>
                   </>
@@ -189,12 +185,20 @@ export default function InventoryPage() {
           ))
         )}
 
+<div className="flex gap-8 justify-center mt-2">
         <button
           onClick={handleAddItem}
-          className="mt-4 flex items-center justify-center text-black font-bold gap-2"
+          className=" flex items-center justify-center text-black font-bold "
         >
-          <img src="/icons/add.svg" alt="Ajouter" className="w-10 h-10" />
+          <img src="/icons/add.svg" alt="Ajouter" className="w-7 " />
         </button>
+          <button
+          onClick={() => router.push("/dashboard")}
+          className="flex justify-center items-center "
+        >
+          <img src="/icons/cross.svg" className="w-5" alt="add" />
+        </button>
+        </div>
       </div>
     </div>
   );

@@ -48,9 +48,11 @@ export default function ShootingsPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center  p-5 ">
-      <h1 className="text-5xl font-bold mb-8 text-white">SHOOTINGS</h1>
+      
+     
 
-      <div className="  flex flex-col gap-4 text-black bg-white/70 backdrop-blur-xs p-10 rounded-xl  border-white ">
+      <div className="w-full max-w-3xl p-5 flex flex-col gap-2 text-black bg-black/70 backdrop-blur-xs rounded-xl">
+       <h1 className="text-3xl font-bold mb-8 text-white">SHOOTINGS</h1>
         {loading ? (
           <p>Chargement...</p>
         ) : shootings.length === 0 ? (
@@ -59,7 +61,7 @@ export default function ShootingsPage() {
           shootings.map((shooting) => (
             <div
               key={shooting.id}
-              className="flex flex-col justify-between items-center bg-white p-3 rounded-xl"
+              className="flex px-2  py-1 rounded gap-3 justify-between items-center bg-white"
             >
               <div className="pb-4">
                 <p className="font-bold">{shooting.title}</p>
@@ -75,18 +77,18 @@ export default function ShootingsPage() {
                 <button
                   onClick={() => router.push(`/shootings/${shooting.id}/edit`)}
                 >
-                  <img src="/icons/pencil.svg" className="w-5 h-5" alt="edit" />
+                  <img src="/icons/pencil.svg" className="w-4" alt="edit" />
                 </button>
 
                 {/* DELETE */}
                 <button onClick={() => handleDelete(shooting.id)}>
-                  <img src="/icons/del.svg" className="w-5 h-5" alt="delete" />
+                  <img src="/icons/del.svg" className="w-3" alt="delete" />
                 </button>
                 {/* DETAILS */}
                 <button
                   onClick={() => router.push(`/shootings/${shooting.id}`)}
                 >
-                  <img src="/icons/eye.svg" className="w-5 h-5" alt="voir" />
+                  <img src="/icons/eye.svg" className="w-4" alt="voir" />
                 </button>
               </div>
             </div>
@@ -98,7 +100,7 @@ export default function ShootingsPage() {
           onClick={() => router.push("/shootings/new")}
           className="flex justify-center items-center gap-2 mt-4"
         >
-          <img src="/icons/add.svg" className="w-10 h-10" alt="add" />
+          <img src="/icons/add.svg" className="w-7" alt="add" />
         </button>
       </div>
     </div>
