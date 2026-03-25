@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import "bcrypt" from bcrypt;
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken"
+
+const JWT_SECRET = process.env.JWT_SECRET as string
 
 
 
@@ -13,9 +16,6 @@ export async function  middleware(request: NextRequest ){
     const {pathname} = request.nextUrl;
     const token = request.cookies.get('token')?.value;
 
-    // verifie la validité 
-    // créer une fonction VerifyToken , getUserFromtoken .... 
-    // const user  = getUserFromtoken(token)
 
 
     const isProtectedRoute = protectedPages.some((route) => pathname.startsWith(route))
