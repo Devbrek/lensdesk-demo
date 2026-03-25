@@ -20,10 +20,24 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
+    const token  = "ekzkezojrzhrzhrjkzhjzkrhrjkz"
 
-    return NextResponse.json({
+
+
+    const response =  NextResponse.json({
       user: { id: user.id, email: user.email, name: user.name },
     });
+
+    response.cookies.set({
+      name: 'token',
+      value: token,
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 7, // 7 jours,
+      path: '/'
+    })
+
+
+    return response;
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
