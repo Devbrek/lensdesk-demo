@@ -26,6 +26,14 @@ export async function  middleware(request: NextRequest ){
 
     }
 
+
+    // petit exercice: 
+
+    // ajout du bcryptjs 
+    // generation du token 
+    // stockage du token dans la cookie
+    
+
     // middleware : request, response, next 
     return NextResponse.next();
 
