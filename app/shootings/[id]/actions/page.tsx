@@ -135,7 +135,6 @@ export default function ActionPage() {
               className="w-5 h-5 "
               alt="add"
               onClick={handleAddManual}
-              size="icon"
             />
           </div>
         </Card>
