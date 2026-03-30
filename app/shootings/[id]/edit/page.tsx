@@ -3,7 +3,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -39,76 +46,101 @@ export default function EditShootingPage() {
   };
 
   if (loading || !shooting) {
-    return <p className=" text-center mt-10 ">Chargement...</p>;
+    return (
+      <p className="text-muted-foreground text-center mt-10">Chargement...</p>
+    );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center  ">
-      <Card className="w-full max-w-2xl p-6 space-y-2 bg-background">
-        {/* TITLE */}
-        <h1 className="text-2xl font-bold text-white text-center">
-          Modifier le shooting
-        </h1>
+    <div className="min-h-screen flex justify-center pt-10">
+      <div className="w-full max-w-md space-y-6">
+        {/* HEADER */}
+        <Card className="bg-background text-white text-center">
+          <CardHeader>
+            <CardTitle>Modifier le shooting</CardTitle>
+            <CardDescription>
+              Mets à jour les informations du projet
+            </CardDescription>
+          </CardHeader>
+        </Card>
 
-        {/* TITLE FIELD */}
-        <div className="space-y-2">
-          <label className="text-sm text-white">Titre</label>
-          <Input
-            value={shooting.title}
-            onChange={(e) =>
-              setShooting({ ...shooting, title: e.target.value })
-            }
-            className="bg-white "
-          />
-        </div>
+        {/* FORM */}
+        <Card className="bg-background text-white">
+          <CardContent className="flex flex-col gap-5 pt-6">
+            {/* TITLE */}
+            <div className="space-y-2">
+              <label className="text-sm text-muted-foreground">Titre</label>
 
-        {/* DESCRIPTION */}
-        <div className="space-y-2">
-          <label className="text-sm text-white">Description</label>
-          <Input
-            value={shooting.description || ""}
-            onChange={(e) =>
-              setShooting({ ...shooting, description: e.target.value })
-            }
-            className="bg-white"
-          />
-        </div>
+              <Input
+                value={shooting.title}
+                onChange={(e) =>
+                  setShooting({ ...shooting, title: e.target.value })
+                }
+                className="bg-white"
+              />
+            </div>
 
-        {/* DATE */}
-        <div className="space-y-2">
-          <label className="text-sm text-white">Date</label>
-          <Input
-            type="date"
-            value={shooting.date?.split("T")[0] || ""}
-            onChange={(e) => setShooting({ ...shooting, date: e.target.value })}
-            className="bg-white"
-          />
-        </div>
+            {/* DESCRIPTION */}
+            <div className="space-y-2">
+              <label className="text-sm text-muted-foreground">
+                Description
+              </label>
 
-        {/* LOCATION */}
-        <div className="space-y-2">
-          <label className="text-sm text-white">Lieu</label>
-          <Input
-            value={shooting.location || ""}
-            onChange={(e) =>
-              setShooting({ ...shooting, location: e.target.value })
-            }
-            className="bg-white"
-          />
-        </div>
+              <Input
+                value={shooting.description || ""}
+                onChange={(e) =>
+                  setShooting({
+                    ...shooting,
+                    description: e.target.value,
+                  })
+                }
+                className="bg-white"
+              />
+            </div>
+
+            {/* DATE */}
+            <div className="space-y-2">
+              <label className="text-sm text-muted-foreground">Date</label>
+
+              <Input
+                type="date"
+                value={shooting.date?.split("T")[0] || ""}
+                onChange={(e) =>
+                  setShooting({ ...shooting, date: e.target.value })
+                }
+                className="bg-white"
+              />
+            </div>
+
+            {/* LOCATION */}
+            <div className="space-y-2">
+              <label className="text-sm text-muted-foreground">Lieu</label>
+
+              <Input
+                value={shooting.location || ""}
+                onChange={(e) =>
+                  setShooting({
+                    ...shooting,
+                    location: e.target.value,
+                  })
+                }
+                className="bg-white"
+              />
+            </div>
+          </CardContent>
+        </Card>
 
         {/* ACTIONS */}
-        <div className="flex justify-center gap-3 pt-4">
-          <Button onClick={handleUpdate}>Valider</Button>
+        <Card className="bg-background text-white">
+          <CardContent className="flex flex-col gap-3 ">
+            <Button onClick={handleUpdate}>Valider les modifications</Button>
 
-          <Button
-            variant="destructive"
-            onClick={() => router.push("/shootings")}
-          >
-            Annuler
-          </Button>
-        </div>
-      </Card>
+            <Button variant="outline" onClick={() => router.push("/shootings")}>
+              Annuler
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
