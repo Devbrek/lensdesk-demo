@@ -95,7 +95,7 @@ export default function MaterielPage() {
     items.some((item) => item.inventoryItemId === inventoryItemId);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="min-h-screen flex flex-col items-center justify-center text-center">
       <div className="w-full max-w-3xl space-y-2 bg-background p-6 items-center justify-center ">
         {/* TITLE */}
         <h1 className="text-3xl font-bold text-white  uppercase">Matériel</h1>
@@ -127,14 +127,14 @@ export default function MaterielPage() {
         </Card>
 
         {/* CHECKLIST */}
-        <Card className="w-full p-6 space-y-4">
+        <Card className="w-full p-6 ">
           <h2 className="text-xl font-bold text-white">Checklist</h2>
 
           <div className="space-y-2">
             {items.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between bg-muted/40 p-3 rounded-lg"
+                className="flex items-center justify-between bg-muted/40 p-3 rounded-lg bg-white"
               >
                 <span
                   className={`flex-1 ${
