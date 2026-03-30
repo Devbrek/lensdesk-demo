@@ -113,7 +113,7 @@ export default function MaterielPage() {
     items.some((item) => item.inventoryItemId === inventoryItemId);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center pt-10">
       <div className="w-full max-w-md space-y-6">
         {/* HEADER */}
         <Card className="bg-background text-white">
@@ -242,24 +242,44 @@ export default function MaterielPage() {
             </div>
 
             {/* ADD INPUT */}
-            <div className="flex gap-2 items-center">
-              <Input
-                value={newItemLabel}
-                onChange={(e) => setNewItemLabel(e.target.value)}
-                placeholder="Ajouter un item..."
-                maxLength={30}
-                onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
-              />
+            {/* ADD INPUT */}
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2 items-center">
+                <Input
+                  value={newItemLabel}
+                  onChange={(e) => setNewItemLabel(e.target.value)}
+                  placeholder="Ex : 2 batteries, trépied, carte SD..."
+                  maxLength={30}
+                  onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
+                />
 
-              <Button onClick={handleAddManual} size="icon">
-                +
-              </Button>
+                <Button
+                  onClick={handleAddManual}
+                  size="icon"
+                  disabled={!newItemLabel.trim()}
+                  className={`
+        transition
+        ${!newItemLabel.trim() ? "opacity-40 cursor-not-allowed" : ""}
+      `}
+                >
+                  +
+                </Button>
+              </div>
+
+              {/* HELP TEXT */}
+              <p className="text-xs text-muted-foreground">
+                Appuie sur Entrée ou clique sur + pour ajouter un élément
+              </p>
             </div>
           </CardContent>
         </Card>
 
         {/* FOOTER */}
-        <Button onClick={() => router.push(`/shootings/${id}`)}>Retour</Button>
+        <div className="flex justify-center pb-5">
+          <Button onClick={() => router.push(`/shootings/${id}`)}>
+            Retour
+          </Button>
+        </div>
       </div>
     </div>
   );
