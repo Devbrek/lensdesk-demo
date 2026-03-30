@@ -123,6 +123,9 @@ const Dashboard = () => {
 
             {/* PROGRESS MATERIEL */}
             <div className="space-y-1 pt-2">
+              <span className="text-xs text-muted-foreground">
+                restant :
+              </span>
               <div className="flex justify-between text-xs">
                 <span>Matériel</span>
                 <span>
