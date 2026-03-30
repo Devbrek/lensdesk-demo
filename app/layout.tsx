@@ -27,7 +27,7 @@ export default function RootLayout({
       {/* IMPORTANT: permet dark mode + hydration stable */}
       <body
         className={cn(
-          "min-h-screen   text-foreground bg-cover bg-center bg-no-repeat pt-10",
+          "min-h-screen   text-foreground bg-cover bg-center bg-no-repeat pt-20",
         )}
         style={{
           backgroundImage: "url('/abuzone2.jpg')",
