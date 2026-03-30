@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 
 // GET /api/inventory → récupérer tous les items d'un utilisateur
-export async function GET(_req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     const userId = "83a83cf9-9ced-478b-9edb-b05042845329"; // à remplacer par l'user actuel
     const items = await prisma.inventoryItem.findMany({
