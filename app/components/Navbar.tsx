@@ -22,17 +22,17 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex py-5 w-screen justify-between px-5 absolute z-10 top-0 left-0 items-center  backdrop-blur-sm">
+    <nav className="flex py-2 w-screen justify-between px-10 absolute z-10 top-0 left-0 items-center  backdrop-blur-sm bg-white/5">
       {/* LOGO */}
       <button
         className="text-white flex gap-3"
         onClick={() => handleNav("/dashboard")}
       >
-        <img src="/icons/logo2.png" alt="logo" className="w-30" />
+        <img src="/icons/logo2.png" alt="logo" className="w-25" />
       </button>
 
       {/* MENU DESKTOP */}
-      <div className="hidden md:block bg-white/10 px-5 py-3 rounded-full border-2 border-white text-white uppercase font-bold">
+      <div className="hidden md:block bg-white/10 px-5 py-2 rounded-full border-2 border-white text-white uppercase font-bold">
         <ul className="flex gap-5">
           <li
             onClick={() => handleNav("/dashboard")}
