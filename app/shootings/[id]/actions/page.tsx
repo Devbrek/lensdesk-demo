@@ -132,18 +132,6 @@ export default function ActionPage() {
                     done ? "bg-green-500/10 border-green-500/40" : ""
                   }`}
                 >
-                  <ItemMedia>
-                    <div
-                      className={`flex items-center justify-center size-8 rounded-full ${
-                        done
-                          ? "bg-green-500 text-black"
-                          : "bg-white/5 text-white"
-                      }`}
-                    >
-                      <Check className="size-4" />
-                    </div>
-                  </ItemMedia>
-
                   <ItemContent>
                     <ItemTitle
                       className={done ? "line-through opacity-60" : ""}
@@ -211,7 +199,7 @@ export default function ActionPage() {
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Entre du texte puis clique sur + pour ajouter un élément
+                Entre du texte puis clique sur + pour ajouter
               </p>
             </div>
           </CardContent>
