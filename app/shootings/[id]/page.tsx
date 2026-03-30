@@ -42,8 +42,8 @@ export default function ShootingDetailPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 space-y-6">
-      <div className="w-full max-w-3xl space-y-4 bg-background p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 space-y-6 text-center">
+      <div className="w-full max-w-3xl space-y-4 bg-background pb-5">
         {/* HEADER CARD */}
         <Card className="w-full max-w-3xl p-6  text-center text-white">
           <h1 className="text-2xl font-bold uppercase">{shooting.title}</h1>
@@ -63,11 +63,11 @@ export default function ShootingDetailPage() {
         </Card>
 
         {/* NAVIGATION BLOCKS */}
-        <div className="w-full max-w-3xl grid gap-4">
+        <div className="w-full max-w-3xl flex flex-row gap-4 justify-center">
           {/* MATERIEL */}
           <Card
             onClick={() => router.push(`/shootings/${id}/materiel`)}
-            className="cursor-pointer min-h-[140px] flex flex-col items-center justify-center gap-3"
+            className="cursor-pointer  flex-col items-center justify-center p-3 rounded "
           >
             <img src="/icons/materiel.svg" className="w-8" alt="materiel" />
             <h2 className="text-xl font-bold uppercase text-white">Matériel</h2>
@@ -76,7 +76,7 @@ export default function ShootingDetailPage() {
           {/* ACTIONS */}
           <Card
             onClick={() => router.push(`/shootings/${id}/actions`)}
-            className="cursor-pointer min-h-[140px] flex flex-col items-center justify-center gap-3"
+            className="cursor-pointer  flex flex-col items-center justify-center p-3 rounded"
           >
             <img src="/icons/actions.svg" className="w-8" alt="actions" />
             <h2 className="text-xl font-bold uppercase text-white">Actions</h2>
