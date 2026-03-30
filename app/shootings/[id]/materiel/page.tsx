@@ -116,9 +116,9 @@ export default function MaterielPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center pt-10">
-      <div className="w-full max-w-md space-y-6">
+      <div className="w-full max-w-md space-y-6 ">
         {/* HEADER */}
-        <Card className="bg-background text-white">
+        <Card className="bg-background text-white text-center">
           <CardHeader>
             <CardTitle>Matériel</CardTitle>
             <CardDescription>
@@ -250,7 +250,6 @@ export default function MaterielPage() {
             </div>
 
             {/* ADD INPUT */}
-            {/* ADD INPUT */}
             <div className="flex flex-col gap-2">
               <div className="flex gap-2 items-center">
                 <Input
@@ -276,7 +275,7 @@ export default function MaterielPage() {
 
               {/* HELP TEXT */}
               <p className="text-xs text-muted-foreground">
-                Appuie sur Entrée ou clique sur + pour ajouter un élément
+                Entre du texte clique sur + pour ajouter un élément
               </p>
             </div>
           </CardContent>

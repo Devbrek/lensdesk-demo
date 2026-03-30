@@ -3,9 +3,27 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+  ItemMedia,
+} from "@/components/ui/item";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+import { Check, Plus } from "lucide-react";
 
 export default function ActionPage() {
   const router = useRouter();
@@ -15,13 +33,13 @@ export default function ActionPage() {
   const [loading, setLoading] = useState(true);
   const [newItemLabel, setNewItemLabel] = useState("");
 
+  const remainingItems = items.filter((item) => !item.checked).length;
+
   const fetchChecklist = async () => {
     try {
       const res = await fetch(`/api/shootings/${id}/checklist?type=action`);
       const data = await res.json();
       setItems(data);
-    } catch (err) {
-      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -72,75 +90,135 @@ export default function ActionPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center  space-y-6">
-      <div className="w-full max-w-2xl space-y-6 bg-background py-5">
+    <div className="min-h-screen flex justify-center pt-10">
+      <div className="w-full max-w-md space-y-6">
         {/* HEADER */}
-        <h1 className="text-3xl font-bold text-center uppercase tracking-wide ">
-          Actions
-        </h1>
+        <Card className="bg-background text-white text-center">
+          <CardHeader>
+            <CardTitle>Actions</CardTitle>
+            <CardDescription>Organise les tâches du shooting</CardDescription>
+          </CardHeader>
 
-        {/* CARD LIST */}
-        <Card className="p-6 space-y-4">
-          <div className="space-y-2">
+          <CardContent className="pt-0 pb-5 flex flex-col items-center gap-2">
+            <span className="text-xs px-2 py-1 rounded-md bg-white/5 border border-white/10 text-muted-foreground">
+              {remainingItems} restant{remainingItems > 1 ? "s" : ""}
+            </span>
+
+            {remainingItems === 0 && (
+              <p className="text-green-400 text-xs">
+                ✔ Toutes les actions sont terminées
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* LIST */}
+        <Card className="bg-background text-white">
+          <CardContent className="flex flex-col gap-3">
             {items.length === 0 && (
-              <p className="text-white text-center text-sm">
+              <p className="text-sm text-muted-foreground text-center">
                 Aucune action pour le moment
               </p>
             )}
 
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between  p-3 hover:bg-muted/40 transition bg-white "
-              >
-                <span
-                  className={`flex-1 ${
-                    item.checked ? "line-through opacity-50" : ""
+            {items.map((item) => {
+              const done = item.checked;
+
+              return (
+                <Item
+                  key={item.id}
+                  variant="outline"
+                  className={`transition ${
+                    done ? "bg-green-500/10 border-green-500/40" : ""
                   }`}
                 >
-                  {item.label}
-                </span>
+                  <ItemMedia>
+                    <div
+                      className={`flex items-center justify-center size-8 rounded-full ${
+                        done
+                          ? "bg-green-500 text-black"
+                          : "bg-white/5 text-white"
+                      }`}
+                    >
+                      <Check className="size-4" />
+                    </div>
+                  </ItemMedia>
 
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    checked={item.checked}
-                    onChange={() => handleToggle(item.id, item.checked)}
-                  />
+                  <ItemContent>
+                    <ItemTitle
+                      className={done ? "line-through opacity-60" : ""}
+                    >
+                      {item.label}
+                    </ItemTitle>
 
-                  <button onClick={() => handleDelete(item.id)}>
-                    <img
-                      src="/icons/del.svg"
-                      className="w-4 h-4 opacity-70 hover:opacity-100 transition"
-                      alt="delete"
-                    />
-                  </button>
-                </div>
+                    <ItemDescription>
+                      {done ? (
+                        <span className="text-green-400">Terminé</span>
+                      ) : (
+                        "En attente"
+                      )}
+                    </ItemDescription>
+                  </ItemContent>
+
+                  <ItemActions>
+                    <div className="flex gap-2 items-center">
+                      <Button
+                        size="icon"
+                        variant={done ? "default" : "outline"}
+                        onClick={() => handleToggle(item.id, item.checked)}
+                        className={
+                          done
+                            ? "bg-green-500 text-black hover:bg-green-400"
+                            : ""
+                        }
+                      >
+                        <Check className="size-4" />
+                      </Button>
+
+                      <Button
+                        size="icon"
+                        variant="destructive"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        <img
+                          src="/icons/del.svg"
+                          className="w-4 h-4"
+                          alt="delete"
+                        />
+                      </Button>
+                    </div>
+                  </ItemActions>
+                </Item>
+              );
+            })}
+
+            {/* INPUT */}
+            <div className="flex flex-col  pt-2 items-center">
+              <div className="flex flex-row gap-2">
+                <Input
+                  value={newItemLabel}
+                  onChange={(e) => setNewItemLabel(e.target.value)}
+                  placeholder="Ajouter une action..."
+                  onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
+                />
+
+                <Button
+                  onClick={handleAddManual}
+                  size="icon"
+                  disabled={!newItemLabel.trim()}
+                >
+                  <Plus className="size-4" />
+                </Button>
               </div>
-            ))}
-          </div>
-
-          {/* INPUT */}
-          <div className="flex gap-2 pt-2  items-center">
-            <Input
-              value={newItemLabel}
-              onChange={(e) => setNewItemLabel(e.target.value)}
-              placeholder="Ajouter une action..."
-              onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
-              className="bg-white"
-            />
-
-            <img
-              src="/icons/add.svg"
-              className="w-5 h-5 "
-              alt="add"
-              onClick={handleAddManual}
-            />
-          </div>
+              <p className="text-xs text-muted-foreground">
+                Entre du texte puis clique sur + pour ajouter un élément
+              </p>
+            </div>
+          </CardContent>
         </Card>
 
         {/* BACK */}
-        <div className="flex justify-center">
+        <div className="flex justify-center pb-5">
           <Button onClick={() => router.push(`/shootings/${id}`)}>
             Retour
           </Button>
