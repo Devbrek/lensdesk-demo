@@ -58,7 +58,7 @@ export default function AProposPage() {
           Version 1.0 — by Devbrek
         </div>
       </div>
-      <div className="flex justify-center pt-5">
+      <div className="flex justify-center py-5">
         <Button onClick={() => router.push(`/dashboard`)}>Retour</Button>
       </div>
     </div>
