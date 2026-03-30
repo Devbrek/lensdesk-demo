@@ -164,15 +164,15 @@ export default function InventoryPage() {
                         variant="outline"
                         onClick={() => startEditing(item)}
                       >
-                        ✎
+                        <img src="/icons/pencilW.svg" alt="pencil" />
                       </Button>
 
                       <Button
                         size="icon"
-                        variant="destructive"
+                        variant="outline"
                         onClick={() => handleDelete(item.id)}
                       >
-                        🗑
+                        <img src="/icons/del.svg" alt="delete" />
                       </Button>
                     </>
                   )}
