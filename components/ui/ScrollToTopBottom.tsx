@@ -18,7 +18,7 @@ export default function ScrollDrawer() {
   };
 
   return (
-    <div className="fixed right-0 bottom-1/10 z-50 flex items-center">
+    <div className="fixed right-0 bottom-1/30 z-50 flex items-center">
       {/* PANEL */}
       <div
         className={`
