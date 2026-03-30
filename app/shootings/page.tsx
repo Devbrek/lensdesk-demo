@@ -86,7 +86,7 @@ export default function ShootingsPage() {
                     variant="outline"
                     onClick={() => router.push(`/shootings/${shooting.id}`)}
                   >
-                    👁
+                    <img src="/icons/eyeW.svg" alt="see" />
                   </Button>
 
                   <Button
@@ -96,15 +96,15 @@ export default function ShootingsPage() {
                       router.push(`/shootings/${shooting.id}/edit`)
                     }
                   >
-                    ✎
+                     <img src="/icons/pencilW.svg" alt="pencil" />
                   </Button>
 
                   <Button
                     size="icon"
-                    variant="destructive"
+                    variant="outline"
                     onClick={() => handleDelete(shooting.id)}
                   >
-                    🗑
+                    <img src="/icons/del.svg" alt="delete" />
                   </Button>
                 </div>
               </Card>
