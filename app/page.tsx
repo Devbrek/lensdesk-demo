@@ -46,6 +46,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-cover bg-center">
       <Card className="w-full max-w-md p-8 bg-black/70 border border-white backdrop-blur-md">
+        <img src="/icons/logo2.png" alt="logo" className="w-45  mx-auto pt-5" />
+
         <h2 className="text-white text-2xl font-semibold text-center mb-6">
           CONNEXION
         </h2>
