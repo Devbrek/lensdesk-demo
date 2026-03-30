@@ -8,9 +8,12 @@ import { Progress } from "@/components/ui/progress";
 
 const Dashboard = () => {
   const router = useRouter();
+
   const [shootings, setShootings] = useState<any[]>([]);
   const [inventory, setInventory] = useState<any[]>([]);
+  const [nextChecklist, setNextChecklist] = useState<any[]>([]);
 
+  // INVENTAIRE
   useEffect(() => {
     fetch("/api/inventory")
       .then((res) => res.json())
@@ -18,6 +21,7 @@ const Dashboard = () => {
       .catch(console.error);
   }, []);
 
+  // SHOOTINGS
   useEffect(() => {
     fetch("/api/shootings")
       .then((res) => res.json())
@@ -25,24 +29,13 @@ const Dashboard = () => {
       .catch(console.error);
   }, []);
 
-  // 📅 futurs shootings
   const upcoming = shootings.filter((s) => new Date(s.date) > new Date());
 
-  // 🧠 prochain shooting (le plus proche)
   const nextShooting = upcoming.sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   )[0];
 
-  // 📊 helper checklist %
-  const getChecklistPercent = (shooting: any) => {
-    if (!shooting?.checklist?.length) return 0;
-
-    const done = shooting.checklist.filter((i: any) => i.checked).length;
-    return Math.round((done / shooting.checklist.length) * 100);
-  };
-
-  const [nextChecklist, setNextChecklist] = useState<any[]>([]);
-
+  // CHECKLIST DU NEXT SHOOTING
   useEffect(() => {
     if (!nextShooting?.id) return;
 
@@ -52,20 +45,33 @@ const Dashboard = () => {
       .catch(console.error);
   }, [nextShooting]);
 
-  const totalChecklistItems = nextChecklist.length;
+  const materialItems = nextChecklist.filter((i) => i.type === "materiel");
 
-  const remainingChecklistItems = nextChecklist.filter(
-    (item) => !item.checked,
-  ).length;
+  const actionItems = nextChecklist.filter((i) => i.type === "action");
 
-  const completedChecklistItems = nextChecklist.filter(
-    (item) => item.checked,
-  ).length;
+  const getProgress = (items: any[]) => {
+    if (!items.length) return 0;
+    const done = items.filter((i) => i.checked).length;
+    return Math.round((done / items.length) * 100);
+  };
 
-  const checklistPercent =
-    totalChecklistItems === 0
-      ? 0
-      : Math.round((completedChecklistItems / totalChecklistItems) * 100);
+  const getScoreOutOf10 = (items: any[]) => {
+    if (!items.length) return 0;
+
+    const done = items.filter((i) => i.checked).length;
+
+    return Math.round((done / items.length) * 10);
+  };
+
+  const materialProgress = getProgress(materialItems);
+  const actionProgress = getProgress(actionItems);
+  const materialRemaining = materialItems.filter((i) => !i.checked).length;
+  const materialTotal = materialItems.length;
+
+  const actionRemaining = actionItems.filter((i) => !i.checked).length;
+  const actionTotal = actionItems.length;
+
+  const inventoryCount = inventory.length;
 
   const items = [
     {
@@ -80,13 +86,12 @@ const Dashboard = () => {
     },
   ];
 
-  const inventoryCount = inventory.length;
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-6 p-4">
       {/* HEADER */}
       <h1 className="text-xl font-bold">Dashboard</h1>
 
-      {/* STATS GLOBAL */}
+      {/* STATS */}
       <div className="max-w-sm w-full grid grid-cols-2 gap-3">
         <Card className="bg-background">
           <CardContent className="p-3 text-center text-white">
@@ -97,10 +102,7 @@ const Dashboard = () => {
 
         <Card className="bg-background">
           <CardContent className="p-3 text-center text-white">
-            <p className="text-xs text-muted-foreground">
-              Objets dans l&apos;inventaire
-            </p>
-
+            <p className="text-xs text-muted-foreground">Inventaire</p>
             <p className="text-lg font-bold pt-2">{inventoryCount}</p>
           </CardContent>
         </Card>
@@ -109,7 +111,7 @@ const Dashboard = () => {
       {/* NEXT SHOOTING */}
       {nextShooting ? (
         <Card className="w-full max-w-sm text-white">
-          <CardContent className="p-4 space-y-2">
+          <CardContent className="p-4 space-y-3">
             <p className="text-sm underline">Prochain shooting :</p>
 
             <p className="font-semibold text-sm">{nextShooting.title}</p>
@@ -119,18 +121,29 @@ const Dashboard = () => {
               {nextShooting.location}
             </p>
 
-            <div className="pt-4 space-y-2">
-              <p className="text-sm text-muted-foreground mt-2 text-center">
-                Actions & matériel restants :{" "}
-              </p>
-              <div className="flex justify-between text-sm">
+            {/* PROGRESS MATERIEL */}
+            <div className="space-y-1 pt-2">
+              <div className="flex justify-between text-xs">
+                <span>Matériel</span>
                 <span>
-                  {remainingChecklistItems} / {totalChecklistItems}
+                  {materialRemaining} / {materialTotal}
                 </span>
-                <span>{checklistPercent}%</span>
+                <span>{materialProgress}%</span>
               </div>
+              <Progress value={materialProgress} />
+            </div>
 
-              <Progress value={checklistPercent} />
+            {/* PROGRESS ACTIONS */}
+            <div className="space-y-1">
+              <div className="flex justify-between text-xs">
+                <span>Actions</span>
+                <span>
+                  {" "}
+                  {actionRemaining} / {actionTotal}
+                </span>
+                <span>{actionProgress}%</span>
+              </div>
+              <Progress value={actionProgress} />
             </div>
           </CardContent>
         </Card>
@@ -149,26 +162,20 @@ const Dashboard = () => {
       )}
 
       {/* NAVIGATION */}
-      <Card className="w-full max-w-sm text-white ">
-        <CardContent className="flex flex-col gap-4 p-4 ">
+      <Card className="w-full max-w-sm text-white">
+        <CardContent className="flex flex-col gap-4 p-4">
           <p className="text-xs text-muted-foreground text-center">
             Gère ton inventaire et tes prochains shootings
           </p>
+
           {items.map((item) => (
             <Card
               key={item.route}
               onClick={() => router.push(item.route)}
-              className="
-                cursor-pointer
-                transition-all
-                hover:scale-[1.02]
-                hover:shadow-lg
-                bg-white/30
-              "
+              className="cursor-pointer transition-all hover:scale-[1.02] hover:shadow-lg bg-white/30"
             >
-              <CardContent className="flex items-center gap-4 p-4 text-white justify-center ">
+              <CardContent className="flex items-center gap-4 p-4 text-white justify-center">
                 <img src={item.icon} className="w-8 h-8" alt={item.title} />
-
                 <p className="text-sm font-semibold uppercase">{item.title}</p>
               </CardContent>
             </Card>
