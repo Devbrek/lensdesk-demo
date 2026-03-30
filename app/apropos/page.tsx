@@ -2,10 +2,14 @@
 
 import React from "react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Router } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function AProposPage() {
+  const router = useRouter();
   return (
-    <div className="min-h-screen flex items-center justify-center ">
+    <div className="min-h-screen flex flex-col items-center justify-center ">
       <div className="w-full max-w-3xl space-y-6 bg-background p-6">
         {/* HEADER */}
         <div className="text-center space-y-2 ">
@@ -53,6 +57,9 @@ export default function AProposPage() {
         <div className="text-center text-sm text-muted-foreground pt-4">
           Version 1.0 — by Devbrek
         </div>
+      </div>
+      <div className="flex justify-center pt-5">
+        <Button onClick={() => router.push(`/dashboard`)}>Retour</Button>
       </div>
     </div>
   );
