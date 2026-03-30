@@ -23,7 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { Package, Check } from "lucide-react";
+import { Package, Check, ChevronDown } from "lucide-react";
 
 export default function MaterielPage() {
   const router = useRouter();
@@ -32,6 +32,7 @@ export default function MaterielPage() {
   const [items, setItems] = useState<any[]>([]);
   const [inventory, setInventory] = useState<any[]>([]);
   const [newItemLabel, setNewItemLabel] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   const remainingItems = items.filter((item) => !item.checked).length;
 
@@ -116,7 +117,7 @@ export default function MaterielPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center pt-10">
-      <div className="w-full max-w-md space-y-6 ">
+      <div className="w-full max-w-md space-y-6">
         {/* HEADER */}
         <Card className="bg-background text-white text-center">
           <CardHeader>
@@ -127,51 +128,67 @@ export default function MaterielPage() {
           </CardHeader>
         </Card>
 
-        {/* INVENTAIRE */}
+        {/* INVENTAIRE DROPDOWN */}
         <Card className="bg-background text-white">
-          <CardContent className="flex flex-col gap-4">
-            <h2 className="font-semibold text-white">
-              Ajouter depuis l’inventaire
-            </h2>
+          <CardContent className="flex flex-col g">
+            {/* HEADER CLICKABLE */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex items-center justify-between w-full"
+            >
+              <h2 className="font-semibold">Ajouter depuis l’inventaire</h2>
 
-            <div className="flex flex-col gap-2">
-              {inventory.map((item) => (
-                <Item
-                  key={item.id}
-                  variant="outline"
-                  className="cursor-pointer"
-                  onClick={() => handleToggleInventory(item.id)}
-                >
-                  <ItemMedia>
-                    {isSelected(item.id) ? (
-                      <Check className="size-5" />
-                    ) : (
-                      <Package className="size-5" />
-                    )}
-                  </ItemMedia>
+              <ChevronDown
+                className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+              />
+            </button>
 
-                  <ItemContent>
-                    <ItemTitle>{item.label}</ItemTitle>
-                    <ItemDescription>
-                      {isSelected(item.id) ? "Sélectionné" : "Disponible"}
-                    </ItemDescription>
-                  </ItemContent>
+            {/* DROPDOWN */}
+            <div
+              className={`overflow-hidden transition-all duration-300 ${
+                isOpen ? " opacity-100" : "max-h-0 opacity-0"
+              }`}
+            >
+              <div className="flex flex-col gap-2 pt-2">
+                {inventory.map((item) => (
+                  <Item
+                    key={item.id}
+                    variant="outline"
+                    className="cursor-pointer"
+                    onClick={() => handleToggleInventory(item.id)}
+                  >
+                    <ItemMedia>
+                      {isSelected(item.id) ? (
+                        <Check className="size-5" />
+                      ) : (
+                        <Package className="size-5" />
+                      )}
+                    </ItemMedia>
 
-                  <ItemActions />
-                </Item>
-              ))}
+                    <ItemContent>
+                      <ItemTitle>{item.label}</ItemTitle>
+                      <ItemDescription>
+                        {isSelected(item.id) ? "Sélectionné" : "Disponible"}
+                      </ItemDescription>
+                    </ItemContent>
+
+                    <ItemActions />
+                  </Item>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* CHECKLIST (UNE SEULE VERSION CLEAN) */}
+        {/* CHECKLIST */}
         <Card className="bg-background text-white">
           <CardContent className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <h2 className="font-semibold text-white">Checklist</h2>
+              <h2 className="font-semibold">Checklist</h2>
 
               <span className="text-xs text-muted-foreground">
-                {remainingItems} restant{remainingItems > 1 ? "s" : ""}
+                {remainingItems} restant
+                {remainingItems > 1 ? "s" : ""}
               </span>
             </div>
 
@@ -183,10 +200,9 @@ export default function MaterielPage() {
                   <Item
                     key={item.id}
                     variant="outline"
-                    className={`
-                      transition-all
-                      ${done ? "bg-green-500/10 border-green-500/40" : ""}
-                    `}
+                    className={`transition-all ${
+                      done ? "bg-green-500/10 border-green-500/40" : ""
+                    }`}
                   >
                     <ItemMedia>
                       {done ? (
@@ -207,9 +223,7 @@ export default function MaterielPage() {
 
                       <ItemDescription>
                         {done ? (
-                          <span className="text-green-400 font-medium">
-                            ✓ Terminé
-                          </span>
+                          <span className="text-green-400">✓ Terminé</span>
                         ) : (
                           "En attente"
                         )}
@@ -217,7 +231,7 @@ export default function MaterielPage() {
                     </ItemContent>
 
                     <ItemActions>
-                      <div className="flex gap-2 items-center">
+                      <div className="flex gap-2">
                         <Button
                           size="icon"
                           variant={done ? "default" : "outline"}
@@ -249,14 +263,13 @@ export default function MaterielPage() {
               })}
             </div>
 
-            {/* ADD INPUT */}
+            {/* INPUT */}
             <div className="flex flex-col gap-2">
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-2">
                 <Input
                   value={newItemLabel}
                   onChange={(e) => setNewItemLabel(e.target.value)}
-                  placeholder="Ex : 2 batteries, trépied, carte SD..."
-                  maxLength={30}
+                  placeholder="Ex : 2 batteries, trépied..."
                   onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
                 />
 
@@ -264,18 +277,13 @@ export default function MaterielPage() {
                   onClick={handleAddManual}
                   size="icon"
                   disabled={!newItemLabel.trim()}
-                  className={`
-        transition
-        ${!newItemLabel.trim() ? "opacity-40 cursor-not-allowed" : ""}
-      `}
                 >
                   +
                 </Button>
               </div>
 
-              {/* HELP TEXT */}
               <p className="text-xs text-muted-foreground">
-                Entre du texte clique sur + pour ajouter un élément
+                Entre du texte puis clique sur + pour ajouter
               </p>
             </div>
           </CardContent>
