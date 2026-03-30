@@ -33,6 +33,8 @@ export default function MaterielPage() {
   const [inventory, setInventory] = useState<any[]>([]);
   const [newItemLabel, setNewItemLabel] = useState("");
 
+  const remainingItems = items.filter((item) => !item.checked).length;
+
   const getChecklistItem = (inventoryItemId: string) => {
     return items.find((item) => item.inventoryItemId === inventoryItemId);
   };
@@ -165,7 +167,13 @@ export default function MaterielPage() {
         {/* CHECKLIST (UNE SEULE VERSION CLEAN) */}
         <Card className="bg-background text-white">
           <CardContent className="flex flex-col gap-4">
-            <h2 className="font-semibold text-white">Checklist</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="font-semibold text-white">Checklist</h2>
+
+              <span className="text-xs text-muted-foreground">
+                {remainingItems} restant{remainingItems > 1 ? "s" : ""}
+              </span>
+            </div>
 
             <div className="flex flex-col gap-2">
               {items.map((item) => {
