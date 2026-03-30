@@ -6,6 +6,7 @@ import LayoutWrapper from "./components/LayoutWrapper";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import ScrollToTopBottom from "@/components/ui/ScrollToTopBottom";
+import RouteLoader from "./components/RouteLoader";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -35,6 +36,7 @@ export default function RootLayout({
         }}
       >
         <LayoutWrapper>{children}</LayoutWrapper>
+        <RouteLoader />
       </body>
     </html>
   );

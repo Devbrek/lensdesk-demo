@@ -128,9 +128,31 @@
 
   body {
     @apply bg-background text-foreground;
+
+    body {
+      transition: opacity 0.2s ease-in-out;
+    }
   }
 
   html {
     @apply font-sans;
+  }
+
+  /* NProgress bar */
+  #nprogress .bar {
+    background: #3a96ed !important;
+    /* violet */
+    height: 6px !important;
+  }
+
+  /* Ombre glow */
+  #nprogress .peg {
+    box-shadow: 0 0 10px #00447c, 0 0 5px #a2b2fa !important;
+  }
+
+  /* Spinner (optionnel) */
+  #nprogress .spinner {
+    display: none;
+    /* tu peux le désactiver */
   }
 }
