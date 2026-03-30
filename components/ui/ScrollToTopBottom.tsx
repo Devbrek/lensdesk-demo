@@ -30,14 +30,14 @@ export default function ScrollDrawer() {
       >
         <button
           onClick={scrollToTop}
-          className="p-3 hover:bg-white/20 rounded-xl text-white transition"
+          className=" hover:bg-white/20 p-5 rounded-xl text-white transition"
         >
           <ArrowUp size={18} />
         </button>
 
         <button
           onClick={scrollToBottom}
-          className="p-3 hover:bg-white/20 rounded-xl text-white transition"
+          className="p-5 hover:bg-white/20 rounded-xl text-white transition"
         >
           <ArrowDown size={18} />
         </button>
