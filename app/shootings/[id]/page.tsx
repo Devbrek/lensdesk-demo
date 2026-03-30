@@ -63,7 +63,7 @@ export default function ShootingDetailPage() {
         </Card>
 
         {/* NAVIGATION BLOCKS */}
-        <div className="w-full max-w-3xl flex flex-row gap-4 justify-center">
+        <div className="w-full max-w-3xl flex flex-row  justify-around">
           {/* MATERIEL */}
           <Card
             onClick={() => router.push(`/shootings/${id}/materiel`)}

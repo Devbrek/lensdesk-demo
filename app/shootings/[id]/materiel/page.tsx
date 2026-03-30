@@ -184,7 +184,7 @@ export default function MaterielPage() {
         </Card>
 
         {/* FOOTER */}
-        <Button onClick={() => router.push("/shootings")}>Retour</Button>
+        <Button onClick={() => router.push(`/shootings/${id}`)}>Retour</Button>
       </div>
     </div>
   );

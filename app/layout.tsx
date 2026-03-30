@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
+
 import "./globals.css";
 
 import LayoutWrapper from "./components/LayoutWrapper";
@@ -23,7 +23,7 @@ export default function RootLayout({
       {/* IMPORTANT: permet dark mode + hydration stable */}
       <body
         className={cn(
-          "min-h-screen font-sans bg-background text-foreground bg-cover bg-center bg-no-repeat",
+          "min-h-screen   text-foreground bg-cover bg-center bg-no-repeat",
         )}
         style={{
           backgroundImage: "url('/abuzone2.jpg')",

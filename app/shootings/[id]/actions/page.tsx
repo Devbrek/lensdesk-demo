@@ -106,7 +106,7 @@ export default function ActionPage() {
         </div>
       </div>
       <button
-        onClick={() => router.push("/shootings")}
+        onClick={() => router.push(`/shootings/${id}`)}
         className="w-full px-5 bg-white text-black rounded-full py-3 mt-2 font-semibold hover:bg-gray-200 transition uppercase"
       >
         Retour
