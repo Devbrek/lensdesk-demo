@@ -73,13 +73,23 @@ export async function DELETE(
   try {
     const { shootingId } = await context.params;
 
-    await prisma.shooting.delete({
-      where: { id: shootingId },
+    const deleted = await prisma.shooting.deleteMany({
+      where: {
+        id: shootingId,
+        userId, // 🔒 sécurité
+      },
     });
+
+    if (deleted.count === 0) {
+      return NextResponse.json(
+        { error: "Shooting non trouvé" },
+        { status: 404 },
+      );
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("DELETE ERROR:", error); // 🔥 important
+    console.error("DELETE ERROR:", error);
 
     return NextResponse.json({ error: "Erreur suppression" }, { status: 500 });
   }
