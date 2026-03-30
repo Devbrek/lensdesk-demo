@@ -84,7 +84,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-6 p-4">
       {/* HEADER */}
-      <h1 className="text-xl font-bold">Accueil</h1>
+      <h1 className="text-xl font-bold">Dashboard</h1>
 
       {/* STATS GLOBAL */}
       <div className="max-w-sm w-full grid grid-cols-2 gap-3">
@@ -153,6 +153,9 @@ const Dashboard = () => {
       {/* NAVIGATION */}
       <Card className="w-full max-w-sm text-white ">
         <CardContent className="flex flex-col gap-4 p-4 ">
+          <p className="text-xs text-muted-foreground text-center">
+            Gère ton inventaire et tes prochains shootings
+          </p>
           {items.map((item) => (
             <Card
               key={item.route}
