@@ -76,7 +76,7 @@ export default function EditShootingPage() {
                 onChange={(e) =>
                   setShooting({ ...shooting, title: e.target.value })
                 }
-                className="bg-white"
+                className="bg-white text-black text-sm"
               />
             </div>
 
@@ -94,13 +94,13 @@ export default function EditShootingPage() {
                     description: e.target.value,
                   })
                 }
-                className="bg-white"
+                className="bg-white text-black text-sm"
               />
             </div>
 
             {/* DATE */}
             <div className="space-y-2">
-              <label className="text-sm text-muted-foreground">Date</label>
+              <label className="text-sm  text-muted-foreground ">Date</label>
 
               <Input
                 type="date"
@@ -108,13 +108,15 @@ export default function EditShootingPage() {
                 onChange={(e) =>
                   setShooting({ ...shooting, date: e.target.value })
                 }
-                className="bg-white"
+                className="bg-white text-black text-sm"
               />
             </div>
 
             {/* LOCATION */}
             <div className="space-y-2">
-              <label className="text-sm text-muted-foreground">Lieu</label>
+              <label className="text-sm text-muted-foreground text-sm">
+                Lieu
+              </label>
 
               <Input
                 value={shooting.location || ""}
@@ -124,18 +126,18 @@ export default function EditShootingPage() {
                     location: e.target.value,
                   })
                 }
-                className="bg-white"
+                className="bg-white text-black text-sm"
               />
             </div>
           </CardContent>
         </Card>
 
         {/* ACTIONS */}
-        <Card className="bg-background text-white">
+        <Card className="bg-background text-black">
           <CardContent className="flex flex-col gap-3 ">
             <Button onClick={handleUpdate}>Valider les modifications</Button>
 
-            <Button variant="outline" onClick={() => router.push("/shootings")}>
+            <Button variant="destructive" onClick={() => router.push("/shootings")}>
               Annuler
             </Button>
           </CardContent>
