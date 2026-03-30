@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
+
 import LayoutWrapper from "./components/LayoutWrapper";
-import { Geist, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "AbuzOne Checker",
@@ -14,18 +15,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="fr" className={cn("font-sans", inter.variable)}>
+    <html lang="fr" className={cn(inter.variable)}>
+      {/* IMPORTANT: permet dark mode + hydration stable */}
       <body
-        className="bg-cover bg-center min-h-screen flex items-center justify-center bg-no-repeat"
+        className={cn(
+          "min-h-screen font-sans bg-background text-foreground bg-cover bg-center bg-no-repeat",
+        )}
         style={{
           backgroundImage: "url('/abuzone2.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          minHeight: "100vh",
         }}
       >
         <LayoutWrapper>{children}</LayoutWrapper>

@@ -3,6 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
 interface Shooting {
   id: string;
   title: string;
@@ -14,14 +17,11 @@ export default function ShootingsPage() {
   const [shootings, setShootings] = useState<Shooting[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // FETCH
   const fetchShootings = async () => {
     try {
       const res = await fetch("/api/shootings");
       const data = await res.json();
       setShootings(data);
-    } catch (err) {
-      console.error("Erreur chargement shootings :", err);
     } finally {
       setLoading(false);
     }
@@ -31,81 +31,92 @@ export default function ShootingsPage() {
     fetchShootings();
   }, []);
 
-  // DELETE
   const handleDelete = async (id: string) => {
     if (!confirm("Supprimer ce shooting ?")) return;
 
-    try {
-      await fetch(`/api/shootings/${id}`, {
-        method: "DELETE",
-      });
+    await fetch(`/api/shootings/${id}`, {
+      method: "DELETE",
+    });
 
-      setShootings(shootings.filter((s) => s.id !== id));
-    } catch (err) {
-      console.error(err);
-    }
+    setShootings((prev) => prev.filter((s) => s.id !== id));
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center  p-5 ">
-      <div className="w-screen md:w-full max-w-3xl p-5 flex flex-col gap-2 text-black bg-black/70 backdrop-blur-xs rounded-xl">
-        <h1 className="text-3xl font-bold mb-8 text-white">SHOOTINGS</h1>
+    <div className="min-h-screen flex items-center justify-center ">
+      <div className="w-full max-w-3xl space-y-6 bg-background p-6">
+        {/* HEADER */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold">Shootings</h1>
+
+          <Button
+            className="bg-sky-500 hover:bg-sky-600"
+            onClick={() => router.push("/shootings/new")}
+          >
+            Nouveau
+          </Button>
+        </div>
+
+        {/* CONTENT */}
         {loading ? (
-          <p>Chargement...</p>
+          <p className="text-muted-foreground">Chargement...</p>
         ) : shootings.length === 0 ? (
-          <p>Aucun shooting</p>
+          <p className="text-muted-foreground">Aucun shooting</p>
         ) : (
-          shootings.map((shooting) => (
-            <div
-              key={shooting.id}
-              className="flex px-2  py-1 rounded gap-3 justify-around items-center bg-white"
-            >
-              <div className="py-2">
-                <p className="font-bold">{shooting.title}</p>
-                {shooting.description && (
-                  <p className="text-sm text-gray-900">
-                    {shooting.description}
-                  </p>
-                )}
-              </div>
+          <div className="space-y-3 ">
+            {shootings.map((shooting) => (
+              <Card
+                key={shooting.id}
+                className="p-4 flex items-center justify-between text-white"
+              >
+                {/* LEFT */}
+                <div className="flex flex-col gap-1">
+                  <p className="font-semibold">{shooting.title}</p>
 
-              <div className="flex gap-7">
-                {/* EDIT */}
-                <button
-                  onClick={() => router.push(`/shootings/${shooting.id}/edit`)}
-                >
-                  <img src="/icons/pencil.svg" className="w-4" alt="edit" />
-                </button>
+                  {shooting.description && (
+                    <p className="text-sm text-muted-foreground text-white">
+                      {shooting.description}
+                    </p>
+                  )}
+                </div>
 
-               
-                <button onClick={() => handleDelete(shooting.id)}>
-                  <img src="/icons/del.svg" className="w-3" alt="delete" />
-                </button>
-                {/* DETAILS */}
-                <button
-                  onClick={() => router.push(`/shootings/${shooting.id}`)}
-                >
-                  <img src="/icons/eye.svg" className="w-4" alt="voir" />
-                </button>
-              </div>
-            </div>
-          ))
+                {/* ACTIONS */}
+                <div className="flex gap-2">
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={() => router.push(`/shootings/${shooting.id}`)}
+                  >
+                    👁
+                  </Button>
+
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={() =>
+                      router.push(`/shootings/${shooting.id}/edit`)
+                    }
+                  >
+                    ✎
+                  </Button>
+
+                  <Button
+                    size="icon"
+                    variant="destructive"
+                    onClick={() => handleDelete(shooting.id)}
+                  >
+                    🗑
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
         )}
 
-        {/* ADD */}
-        <div className=" flex justify-center gap-8 mt-4">
-          <button
-            onClick={() => router.push("/shootings/new")}
-            className="flex justify-center items-center gap-2 "
-          >
-            <img src="/icons/add.svg" className="w-7" alt="add" />
-          </button>
-          <button
-            onClick={() => router.push("/dashboard")}
-            className="flex justify-center items-center "
-          >
-            <img src="/icons/ok.svg" className="w-7" alt="ok" />
-          </button>
+        {/* FOOTER */}
+        <div className="flex justify-center">
+          <Button variant="outline" onClick={() => router.push("/dashboard")}>
+            Retour
+          </Button>
         </div>
       </div>
     </div>

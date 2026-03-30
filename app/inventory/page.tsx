@@ -2,7 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "../components/Navbar";
+
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface InventoryItem {
   id: string;
@@ -15,7 +18,6 @@ export default function InventoryPage() {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // État pour l'édition inline
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editLabel, setEditLabel] = useState("");
   const [editType, setEditType] = useState("");
@@ -25,8 +27,6 @@ export default function InventoryPage() {
       const res = await fetch("/api/inventory");
       const data = await res.json();
       setItems(data);
-    } catch (err) {
-      console.error("Erreur en chargeant l'inventaire :", err);
     } finally {
       setLoading(false);
     }
@@ -37,21 +37,18 @@ export default function InventoryPage() {
   }, []);
 
   const handleAddItem = async () => {
-    const label = prompt("Nom du nouvel item :");
-    const type = prompt("Type de l'item : appareil, objectif, accessoire ...");
+    const label = prompt("Nom de l'item ?");
+    const type = prompt("Type ?");
     if (!label || !type) return;
 
-    try {
-      const res = await fetch("/api/inventory", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ label, type }),
-      });
-      const newItem = await res.json();
-      setItems([...items, newItem]);
-    } catch (err) {
-      console.error("Erreur lors de l'ajout :", err);
-    }
+    const res = await fetch("/api/inventory", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ label, type }),
+    });
+
+    const newItem = await res.json();
+    setItems((prev) => [...prev, newItem]);
   };
 
   const startEditing = (item: InventoryItem) => {
@@ -67,137 +64,129 @@ export default function InventoryPage() {
   };
 
   const saveEditing = async (id: string) => {
-    try {
-      await fetch(`/api/inventory/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ label: editLabel, type: editType }),
-      });
+    await fetch(`/api/inventory/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ label: editLabel, type: editType }),
+    });
 
-      setItems(
-        items.map((i) =>
-          i.id === id ? { ...i, label: editLabel, type: editType } : i,
-        ),
-      );
-      cancelEditing();
-    } catch (err) {
-      console.error("Erreur lors de la modification :", err);
-    }
+    setItems((prev) =>
+      prev.map((i) =>
+        i.id === id ? { ...i, label: editLabel, type: editType } : i,
+      ),
+    );
+
+    cancelEditing();
   };
 
-  const handleDeleteItem = async (id: string) => {
-    if (!confirm("Voulez-vous vraiment supprimer cet item ?")) return;
-    try {
-      await fetch(`/api/inventory/${id}`, { method: "DELETE" });
-      setItems(items.filter((i) => i.id !== id));
-    } catch (err) {
-      console.error("Erreur lors de la suppression :", err);
-    }
+  const handleDelete = async (id: string) => {
+    await fetch(`/api/inventory/${id}`, { method: "DELETE" });
+    setItems((prev) => prev.filter((i) => i.id !== id));
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-5 justify-center text-white">
-      <div className="w-screen md:w-full max-w-3xl p-5 flex flex-col gap-2 text-black bg-black/70 backdrop-blur-xs rounded-xl">
-        <h1 className="text-3xl font-bold mb-5 text-white ">INVENTAIRE</h1>
+    <div className="min-h-screen flex items-center justify-center ">
+      <div className="w-full max-w-3xl space-y-6 bg-background p-6">
+        {/* HEADER */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold">Inventaire</h1>
+
+          <Button
+            variant="default"
+            className="bg-sky-500 hover:bg-sky-600"
+            onClick={handleAddItem}
+          >
+            Ajouter
+          </Button>
+        </div>
+
+        {/* CONTENT */}
         {loading ? (
-          <p>Chargement...</p>
+          <p className="text-muted-foreground">Chargement...</p>
         ) : items.length === 0 ? (
-          <p>Aucun item dans l&apos;inventaire</p>
+          <p className="text-muted-foreground">Aucun item</p>
         ) : (
-          items.map((item) => (
-            <div
-              key={item.id}
-              className="flex px-2  py-1 rounded gap-3 justify-between items-center bg-white "
-            >
-              {editingId === item.id ? (
-                <div className="flex flex-col ">
-                  <h3>Nom</h3>
-                  <input
-                    className="p-1 rounded border"
-                    value={editLabel}
-                    onChange={(e) => setEditLabel(e.target.value)}
-                  />
-                  <h3>Type</h3>
-                  <input
-                    className="p-1  rounded border"
-                    value={editType}
-                    onChange={(e) => setEditType(e.target.value)}
-                  />
+          <div className="space-y-3">
+            {items.map((item) => (
+              <Card
+                key={item.id}
+                className="p-4 flex items-center justify-between text-white"
+              >
+                {/* LEFT */}
+                <div className="flex flex-col gap-2 w-full">
+                  {editingId === item.id ? (
+                    <>
+                      <Input
+                        value={editLabel}
+                        onChange={(e) => setEditLabel(e.target.value)}
+                        placeholder="Label"
+                      />
+                      <Input
+                        value={editType}
+                        onChange={(e) => setEditType(e.target.value)}
+                        placeholder="Type"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <p className="font-semibold">{item.label}</p>
+                      <p className="text-sm text-muted-foreground text-white">
+                        {item.type}
+                      </p>
+                    </>
+                  )}
                 </div>
-              ) : (
-                <div>
-                  <p className="font-bold">{item.label}</p>
-                  <p className="text-sm text-black">{item.type}</p>
+
+                {/* ACTIONS */}
+                <div className="flex gap-2 ml-4">
+                  {editingId === item.id ? (
+                    <>
+                      <Button
+                        size="icon"
+                        onClick={() => saveEditing(item.id)}
+                        className="bg-sky-500 hover:bg-sky-600"
+                      >
+                        ✓
+                      </Button>
+
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        onClick={cancelEditing}
+                      >
+                        ✕
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        onClick={() => startEditing(item)}
+                      >
+                        ✎
+                      </Button>
+
+                      <Button
+                        size="icon"
+                        variant="destructive"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        🗑
+                      </Button>
+                    </>
+                  )}
                 </div>
-              )}
-
-              <div className="flex gap-7 ms-3">
-                {editingId === item.id ? (
-                  <>
-                    <button
-                      onClick={() => saveEditing(item.id)}
-                      className="hover:opacity-80 "
-                    >
-                      <img
-                        src="/icons/checked.svg"
-                        alt="checked"
-                        className="w-6 h-6"
-                      />
-                    </button>
-                    <button
-                      onClick={cancelEditing}
-                      className="hover:opacity-80"
-                    >
-                      <img
-                        src="/icons/cross.svg"
-                        alt="cross"
-                        className="w-5 h-5"
-                      />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => startEditing(item)}
-                      className="hover:opacity-80"
-                    >
-                      <img
-                        src="/icons/pencil.svg"
-                        alt="Modifier"
-                        className="w-4 "
-                      />
-                    </button>
-
-                    <button
-                      onClick={() => handleDeleteItem(item.id)}
-                      className="hover:opacity-80"
-                    >
-                      <img
-                        src="/icons/del.svg"
-                        alt="Supprimer"
-                        className="w-3"
-                      />
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-          ))
+              </Card>
+            ))}
+          </div>
         )}
 
-        <div className="flex gap-8 justify-center mt-2">
-          <button
-            onClick={handleAddItem}
-            className=" flex items-center justify-center text-black font-bold "
-          >
-            <img src="/icons/add.svg" alt="Ajouter" className="w-7 " />
-          </button>
-          <button
-            onClick={() => router.push("/dashboard")}
-            className="flex justify-center items-center "
-          >
-            <img src="/icons/ok.svg" className="w-7" alt="ok" />
-          </button>
+        {/* FOOTER */}
+        <div className="flex justify-center">
+          <Button variant="outline" onClick={() => router.push("/dashboard")}>
+            Retour
+          </Button>
         </div>
       </div>
     </div>

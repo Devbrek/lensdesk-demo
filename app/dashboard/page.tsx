@@ -2,38 +2,41 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "../components/Navbar";
+
+import { Card, CardContent } from "@/components/ui/card";
 
 const Dashboard = () => {
   const router = useRouter();
 
+  const items = [
+    { title: "Inventaire", icon: "/icons/inventory.svg", route: "/inventory" },
+    { title: "Shootings", icon: "/icons/shootings.svg", route: "/shootings" },
+  ];
+
   return (
+    <div className="min-h-screen flex items-center justify-center ">
+      <div className="w-full max-w-5xl p-6 bg-background">
+        <h1 className="text-center text-4xl md:text-6xl font-bold mb-12">
+          ACCUEIL
+        </h1>
 
-    <div className="min-h-screen bg-cover bg-center flex items-center justify-center flex-col">
-      <div className="bg-black/70 rounded-xl py-5">
-      <h1 className="text-white text-5xl md:text-7xl font-bold text-center">
-        ACCUEIL
-      </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {items.map((item) => (
+            <Card
+              key={item.route}
+              onClick={() => router.push(item.route)}
+              className="cursor-pointer transition hover:shadow-lg hover:border-sky-500"
+            >
+              <CardContent className="flex flex-col items-center justify-center gap-4 p-10">
+                <img src={item.icon} alt={item.title} className="w-10 h-10" />
 
-      <div className="flex flex-col gap-5 p-5">
-        {/* Carte Inventaire */}
-        <div
-          onClick={() => router.push("/inventory")}
-          className="cursor-pointer py-11 px-20 bg-white/40 rounded-xl shadow-lg flex flex-col items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs gap-3"
-        >
-          <img src="/icons/inventory.svg" alt="inventory_logo" className="w-8"/>
-          Inventaire
+                <p className="text-lg font-semibold text-white uppercase tracking-wide">
+                  {item.title}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-
-        {/* Carte Shootings */}
-        <div
-          onClick={() => router.push("/shootings")}
-          className="cursor-pointer py-11 px-20 bg-white/40 rounded-xl shadow-lg flex flex-col items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs gap-3"
-        >
-          <img src="/icons/shootings.svg" alt="shooting_logo" className="w-8"/>
-          Shootings
-        </div>
-      </div>
       </div>
     </div>
   );
