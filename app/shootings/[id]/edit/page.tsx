@@ -43,8 +43,8 @@ export default function EditShootingPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 ">
-      <Card className="w-full max-w-2xl p-6 space-y-6 bg-background">
+    <div className="min-h-screen flex items-center justify-center  ">
+      <Card className="w-full max-w-2xl p-6 space-y-2 bg-background">
         {/* TITLE */}
         <h1 className="text-2xl font-bold text-white text-center">
           Modifier le shooting

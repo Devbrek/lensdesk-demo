@@ -42,7 +42,7 @@ export default function ShootingDetailPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 space-y-6 text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center  space-y-6 text-center">
       <div className="w-full max-w-3xl space-y-4 bg-background pb-5">
         {/* HEADER CARD */}
         <Card className="w-full max-w-3xl p-6  text-center text-white">

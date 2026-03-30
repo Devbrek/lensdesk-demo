@@ -96,7 +96,7 @@ export default function MaterielPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center">
-      <div className="w-full max-w-3xl space-y-2 bg-background p-6 items-center justify-center ">
+      <div className="w-full max-w-3xl space-y-2 bg-background  items-center justify-center py-3">
         {/* TITLE */}
         <h1 className="text-3xl font-bold text-white  uppercase">Matériel</h1>
 

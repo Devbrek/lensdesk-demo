@@ -72,7 +72,7 @@ export default function ActionPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 space-y-6">
+    <div className="min-h-screen flex flex-col items-center justify-center  space-y-6">
       <div className="w-full max-w-2xl space-y-6 bg-background py-5">
         {/* HEADER */}
         <h1 className="text-3xl font-bold text-center uppercase tracking-wide ">
