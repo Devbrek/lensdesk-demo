@@ -43,21 +43,23 @@ export default function ShootingDetailPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 space-y-6">
-      <div className="w-full max-w-3xl space-y-6 bg-background p-6">
+      <div className="w-full max-w-3xl space-y-4 bg-background p-6">
         {/* HEADER CARD */}
-        <Card className="w-full max-w-3xl p-6 space-y-3 text-center text-white">
+        <Card className="w-full max-w-3xl p-6  text-center text-white">
           <h1 className="text-2xl font-bold uppercase">{shooting.title}</h1>
 
-          <p className="text-muted-foreground text-white">
-            Date :{" "}
-            {shooting.date
-              ? new Date(shooting.date).toLocaleDateString()
-              : "Pas de date"}
-          </p>
+          <div className="flex flex-row gap-1 justify-center">
+            <p className=" text-white">
+              Le{" "}
+              {shooting.date
+                ? new Date(shooting.date).toLocaleDateString()
+                : "Pas de date"}
+            </p>
 
-          <p className="text-muted-foreground text-white">
-            Lieu : {shooting.location || "Pas de lieu"}
-          </p>
+            <p className=" text-white">
+              à {shooting.location || "Pas de lieu"}
+            </p>
+          </div>
         </Card>
 
         {/* NAVIGATION BLOCKS */}
