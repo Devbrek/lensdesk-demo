@@ -7,7 +7,7 @@ const userId = "83a83cf9-9ced-478b-9edb-b05042845329";
 // GET /api/shootings/[shootingId] → récupérer un shooting précis
 export async function GET(
   req: NextRequest,
-  context : { params: Promise<{ shootingId: string }> },
+  context: { params: Promise<{ shootingId: string }> },
 ) {
   try {
     const { shootingId } = await context.params;
@@ -73,19 +73,14 @@ export async function DELETE(
   try {
     const { shootingId } = await context.params;
 
-    const deleted = await prisma.shooting.deleteMany({
-      where: { id: shootingId, userId },
+    await prisma.shooting.delete({
+      where: { id: shootingId },
     });
 
-    if (deleted.count === 0)
-      return NextResponse.json(
-        { error: "Shooting non trouvé" },
-        { status: 404 },
-      );
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("DELETE ERROR:", error); // 🔥 important
 
-    return NextResponse.json({ message: "Shooting supprimé ✅" });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Erreur suppression" }, { status: 500 });
   }
 }

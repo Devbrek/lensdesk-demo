@@ -41,7 +41,7 @@ model ChecklistItem {
   priority         Int?           // facultatif, utilisé pour les actions
 
   shootingId String
-  shooting   Shooting @relation(fields: [shootingId], references: [id])
+  shooting   Shooting @relation(fields: [shootingId], references: [id], onDelete: Cascade)
 
   inventoryItemId String? // facultatif
   inventoryItem   InventoryItem? @relation(fields: [inventoryItemId], references: [id])
