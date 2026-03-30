@@ -113,7 +113,7 @@ export default function NewShootingPage() {
                 placeholder="Ex : Montpellier"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="bg-white"
+                className="bg-white text-black"
               />
             </div>
           </CardContent>

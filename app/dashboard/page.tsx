@@ -25,7 +25,10 @@ const Dashboard = () => {
       <Card className="w-full max-w-sm bg-background text-white">
         <CardHeader>
           <CardTitle>Menu principal</CardTitle>
-          <CardDescription>Complète l'inventaire avec tes équipements et créé tes sessions shooting </CardDescription>
+          <CardDescription>
+            Complète l&apos;inventaire avec tes équipements et créé tes sessions
+            shooting{" "}
+          </CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col gap-6">
