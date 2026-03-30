@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/lib/hash.js"  ],
+, "app/lib/hash.mjs"  ],
   "exclude": ["node_modules"]
 }

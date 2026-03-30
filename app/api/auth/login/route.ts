@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
-import { comparePassword } from "@/app/lib/auth"; // à adapter selon ton chemin
+import { verifyPassword } from "@/app/lib/auth"; // à adapter selon ton chemin
 import { generateToken } from "@/app/lib/auth";
 
 export async function POST(req: NextRequest) {
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ✅ comparaison sécurisée
-    const isValidPassword = await comparePassword(password, user.password);
+    const isValidPassword = await verifyPassword(password, user.password);
 
     if (!isValidPassword) {
       return NextResponse.json(
