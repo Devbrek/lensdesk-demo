@@ -85,7 +85,7 @@ const Navbar = () => {
 
       {/* MOBILE MENU */}
       <div
-        className={`fixed top-0 left-0 z-50 h-screen w-72 bg-sky-900 text-white p-6 py-12 flex flex-col gap-6 uppercase font-bold transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 z-50 h-screen w-72 bg-sky-900 text-white p-6 py-12 flex flex-col  gap-6 uppercase font-bold transform transition-transform duration-300 ease-in-out ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -115,7 +115,7 @@ const Navbar = () => {
         {/* LOGOUT */}
         <button
           onClick={handleLogout}
-          className="mt-auto flex flex-col items-center gap-3 uppercase"
+          className="mt-auto flex flex-col items-center gap-3 uppercase pb-10"
         >
           <img src="/icons/logout.svg" alt="logout" className="w-10" />
           Se deconnecter
