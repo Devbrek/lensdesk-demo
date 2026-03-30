@@ -119,16 +119,14 @@ const Dashboard = () => {
               {nextShooting.location}
             </p>
 
-            <p className="text-sm text-muted-foreground mt-2">
-              Actions & matériel restants :{" "}
-              <span className="font-bold text-white">
-                {remainingChecklistItems} / {totalChecklistItems}
-              </span>
-            </p>
-
             <div className="pt-4 space-y-2">
+              <p className="text-sm text-muted-foreground mt-2 text-center">
+                Actions & matériel restants :{" "}
+              </p>
               <div className="flex justify-between text-sm">
-                <span>Progression</span>
+                <span>
+                  {remainingChecklistItems} / {totalChecklistItems}
+                </span>
                 <span>{checklistPercent}%</span>
               </div>
 
