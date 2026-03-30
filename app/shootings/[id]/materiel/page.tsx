@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { Package, Check, ChevronDown } from "lucide-react";
+import ScrollToTopBottom from "@/components/ui/ScrollToTopBottom";
 
 export default function MaterielPage() {
   const router = useRouter();

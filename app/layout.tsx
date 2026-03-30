@@ -5,6 +5,7 @@ import "./globals.css";
 import LayoutWrapper from "./components/LayoutWrapper";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
+import ScrollToTopBottom from "@/components/ui/ScrollToTopBottom";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -27,13 +28,16 @@ export default function RootLayout({
       {/* IMPORTANT: permet dark mode + hydration stable */}
       <body
         className={cn(
-          "h-screen absolute top-0  text-foreground  bg-center bg-no-repeat pt-20",
+          "h-screen top-0  text-foreground  bg-center bg-no-repeat pt-20",
         )}
         style={{
           backgroundImage: "url('/abuzone2.jpg')",
         }}
       >
-        <LayoutWrapper>{children}</LayoutWrapper>
+        <LayoutWrapper>
+          {children}
+          <ScrollToTopBottom />
+        </LayoutWrapper>
       </body>
     </html>
   );
