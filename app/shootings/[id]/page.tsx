@@ -3,8 +3,26 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+  ItemMedia,
+} from "@/components/ui/item";
+
 import { Button } from "@/components/ui/button";
+
+import { Camera, ListTodo } from "lucide-react";
 
 export default function ShootingDetailPage() {
   const { id } = useParams();
@@ -35,59 +53,73 @@ export default function ShootingDetailPage() {
 
   if (!shooting) {
     return (
-      <p className="text-muted-foreground text-center mt-10 ">
+      <p className="text-muted-foreground text-center mt-10">
         Shooting introuvable
       </p>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center  space-y-6 text-center">
-      <div className="w-full max-w-3xl space-y-4 bg-background pb-5">
-        {/* HEADER CARD */}
-        <Card className="w-full max-w-3xl p-6  text-center text-white">
-          <h1 className="text-2xl font-bold uppercase">{shooting.title}</h1>
+    <div className="min-h-screen flex items-center justify-center">
+      <Card className="w-full max-w-md bg-background text-white">
+        {/* HEADER */}
+        <CardHeader>
+          <CardTitle>{shooting.title}</CardTitle>
 
-          <div className="flex flex-row gap-1 justify-center">
-            <p className=" text-white">
-              Le{" "}
-              {shooting.date
-                ? new Date(shooting.date).toLocaleDateString()
-                : "Pas de date"}
-            </p>
+          <CardDescription>
+            {shooting.date
+              ? new Date(shooting.date).toLocaleDateString()
+              : "Pas de date"}{" "}
+            • {shooting.location || "Pas de lieu"}
+          </CardDescription>
+        </CardHeader>
 
-            <p className=" text-white">
-              à {shooting.location || "Pas de lieu"}
-            </p>
+        <CardContent className="flex flex-col gap-6">
+          {/* NAVIGATION */}
+          <div className="flex flex-col gap-3">
+            {/* MATERIEL */}
+            <Item
+              variant="outline"
+              className="cursor-pointer bg-black/50"
+              onClick={() => router.push(`/shootings/${id}/materiel`)}
+            >
+              <ItemMedia>
+                <Camera className="size-5" />
+              </ItemMedia>
+
+              <ItemContent>
+                <ItemTitle>Matériel</ItemTitle>
+                <ItemDescription>
+                  Gère les équipements du shooting
+                </ItemDescription>
+              </ItemContent>
+
+              <ItemActions />
+            </Item>
+
+            {/* ACTIONS */}
+            <Item
+              variant="outline"
+              className="cursor-pointer bg-black/50"
+              onClick={() => router.push(`/shootings/${id}/actions`)}
+            >
+              <ItemMedia>
+                <ListTodo className="size-5" />
+              </ItemMedia>
+
+              <ItemContent>
+                <ItemTitle>Actions</ItemTitle>
+                <ItemDescription>Suivi des tâches et étapes</ItemDescription>
+              </ItemContent>
+
+              <ItemActions />
+            </Item>
           </div>
-        </Card>
 
-        {/* NAVIGATION BLOCKS */}
-        <div className="w-full max-w-3xl flex flex-row  justify-around">
-          {/* MATERIEL */}
-          <Card
-            onClick={() => router.push(`/shootings/${id}/materiel`)}
-            className="cursor-pointer  flex-col items-center justify-center p-3 rounded "
-          >
-            <img src="/icons/materiel.svg" className="w-8" alt="materiel" />
-            <h2 className="text-xl font-bold uppercase text-white">Matériel</h2>
-          </Card>
-
-          {/* ACTIONS */}
-          <Card
-            onClick={() => router.push(`/shootings/${id}/actions`)}
-            className="cursor-pointer  flex flex-col items-center justify-center p-3 rounded"
-          >
-            <img src="/icons/actions.svg" className="w-8" alt="actions" />
-            <h2 className="text-xl font-bold uppercase text-white">Actions</h2>
-          </Card>
-        </div>
-
-        {/* FOOTER */}
-        <div className="pt-4">
+          {/* FOOTER */}
           <Button onClick={() => router.push("/shootings")}>Terminer</Button>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

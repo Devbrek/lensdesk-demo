@@ -48,7 +48,7 @@
 }
 
 :root {
-  --card: oklch(53.476% 0.00006 271.152);
+  --card: oklch(33.289% 0.00004 271.152);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
@@ -84,9 +84,14 @@
 
 .dark {
   --background: oklch(28.094% 0.00003 271.152);
-  --foreground: oklch(0.985 0 0);
+  --foreground: oklch(44.226% 0.00005 271.152);
   --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
+
+  --card-foreground: <form className="flex flex-col gap-4 " onSubmit= {
+    handleLogin
+  }
+
+  >;
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.443 0.11 240.79);

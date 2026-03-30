@@ -3,9 +3,27 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+  ItemMedia,
+} from "@/components/ui/item";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+import { Package, Check } from "lucide-react";
 
 export default function MaterielPage() {
   const router = useRouter();
@@ -95,92 +113,149 @@ export default function MaterielPage() {
     items.some((item) => item.inventoryItemId === inventoryItemId);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center">
-      <div className="w-full max-w-3xl space-y-2 bg-background  items-center justify-center py-3">
-        {/* TITLE */}
-        <h1 className="text-3xl font-bold text-white  uppercase">Matériel</h1>
-
-        {/* INVENTORY */}
-        <Card className="w-full  p-6 ">
-          <h2 className="text-xl font-bold text-white">
-            Ajouter depuis l’inventaire
-          </h2>
-
-          <div className="grid gap-2">
-            {inventory.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleToggleInventory(item.id)}
-                className={`
-                w-full p-3 rounded-lg text-left transition
-                ${
-                  isSelected(item.id)
-                    ? "bg-green-500 text-black"
-                    : "bg-muted  hover:bg-muted/70"
-                }
-              `}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-md space-y-6">
+        {/* HEADER */}
+        <Card className="bg-background text-white">
+          <CardHeader>
+            <CardTitle>Matériel</CardTitle>
+            <CardDescription>
+              Prépare ton équipement pour le shooting
+            </CardDescription>
+          </CardHeader>
         </Card>
 
-        {/* CHECKLIST */}
-        <Card className="w-full p-6 ">
-          <h2 className="text-xl font-bold text-white">Checklist</h2>
+        {/* INVENTAIRE */}
+        <Card className="bg-background text-white">
+          <CardContent className="flex flex-col gap-4">
+            <h2 className="font-semibold text-white">
+              Ajouter depuis l’inventaire
+            </h2>
 
-          <div className="space-y-2">
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between bg-muted/40 p-3 rounded-lg bg-white"
-              >
-                <span
-                  className={`flex-1 ${
-                    item.checked ? "line-through opacity-50" : ""
-                  }`}
+            <div className="flex flex-col gap-2">
+              {inventory.map((item) => (
+                <Item
+                  key={item.id}
+                  variant="outline"
+                  className="cursor-pointer"
+                  onClick={() => handleToggleInventory(item.id)}
                 >
-                  {item.label}
-                </span>
+                  <ItemMedia>
+                    {isSelected(item.id) ? (
+                      <Check className="size-5" />
+                    ) : (
+                      <Package className="size-5" />
+                    )}
+                  </ItemMedia>
 
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    checked={item.checked}
-                    onChange={() => handleToggle(item.id, item.checked)}
-                  />
+                  <ItemContent>
+                    <ItemTitle>{item.label}</ItemTitle>
+                    <ItemDescription>
+                      {isSelected(item.id) ? "Sélectionné" : "Disponible"}
+                    </ItemDescription>
+                  </ItemContent>
 
-                  <button onClick={() => handleDeleteItem(item.id)}>
-                    <img
-                      src="/icons/del.svg"
-                      className="w-4 h-4"
-                      alt="delete"
-                    />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+                  <ItemActions />
+                </Item>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-          {/* ADD INPUT */}
-          <div className="flex gap-2  items-center">
-            <Input
-              value={newItemLabel}
-              onChange={(e) => setNewItemLabel(e.target.value)}
-              placeholder="Ajouter un item..."
-              maxLength={30}
-              onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
-              className="bg-white"
-            />
+        {/* CHECKLIST (UNE SEULE VERSION CLEAN) */}
+        <Card className="bg-background text-white">
+          <CardContent className="flex flex-col gap-4">
+            <h2 className="font-semibold text-white">Checklist</h2>
 
-            <button
-              onClick={handleAddManual}
-              className="p-2 rounded transition "
-            >
-              <img src="/icons/add.svg" className="w-6 h-6" alt="add" />
-            </button>
-          </div>
+            <div className="flex flex-col gap-2">
+              {items.map((item) => {
+                const done = item.checked;
+
+                return (
+                  <Item
+                    key={item.id}
+                    variant="outline"
+                    className={`
+                      transition-all
+                      ${done ? "bg-green-500/10 border-green-500/40" : ""}
+                    `}
+                  >
+                    <ItemMedia>
+                      {done ? (
+                        <div className="flex items-center justify-center size-8 rounded-full bg-green-500 text-black">
+                          <Check className="size-4" />
+                        </div>
+                      ) : (
+                        <Package className="size-5 opacity-80" />
+                      )}
+                    </ItemMedia>
+
+                    <ItemContent>
+                      <ItemTitle
+                        className={done ? "line-through opacity-60" : ""}
+                      >
+                        {item.label}
+                      </ItemTitle>
+
+                      <ItemDescription>
+                        {done ? (
+                          <span className="text-green-400 font-medium">
+                            ✓ Terminé
+                          </span>
+                        ) : (
+                          "En attente"
+                        )}
+                      </ItemDescription>
+                    </ItemContent>
+
+                    <ItemActions>
+                      <div className="flex gap-2 items-center">
+                        <Button
+                          size="icon"
+                          variant={done ? "default" : "outline"}
+                          onClick={() => handleToggle(item.id, item.checked)}
+                          className={
+                            done
+                              ? "bg-green-500 text-black hover:bg-green-400"
+                              : ""
+                          }
+                        >
+                          <Check className="size-4" />
+                        </Button>
+
+                        <Button
+                          size="icon"
+                          variant="destructive"
+                          onClick={() => handleDeleteItem(item.id)}
+                        >
+                          <img
+                            src="/icons/del.svg"
+                            className="w-4 h-4"
+                            alt="delete"
+                          />
+                        </Button>
+                      </div>
+                    </ItemActions>
+                  </Item>
+                );
+              })}
+            </div>
+
+            {/* ADD INPUT */}
+            <div className="flex gap-2 items-center">
+              <Input
+                value={newItemLabel}
+                onChange={(e) => setNewItemLabel(e.target.value)}
+                placeholder="Ajouter un item..."
+                maxLength={30}
+                onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
+              />
+
+              <Button onClick={handleAddManual} size="icon">
+                +
+              </Button>
+            </div>
+          </CardContent>
         </Card>
 
         {/* FOOTER */}

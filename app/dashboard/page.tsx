@@ -3,7 +3,13 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -14,30 +20,32 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center ">
-      <div className="w-full max-w-5xl p-6 bg-background">
-        <h1 className="text-center text-4xl md:text-6xl font-bold mb-12">
-          ACCUEIL
-        </h1>
+    <div className="min-h-screen flex items-center justify-center">
+      {/* ✅ Card principale (comme login) */}
+      <Card className="w-full max-w-sm bg-background text-white">
+        <CardHeader>
+          <CardTitle>Menu principal</CardTitle>
+          <CardDescription>Complète l'inventaire avec tes équipements et créé tes sessions shooting </CardDescription>
+        </CardHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <CardContent className="flex flex-col gap-6">
           {items.map((item) => (
             <Card
               key={item.route}
               onClick={() => router.push(item.route)}
-              className="cursor-pointer transition hover:shadow-lg hover:border-sky-500"
+              className="cursor-pointer transition-all hover:scale-[1.02] hover:shadow-lg border"
             >
-              <CardContent className="flex flex-col items-center justify-center gap-4 p-10">
+              <CardContent className="flex flex-col items-center justify-center gap-4 p-8">
                 <img src={item.icon} alt={item.title} className="w-10 h-10" />
 
-                <p className="text-lg font-semibold text-white uppercase tracking-wide">
+                <p className="text-sm font-semibold uppercase tracking-wide text-white">
                   {item.title}
                 </p>
               </CardContent>
             </Card>
           ))}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
