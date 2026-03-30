@@ -46,7 +46,7 @@ export default function ShootingDetailPage() {
       <div className="w-full max-w-3xl space-y-6 bg-background p-6">
         {/* HEADER CARD */}
         <Card className="w-full max-w-3xl p-6 space-y-3 text-center text-white">
-          <h1 className="text-2xl font-bold">{shooting.title}</h1>
+          <h1 className="text-2xl font-bold uppercase">{shooting.title}</h1>
 
           <p className="text-muted-foreground text-white">
             Date :{" "}

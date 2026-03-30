@@ -46,7 +46,7 @@ export default function ShootingsPage() {
       <div className="w-full max-w-3xl space-y-6 bg-background p-6">
         {/* HEADER */}
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Shootings</h1>
+          <h1 className="text-3xl font-bold uppercase ">Shootings</h1>
 
           <Button onClick={() => router.push("/shootings/new")}>Nouveau</Button>
         </div>
@@ -61,14 +61,16 @@ export default function ShootingsPage() {
             {shootings.map((shooting) => (
               <Card
                 key={shooting.id}
-                className="p-4 flex items-center justify-between text-white"
+                className=" flex items-center justify-between text-center "
               >
                 {/* LEFT */}
                 <div className="flex flex-col gap-1">
-                  <p className="font-semibold">{shooting.title}</p>
+                  <p className="font-bold uppercase tracking-widest ">
+                    {shooting.title}
+                  </p>
 
                   {shooting.description && (
-                    <p className="text-sm text-muted-foreground text-white">
+                    <p className="text-sm  text-white">
                       {shooting.description}
                     </p>
                   )}

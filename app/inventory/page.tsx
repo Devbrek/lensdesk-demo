@@ -89,7 +89,7 @@ export default function InventoryPage() {
       <div className="w-full max-w-3xl space-y-6 bg-background p-6">
         {/* HEADER */}
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Inventaire</h1>
+          <h1 className="text-3xl font-bold uppercase">Inventaire</h1>
 
           <Button variant="default" onClick={handleAddItem}>
             Ajouter
