@@ -3,9 +3,18 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -45,35 +54,55 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-cover bg-center">
-      <Card className="w-full max-w-md p-8 bg-black/70 border border-white backdrop-blur-md">
-        <img src="/icons/logo2.png" alt="logo" className="w-45  mx-auto pt-5" />
-
-        <h2 className="text-white text-2xl font-semibold text-center mb-6">
-          CONNEXION
-        </h2>
-
-        <form onSubmit={handleLogin} className="flex flex-col gap-4 ">
-          <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="text-white"
+      <Card
+        className="w-full max-w-sm bg-background text-white"
+        onSubmit={handleLogin}
+      >
+        <CardHeader>
+          <img
+            src="/icons/logo2.png"
+            alt="logo"
+            className="w-45  mx-auto pt-5"
           />
-
-          <Input
-            type="password"
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="text-white"
-          />
-
-          {error && <p className="text-red-400 text-sm">{error}</p>}
-
-          <Button type="submit" disabled={loading}>
-            {loading ? "Connexion..." : "Se connecter"}
-          </Button>
+          <CardTitle>Connexion</CardTitle>
+          <CardDescription>
+            Saisis ton email et ton mot de passe
+          </CardDescription>
+        </CardHeader>
+        <form className="flex flex-col gap-4 " onSubmit={handleLogin}>
+          <CardContent>
+            <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="m@example.com"
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="password">Password</Label>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  placeholder="Mot de passe"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className="flex-col gap-2">
+            <Button type="submit" disabled={loading}>
+              {loading ? "Connexion..." : "Se connecter"}
+            </Button>
+          </CardFooter>
         </form>
       </Card>
     </div>
