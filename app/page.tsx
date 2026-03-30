@@ -56,6 +56,7 @@ export default function LoginPage() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="text-white"
           />
 
           <Input
@@ -63,6 +64,7 @@ export default function LoginPage() {
             placeholder="Mot de passe"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="text-white"
           />
 
           {error && <p className="text-red-400 text-sm">{error}</p>}
