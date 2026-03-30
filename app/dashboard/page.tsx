@@ -102,7 +102,7 @@ const Dashboard = () => {
 
         <Card className="bg-background">
           <CardContent className="p-3 text-center text-white">
-            <p className="text-xs text-muted-foreground">Inventaire</p>
+            <p className="text-xs text-muted-foreground">Objets dans l&apos;inventaire</p>
             <p className="text-lg font-bold pt-2">{inventoryCount}</p>
           </CardContent>
         </Card>
