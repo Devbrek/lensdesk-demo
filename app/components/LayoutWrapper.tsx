@@ -3,6 +3,7 @@
 
 import { usePathname } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
+import ScrollToTopBottom from "@/components/ui/ScrollToTopBottom";
 
 export default function LayoutWrapper({
   children,
@@ -17,6 +18,7 @@ export default function LayoutWrapper({
     <>
       {!isLoginPage && <Navbar />}
       {children}
+      {!isLoginPage && <ScrollToTopBottom />}
     </>
   );
 }

@@ -34,10 +34,7 @@ export default function RootLayout({
           backgroundImage: "url('/abuzone2.jpg')",
         }}
       >
-        <LayoutWrapper>
-          {children}
-          <ScrollToTopBottom />
-        </LayoutWrapper>
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );
