@@ -22,7 +22,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex py-5 w-screen justify-between px-5 absolute z-10 top-0 left-0 items-center">
+    <nav className="flex py-5 w-screen justify-between px-5 absolute z-10 top-0 left-0 items-center  backdrop-blur-sm">
       {/* LOGO */}
       <button
         className="text-white flex gap-3"
