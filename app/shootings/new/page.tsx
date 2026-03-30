@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
 export default function NewShootingPage() {
   const router = useRouter();
 
@@ -12,7 +16,7 @@ export default function NewShootingPage() {
   const [location, setLocation] = useState("");
 
   const handleCreate = async () => {
-    if (!title) return alert("Titre requis");
+    if (!title) return;
 
     const res = await fetch("/api/shootings", {
       method: "POST",
@@ -29,62 +33,55 @@ export default function NewShootingPage() {
 
     const newShooting = await res.json();
 
-    // 👉 redirige vers la page détail
     router.push(`/shootings/${newShooting.id}`);
   };
 
   return (
-    <div className="min-h-screen  flex flex-col items-center justify-center p-5">
-      <div className="w-full max-w-3xl p-5 flex flex-col gap-2  bg-black/70 backdrop-blur-xs rounded-xl">
-        <h1 className="text-3xl font-bold mb-8  text-white">
-          NOUVEAU SHOOTING
-        </h1>
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <Card className="w-full max-w-xl p-6 space-y-6 bg-background">
+        {/* TITLE */}
+        <h1 className="text-2xl font-bold text-white">Nouveau shooting</h1>
 
-        <div className="flex flex-col gap-4 w-full max-w-md text-black">
-          <input
+        {/* FORM */}
+        <div className="space-y-4 ">
+          <Input
             placeholder="Titre"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="bg-white/70 p-3 text-black"
           />
 
-          <input
+          <Input
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="bg-white/70 p-3 text-black"
           />
 
-          <input
+          <Input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="bg-white/70 p-3 text-black"
+            className="text-white"
           />
 
-          <input
+          <Input
             placeholder="Lieu"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="bg-white/70 p-3 text-black"
           />
+        </div>
 
-<div className="flex justify-center gap-8 mt-4">
-           <button
-          onClick={() => handleCreate()}
-          className="flex justify-center items-center "
-        >
-          <img src="/icons/checked.svg" className="w-6" alt="add" />
-        </button>
-           <button
-          onClick={() => router.push("/shootings")}
-          className="flex justify-center items-center "
-        >
-          <img src="/icons/cross.svg" className="w-5" alt="add" />
-        </button>
+        {/* ACTIONS */}
+        <div className="flex justify-end gap-3 pt-2">
+          <Button
+            variant="destructive"
+            onClick={() => router.push("/shootings")}
+          >
+            Annuler
+          </Button>
+
+          <Button onClick={handleCreate}>Créer</Button>
         </div>
-        </div>
-      </div>
+      </Card>
     </div>
   );
 }

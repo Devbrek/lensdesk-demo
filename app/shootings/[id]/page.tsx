@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
 export default function ShootingDetailPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -15,8 +18,6 @@ export default function ShootingDetailPage() {
       const res = await fetch(`/api/shootings/${id}`);
       const data = await res.json();
       setShooting(data);
-    } catch (err) {
-      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -26,52 +27,64 @@ export default function ShootingDetailPage() {
     if (id) fetchShooting();
   }, [id]);
 
-  if (loading) return <p className="text-white">Chargement...</p>;
-  if (!shooting) return <p className="text-white">Shooting introuvable</p>;
+  if (loading) {
+    return (
+      <p className="text-muted-foreground text-center mt-10">Chargement...</p>
+    );
+  }
+
+  if (!shooting) {
+    return (
+      <p className="text-muted-foreground text-center mt-10 ">
+        Shooting introuvable
+      </p>
+    );
+  }
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center justify-center p-5   ">
-      <div className="w-screen md:w-full max-w-3xl p-5 flex flex-col gap-2 text-white bg-black/70 backdrop-blur-xs rounded-xl text-center">
-        <div>
-          <h1 className="text-white text-2xl mb-2">Shooting : {shooting.title}</h1>
-          <p className="text-white">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 space-y-6">
+      <div className="w-full max-w-3xl space-y-6 bg-background p-6">
+        {/* HEADER CARD */}
+        <Card className="w-full max-w-3xl p-6 space-y-3 text-center text-white">
+          <h1 className="text-2xl font-bold">{shooting.title}</h1>
+
+          <p className="text-muted-foreground text-white">
             Date :{" "}
             {shooting.date
               ? new Date(shooting.date).toLocaleDateString()
               : "Pas de date"}
           </p>
-          <p className="text-white ">
+
+          <p className="text-muted-foreground text-white">
             Lieu : {shooting.location || "Pas de lieu"}
           </p>
-        </div>
+        </Card>
 
-        {/* BLOCS */}
-        <div className="w-full max-w-4xl flex flex-col gap-6">
+        {/* NAVIGATION BLOCKS */}
+        <div className="w-full max-w-3xl grid gap-4">
           {/* MATERIEL */}
-          <div
+          <Card
             onClick={() => router.push(`/shootings/${id}/materiel`)}
-            className="cursor-pointer py-11 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs flex-col gap-3"
+            className="cursor-pointer min-h-[140px] flex flex-col items-center justify-center gap-3"
           >
-            <img src="/icons/materiel.svg" alt="materiel" className="w-8" />
-            <h2>MATÉRIEL</h2>
-          </div>
+            <img src="/icons/materiel.svg" className="w-8" alt="materiel" />
+            <h2 className="text-xl font-bold uppercase text-white">Matériel</h2>
+          </Card>
 
           {/* ACTIONS */}
-          <div
+          <Card
             onClick={() => router.push(`/shootings/${id}/actions`)}
-            className="cursor-pointer py-11 px-20 bg-white/40 rounded-xl shadow-lg flex items-center justify-center text-white text-2xl md:text-4xl font-bold hover:bg-white/10 transition uppercase backdrop-blur-xs flex-col"
+            className="cursor-pointer min-h-[140px] flex flex-col items-center justify-center gap-3"
           >
-            <img src="/icons/actions.svg" alt="actions" className="w-8" />
-            <h2>ACTIONS</h2>
-          </div>
+            <img src="/icons/actions.svg" className="w-8" alt="actions" />
+            <h2 className="text-xl font-bold uppercase text-white">Actions</h2>
+          </Card>
         </div>
-      </div>
 
-      {/* NAV */}
-      <div className="mt-10">
-         <button onClick={() => router.push("/shootings")} className="w-10  ">
-            <img src="/icons/ok.svg" alt="ok" />
-          </button>
+        {/* FOOTER */}
+        <div className="pt-4">
+          <Button onClick={() => router.push("/shootings")}>Terminer</Button>
+        </div>
       </div>
     </div>
   );

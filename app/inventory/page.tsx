@@ -91,11 +91,7 @@ export default function InventoryPage() {
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Inventaire</h1>
 
-          <Button
-            variant="default"
-            className="bg-sky-500 hover:bg-sky-600"
-            onClick={handleAddItem}
-          >
+          <Button variant="default" onClick={handleAddItem}>
             Ajouter
           </Button>
         </div>
@@ -141,11 +137,7 @@ export default function InventoryPage() {
                 <div className="flex gap-2 ml-4">
                   {editingId === item.id ? (
                     <>
-                      <Button
-                        size="icon"
-                        onClick={() => saveEditing(item.id)}
-                        className="bg-sky-500 hover:bg-sky-600"
-                      >
+                      <Button size="icon" onClick={() => saveEditing(item.id)}>
                         ✓
                       </Button>
 
@@ -169,7 +161,7 @@ export default function InventoryPage() {
 
                       <Button
                         size="icon"
-                        variant="outline"
+                        variant="destructive"
                         onClick={() => handleDelete(item.id)}
                       >
                         <img src="/icons/del.svg" alt="delete" />

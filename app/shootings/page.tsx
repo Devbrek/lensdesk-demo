@@ -48,12 +48,7 @@ export default function ShootingsPage() {
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Shootings</h1>
 
-          <Button
-            className="bg-sky-500 hover:bg-sky-600"
-            onClick={() => router.push("/shootings/new")}
-          >
-            Nouveau
-          </Button>
+          <Button onClick={() => router.push("/shootings/new")}>Nouveau</Button>
         </div>
 
         {/* CONTENT */}
@@ -96,7 +91,7 @@ export default function ShootingsPage() {
                       router.push(`/shootings/${shooting.id}/edit`)
                     }
                   >
-                     <img src="/icons/pencilW.svg" alt="pencil" />
+                    <img src="/icons/pencilW.svg" alt="pencil" />
                   </Button>
 
                   <Button

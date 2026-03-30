@@ -88,7 +88,7 @@ const Navbar = () => {
 
       {/* MENU MOBILE SLIDE */}
       <div
-        className={`fixed top-0 left-0 h-screen w-3/4  max-w-xs bg-cyan-900/90 backdrop-blur-sm  text-white p-6 py-12 flex flex-col gap-6 uppercase font-bold transform transition-transform duration-300 ease-in-out z-20
+        className={`fixed top-0 left-0 h-screen w-3/4  max-w-xs bg-sky-900/90 backdrop-blur-sm text-white p-6 py-12 flex flex-col gap-6 uppercase font-bold transform transition-transform duration-300 ease-in-out z-20
         ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex justify-between mb-20">
