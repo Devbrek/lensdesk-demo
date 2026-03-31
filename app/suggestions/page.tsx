@@ -94,7 +94,7 @@ export default function SuggestionsPage() {
             <select
               value={type}
               onChange={(e) => setType(e.target.value)}
-              className="w-full p-2 rounded bg-background border text-white"
+              className="w-full p-2  bg-background border text-white"
             >
               <option value="ajout">Ajout</option>
               <option value="suppression">Suppression</option>
@@ -109,7 +109,7 @@ export default function SuggestionsPage() {
             <select
               value={page}
               onChange={(e) => setPage(e.target.value)}
-              className="w-full p-2 rounded bg-background border text-white"
+              className="w-full p-2  bg-background border text-white"
             >
               <option value="login">Login</option>
               <option value="dashboard">Dashboard</option>
@@ -129,7 +129,7 @@ export default function SuggestionsPage() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Explique ton idée, bug ou amélioration..."
-              className="w-full min-h-[120px] p-3 rounded bg-background border text-white resize-none"
+              className="w-full min-h-[120px] p-3  bg-background border text-white resize-none"
             />
 
             {/* VALIDATION MESSAGE */}
