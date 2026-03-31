@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -114,8 +115,20 @@ const Dashboard = () => {
       {nextShooting ? (
         <Card className="w-full max-w-sm text-white">
           <CardContent className="p-4 space-y-3">
-            <p className="text-sm underline">Prochain shooting :</p>
-
+            <div className="flex items-center justify-between">
+              <p className="text-sm underline">Prochain shooting : </p>
+              <Button
+                className="  hover:bg-white/10 transition bg-black/20 border border-white"
+                title="Voir le shooting"
+              >
+                <img
+                  src="/icons/eyeW.svg"
+                  className="w-4 h-4"
+                  alt="voir shooting"
+                  onClick={() => router.push(`/shootings/${nextShooting.id}`)}
+                />
+              </Button>
+            </div>
             <p className="font-semibold text-sm">{nextShooting.title}</p>
 
             <p className="text-sm text-muted-foreground">
