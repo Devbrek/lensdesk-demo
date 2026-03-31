@@ -29,7 +29,7 @@ export default function LayoutWrapper({
       return "url('/abuzone2.webp')";
     }
 
-    return "url('/default-bg.jpg')";
+    return "url('/abuzone2.webp')";
   }
 
   const backgroundImage = getBackground(pathname);

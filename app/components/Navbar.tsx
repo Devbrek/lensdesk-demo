@@ -132,19 +132,18 @@ export default function Navbar() {
 
           <button onClick={() => handleNav("/shootings")}>Shootings</button>
 
-          <button onClick={() => handleNav("/apropos")}>À propos</button>
+          <Button variant="outline" onClick={() => handleNav("/apropos")}>
+            A propos
+          </Button>
         </div>
 
         {/* ACTIONS */}
         <div className="mt-auto pt-6 border-t border-white/10 flex flex-col gap-3">
-          <Button variant="outline" onClick={() => handleNav("/apropos")}>
-            A propos
-          </Button>
-
           <Button
             disabled={loggingOut}
             variant="destructive"
             onClick={handleLogout}
+            className="border border-red-600"
           >
             {loggingOut ? "Déconnexion..." : "Logout"}
           </Button>
