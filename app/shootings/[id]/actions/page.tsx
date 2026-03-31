@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input";
 
 import { Check, Plus } from "lucide-react";
 
+type Priority = 1 | 2 | 3 | 4 | 5;
+
 export default function ActionPage() {
   const router = useRouter();
   const { id } = useParams();
@@ -31,8 +33,8 @@ export default function ActionPage() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [newItemLabel, setNewItemLabel] = useState("");
+  const [newItemPriority, setNewItemPriority] = useState<Priority>(3);
 
-  const remainingItems = items.filter((item) => !item.checked).length;
   const fetchChecklist = async () => {
     try {
       const res = await fetch(`/api/shootings/${id}/checklist?type=action`);
@@ -74,12 +76,51 @@ export default function ActionPage() {
       body: JSON.stringify({
         label: newItemLabel,
         type: "action",
+        priority: newItemPriority,
       }),
     });
 
     setNewItemLabel("");
+    setNewItemPriority(3);
     fetchChecklist();
   };
+
+  const getPriority = (item: any): Priority => {
+    const p = Number(item.priority);
+    if (p >= 1 && p <= 5) return p as Priority;
+    return 3;
+  };
+
+  const getPriorityClass = (priority: Priority) => {
+    switch (priority) {
+      case 1:
+        return "text-blue-400 border-blue-500/40 bg-blue-500/10";
+      case 2:
+        return "text-green-400 border-green-500/40 bg-green-500/10";
+      case 3:
+        return "text-yellow-400 border-yellow-500/40 bg-yellow-500/10";
+      case 4:
+        return "text-orange-400 border-orange-500/40 bg-orange-500/10";
+      case 5:
+        return "text-red-400 border-red-500/40 bg-red-500/10";
+      default:
+        return "text-yellow-400 border-yellow-500/40 bg-yellow-500/10";
+    }
+  };
+
+  // 🔥 TRI FINAL : priorité DESC + non faits en premier
+  const sortedItems = [...items].sort((a, b) => {
+    const pa = getPriority(a);
+    const pb = getPriority(b);
+
+    if (pb !== pa) return pb - pa; // P5 → P1
+
+    if (a.checked !== b.checked) return a.checked ? 1 : -1;
+
+    return 0;
+  });
+
+  const remainingItems = items.filter((item) => !item.checked).length;
 
   if (loading) {
     return (
@@ -113,23 +154,25 @@ export default function ActionPage() {
         {/* LIST */}
         <Card className="bg-background text-white">
           <CardContent className="flex flex-col gap-3">
-            {items.length === 0 && (
+            {sortedItems.length === 0 && (
               <p className="text-sm text-muted-foreground text-center">
                 Aucune action pour le moment
               </p>
             )}
 
-            {items.map((item) => {
+            {sortedItems.map((item) => {
               const done = item.checked;
+              const priority = getPriority(item);
 
               return (
                 <Item
                   key={item.id}
                   variant="outline"
-                  className={`transition ${
+                  className={`flex items-center justify-between transition ${
                     done ? "bg-green-500/10 border-green-500/40" : ""
                   }`}
                 >
+                  {/* CONTENT */}
                   <ItemContent>
                     <ItemTitle
                       className={done ? "line-through opacity-60" : ""}
@@ -146,47 +189,80 @@ export default function ActionPage() {
                     </ItemDescription>
                   </ItemContent>
 
-                  <ItemActions>
-                    <div className="flex gap-2 items-center">
-                      <Button
-                        size="icon"
-                        variant={done ? "default" : "outline"}
-                        onClick={() => handleToggle(item.id, item.checked)}
-                        className={
-                          done
-                            ? "bg-green-500 text-black hover:bg-green-400"
-                            : ""
-                        }
-                      >
-                        <Check className="size-4" />
-                      </Button>
+                  {/* RIGHT SIDE */}
+                  <div className="flex items-center gap-3">
+                    {/* PRIORITY */}
+                    <span
+                      className={`text-xs px-2 py-1 rounded-md border ${getPriorityClass(
+                        priority,
+                      )}`}
+                    >
+                      P{priority}
+                    </span>
 
-                      <Button
-                        size="icon"
-                        variant="destructive"
-                        onClick={() => handleDelete(item.id)}
-                      >
-                        <img
-                          src="/icons/del.svg"
-                          className="w-4 h-4"
-                          alt="delete"
-                        />
-                      </Button>
-                    </div>
-                  </ItemActions>
+                    {/* ACTIONS */}
+                    <ItemActions>
+                      <div className="flex gap-2 items-center">
+                        <Button
+                          size="icon"
+                          variant={done ? "default" : "outline"}
+                          onClick={() => handleToggle(item.id, item.checked)}
+                          className={
+                            done
+                              ? "bg-green-500 text-black hover:bg-green-400"
+                              : ""
+                          }
+                        >
+                          <Check className="size-4" />
+                        </Button>
+
+                        <Button
+                          size="icon"
+                          variant="destructive"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          <img
+                            src="/icons/del.svg"
+                            className="w-4 h-4"
+                            alt="delete"
+                          />
+                        </Button>
+                      </div>
+                    </ItemActions>
+                  </div>
                 </Item>
               );
             })}
 
             {/* INPUT */}
-            <div className="flex flex-col  pt-2 items-center">
-              <div className="flex flex-row gap-2">
+            <div className="flex flex-col pt-2 items-center justify-center">
+              <div className="flex flex-row gap-2 items-end">
                 <Input
                   value={newItemLabel}
                   onChange={(e) => setNewItemLabel(e.target.value)}
                   placeholder="Ajouter une action..."
                   onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
                 />
+
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground">
+                    Priorité
+                  </span>
+
+                  <select
+                    value={newItemPriority}
+                    onChange={(e) =>
+                      setNewItemPriority(Number(e.target.value) as Priority)
+                    }
+                    className="bg-background border border-white/10 rounded-md px-2 py-1 text-sm"
+                  >
+                    <option value={1}>P1</option>
+                    <option value={2}>P2</option>
+                    <option value={3}>P3</option>
+                    <option value={4}>P4</option>
+                    <option value={5}>P5</option>
+                  </select>
+                </div>
 
                 <Button
                   onClick={handleAddManual}
@@ -196,9 +272,6 @@ export default function ActionPage() {
                   <Plus className="size-4" />
                 </Button>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Entre du texte puis clique sur + pour ajouter
-              </p>
             </div>
           </CardContent>
         </Card>

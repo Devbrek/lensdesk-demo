@@ -34,6 +34,7 @@ export async function POST(
   try {
     const { shootingId } = await context.params;
     const body = await req.json();
+
     const { label, inventoryItemId, priority, type } = body;
 
     if (!label && !inventoryItemId) {
@@ -43,34 +44,49 @@ export async function POST(
       );
     }
 
-    // Préparer les données pour Prisma
-    const data: any = {
+    let finalPriority = Number(priority);
+
+    if (
+      !Number.isFinite(finalPriority) ||
+      finalPriority < 1 ||
+      finalPriority > 5
+    ) {
+      finalPriority = 3;
+    }
+
+    const baseData: any = {
       shooting: { connect: { id: shootingId } },
       checked: false,
-      type: type || "action", // par défaut "action"
+      type: type || "action",
+      priority: finalPriority,
     };
 
-    // Si c’est un item ad hoc, on ajoute le label
-    if (label) data.label = label;
+    // ITEM MANUEL
+    if (label) {
+      baseData.label = label;
+    }
 
-    // Si c’est un item venant de l’inventaire, on relie l’id
+    // ITEM INVENTAIRE
     if (inventoryItemId) {
       const inventoryItem = await prisma.inventoryItem.findUnique({
         where: { id: inventoryItemId },
       });
-      if (priority !== undefined) data.priority = priority;
+
       if (!inventoryItem) {
         return NextResponse.json(
           { error: "Item d’inventaire introuvable" },
           { status: 404 },
         );
       }
-      data.inventoryItem = { connect: { id: inventoryItemId } };
-      data.label = inventoryItem.label; // pour affichage direct
-      data.type = "materiel"; // override type si c'est depuis l'inventaire
+
+      baseData.inventoryItem = { connect: { id: inventoryItemId } };
+      baseData.label = inventoryItem.label;
+      baseData.type = "materiel";
     }
 
-    const newItem = await prisma.checklistItem.create({ data });
+    const newItem = await prisma.checklistItem.create({
+      data: baseData,
+    });
 
     return NextResponse.json({
       message: "Checklist item créé ✅",
