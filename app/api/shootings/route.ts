@@ -28,6 +28,12 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (date && new Date(date) < today) {
+      return NextResponse.json({ error: "Date invalide" }, { status: 400 });
+    }
 
     const newShooting = await prisma.shooting.create({
       data: {
