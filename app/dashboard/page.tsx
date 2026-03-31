@@ -87,7 +87,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-6 p-4">
+    <div className=" min-h-screen flex flex-col items-center justify-center gap-6 p-4 text-foreground ">
       {/* HEADER */}
       <h1 className="text-xl font-bold">Dashboard</h1>
 
@@ -102,7 +102,9 @@ const Dashboard = () => {
 
         <Card className="bg-background">
           <CardContent className="p-3 text-center text-white">
-            <p className="text-xs text-muted-foreground">Objets dans l&apos;inventaire</p>
+            <p className="text-xs text-muted-foreground">
+              Objets dans l&apos;inventaire
+            </p>
             <p className="text-lg font-bold pt-2">{inventoryCount}</p>
           </CardContent>
         </Card>
@@ -123,9 +125,7 @@ const Dashboard = () => {
 
             {/* PROGRESS MATERIEL */}
             <div className="space-y-1 pt-2">
-              <span className="text-xs text-muted-foreground">
-                restant :
-              </span>
+              <span className="text-xs text-muted-foreground">restant :</span>
               <div className="flex justify-between text-xs">
                 <span>Matériel</span>
                 <span>

@@ -53,7 +53,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cover bg-center">
+    <div className=" min-h-screen bg-cover flex items-center justify-center  ">
       <Card
         className="w-full max-w-sm bg-background text-white"
         onSubmit={handleLogin}

@@ -174,7 +174,10 @@ export default function InventoryPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div
+      className="min-h-screen flex items-center justify-center "
+     
+    >
       <Card className="w-full max-w-md bg-background text-white">
         <CardHeader>
           <CardTitle>Inventaire</CardTitle>

@@ -138,6 +138,12 @@
     @apply font-sans;
   }
 
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+  }
+
   /* NProgress bar */
   #nprogress .bar {
     background: #3a96ed !important;

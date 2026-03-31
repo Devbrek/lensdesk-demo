@@ -5,7 +5,7 @@ import "./globals.css";
 import LayoutWrapper from "./components/LayoutWrapper";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
-import ScrollToTopBottom from "@/components/ui/ScrollToTopBottom";
+
 import RouteLoader from "./components/RouteLoader";
 
 const poppins = Poppins({
@@ -25,11 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={cn(poppins.variable)}>
+    <html lang="fr" className={cn(poppins.variable, "h-full ")}>
       {/* IMPORTANT: permet dark mode + hydration stable */}
       <body
         className={cn(
-          "h-screen top-0  text-foreground  bg-center bg-no-repeat pt-20",
+          " text-foreground  bg-center bg-no-repeat bg-cover bg-fixed min-h-dvh ",
         )}
         style={{
           backgroundImage: "url('/abuzone2.jpg')",
