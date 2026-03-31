@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 export default function AProposPage() {
   const router = useRouter();
 
+  const today = new Date().toLocaleDateString("fr-FR");
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center ">
       <div className="w-full max-w-3xl space-y-6 bg-background p-6">
@@ -55,9 +57,13 @@ export default function AProposPage() {
 
         {/* 🔥 CHANGELOG / MISES À JOUR */}
         <Card className="p-6 space-y-3">
-          <h2 className="text-xl font-bold text-white">
-            Dernières mises à jour
-          </h2>
+          <div className="space-y-1">
+            <h2 className="text-xl font-bold text-white">
+              Dernières mises à jour
+            </h2>
+
+            <p className="text-xs text-muted-foreground">{today}</p>
+          </div>
 
           <ul className="space-y-2 text-white list-disc pl-5">
             <li>
