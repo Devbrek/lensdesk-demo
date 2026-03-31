@@ -140,6 +140,13 @@ export default function Navbar() {
         {/* ACTIONS */}
         <div className="mt-auto pt-6 border-t border-white/10 flex flex-col gap-3">
           <Button
+            variant="outline"
+            onClick={() => handleNav("/suggestions")}
+            className="border-sky-800 bg-sky-500/10 text-sky-500"
+          >
+            Suggestions
+          </Button>
+          <Button
             disabled={loggingOut}
             variant="destructive"
             onClick={handleLogout}
