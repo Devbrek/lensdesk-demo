@@ -3,11 +3,11 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Router } from "next/router";
 import { useRouter } from "next/navigation";
 
 export default function AProposPage() {
   const router = useRouter();
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center ">
       <div className="w-full max-w-3xl space-y-6 bg-background p-6">
@@ -53,11 +53,43 @@ export default function AProposPage() {
           </p>
         </Card>
 
+        {/* 🔥 CHANGELOG / MISES À JOUR */}
+        <Card className="p-6 space-y-3">
+          <h2 className="text-xl font-bold text-white">
+            Dernières mises à jour
+          </h2>
+
+          <ul className="space-y-2 text-white list-disc pl-5">
+            <li>
+              Ajout d’un système de priorités (P1 → P5) pour les actions et le
+              matériel
+            </li>
+
+            <li>
+              Tri automatique des tâches par ordre de priorité et statut (non
+              faites en premier)
+            </li>
+
+            <li>
+              Ajout d’un accès rapide au prochain shooting depuis le dashboard
+              avec un bouton “voir”
+            </li>
+
+            <li>
+              Correction du calendrier : impossibilité de créer un shooting avec
+              une date antérieure
+            </li>
+
+            <li>Fix de l’édition du type de matériel dans l’inventaire</li>
+          </ul>
+        </Card>
+
         {/* FOOTER */}
         <div className="text-center text-sm text-muted-foreground pt-4">
-          Version 1.0 — by Devbrek
+          Version 2.0 — by Devbrek
         </div>
       </div>
+
       <div className="flex justify-center py-5">
         <Button onClick={() => router.push(`/dashboard`)}>Retour</Button>
       </div>
