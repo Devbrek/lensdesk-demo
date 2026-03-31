@@ -101,6 +101,7 @@ export default function NewShootingPage() {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
+                min={new Date().toISOString().split("T")[0]}
                 className="bg-white text-black"
               />
             </div>
