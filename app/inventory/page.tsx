@@ -67,7 +67,6 @@ export default function InventoryPage() {
 
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
-  
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editLabel, setEditLabel] = useState("");
@@ -240,9 +239,9 @@ export default function InventoryPage() {
                         />
 
                         <Select
-                          value={newType}
+                          value={editType}
                           onValueChange={(value) => {
-                            if (value) setNewType(value);
+                            if (value) setEditType(value);
                           }}
                         >
                           <SelectTrigger>

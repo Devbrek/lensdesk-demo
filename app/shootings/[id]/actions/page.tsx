@@ -17,7 +17,6 @@ import {
   ItemContent,
   ItemTitle,
   ItemDescription,
-  ItemMedia,
 } from "@/components/ui/item";
 
 import { Button } from "@/components/ui/button";
@@ -34,7 +33,6 @@ export default function ActionPage() {
   const [newItemLabel, setNewItemLabel] = useState("");
 
   const remainingItems = items.filter((item) => !item.checked).length;
-
   const fetchChecklist = async () => {
     try {
       const res = await fetch(`/api/shootings/${id}/checklist?type=action`);
