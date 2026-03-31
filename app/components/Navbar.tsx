@@ -9,16 +9,23 @@ import { Button } from "@/components/ui/button";
 export default function Navbar() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const handleNav = (path: string) => {
     setOpen(false);
     router.push(path);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
+  const handleLogout = async () => {
+    setLoggingOut(true);
+
+    await fetch("/api/auth/logout", { method: "POST" });
+
     setOpen(false);
     router.replace("/");
+    router.refresh();
+
+    setLoggingOut(false);
   };
 
   return (
@@ -77,11 +84,11 @@ export default function Navbar() {
                 </Button>
 
                 <Button
+                  disabled={loggingOut}
                   variant="destructive"
-                  className="hidden md:flex hover:text-white hover:cursor-pointer"
                   onClick={handleLogout}
                 >
-                  Logout
+                  {loggingOut ? "Déconnexion..." : "Logout"}
                 </Button>
 
                 {/* MOBILE BURGER */}
@@ -134,8 +141,12 @@ export default function Navbar() {
             A propos
           </Button>
 
-          <Button variant="destructive" onClick={handleLogout}>
-            Déconnexion
+          <Button
+            disabled={loggingOut}
+            variant="destructive"
+            onClick={handleLogout}
+          >
+            {loggingOut ? "Déconnexion..." : "Logout"}
           </Button>
         </div>
       </div>
