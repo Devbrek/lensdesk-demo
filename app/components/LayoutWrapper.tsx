@@ -15,18 +15,18 @@ export default function LayoutWrapper({
 
   function getBackground(pathname: string) {
     if (pathname.startsWith("/dashboard")) {
-      return "url('/leoFlames.jpg')";
+      return "url('/leoFlames.webp')";
     }
 
     if (pathname.startsWith("/shootings")) {
-      return "url('/leoHole.jpg')";
+      return "url('/leoHole.webp')";
     }
     if (pathname === "/inventory") {
-      return "url('/windoor.jpg')";
+      return "url('/windoor.webp')";
     }
 
     if (pathname === "/") {
-      return "url('/abuzone2.jpg')";
+      return "url('/abuzone2.webp')";
     }
 
     return "url('/default-bg.jpg')";
@@ -36,7 +36,7 @@ export default function LayoutWrapper({
 
   return (
     <div
-      className="min-h-dvh flex flex-col bg-cover bg-center bg-no-repeat "
+      className="min-h-dvh flex flex-col bg-cover bg-center bg-no-repeat transition-opacity duration-500"
       style={{ backgroundImage }}
     >
       {!isAuthPage && <Navbar />}
