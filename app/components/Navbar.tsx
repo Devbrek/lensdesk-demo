@@ -82,7 +82,13 @@ export default function Navbar() {
                 >
                   A propos
                 </Button>
-
+                <Button
+                  variant="outline"
+                  onClick={() => handleNav("/suggestions")}
+                  className="border-sky-800 bg-sky-500/10 text-sky-500 hidden md:block"
+                >
+                  Suggestions
+                </Button>
                 <Button
                   disabled={loggingOut}
                   variant="destructive"

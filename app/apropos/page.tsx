@@ -87,6 +87,8 @@ export default function AProposPage() {
             </li>
 
             <li>Fix de l’édition du type de matériel dans l’inventaire</li>
+            
+            <li>Ajout de la page suggestion</li>
           </ul>
         </Card>
 
