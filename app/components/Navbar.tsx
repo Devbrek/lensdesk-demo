@@ -34,24 +34,35 @@ export default function Navbar() {
                 onClick={() => handleNav("/dashboard")}
                 className="flex items-center shrink-0"
               >
-                <img src="/icons/logo2.png" alt="logo" className="w-20" />
+                <img
+                  src="/icons/logo2.png"
+                  alt="logo"
+                  className="w-20 hover:cursor-pointer"
+                />
               </button>
 
               {/* DESKTOP LINKS */}
               <div className="hidden md:flex flex-row items-center gap-3 text-sm uppercase font-semibold text-muted-foreground">
-                <button onClick={() => handleNav("/dashboard")}>
+                <button
+                  onClick={() => handleNav("/dashboard")}
+                  className="hover:text-white hover:cursor-pointer"
+                >
                   Dashboard
                 </button>
 
-                <button onClick={() => handleNav("/inventory")}>
+                <button
+                  onClick={() => handleNav("/inventory")}
+                  className="hover:text-white hover:cursor-pointer"
+                >
                   Inventaire
                 </button>
 
-                <button onClick={() => handleNav("/shootings")}>
+                <button
+                  onClick={() => handleNav("/shootings")}
+                  className="hover:text-white hover:cursor-pointer"
+                >
                   Shootings
                 </button>
-
-                <button onClick={() => handleNav("/apropos")}>À propos</button>
               </div>
 
               {/* RIGHT ACTIONS */}
@@ -59,7 +70,7 @@ export default function Navbar() {
                 {/* DESKTOP CTA */}
                 <Button
                   variant="outline"
-                  className="hidden md:flex"
+                  className="hidden md:flex hover:text-black hover:cursor-pointer"
                   onClick={() => handleNav("/apropos")}
                 >
                   A propos
@@ -67,7 +78,7 @@ export default function Navbar() {
 
                 <Button
                   variant="destructive"
-                  className="hidden md:flex"
+                  className="hidden md:flex hover:text-white hover:cursor-pointer"
                   onClick={handleLogout}
                 >
                   Logout
