@@ -7,7 +7,7 @@ import Footer from "@/app/landing/Footer";
 
 export default function LandingPage() {
   return (
-    <main className="max-w-1/2  bg-background text-white flex flex-col justify-center items-center mx-auto min-h-screen">
+    <main className=" bg-background text-white flex flex-col justify-center items-center mx-auto min-h-screen">
       <Hero />
       <Features />
       <CTA />
