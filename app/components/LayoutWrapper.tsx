@@ -11,7 +11,7 @@ export default function LayoutWrapper({
 }) {
   const pathname = usePathname();
 
-  const isAuthPage = ["/", "/login"].includes(pathname);
+  const isAuthPage = ["/", "/login", "/landing"].includes(pathname);
 
   function getBackground(pathname: string) {
     if (pathname.startsWith("/dashboard")) {
@@ -39,7 +39,7 @@ export default function LayoutWrapper({
       className="min-h-dvh flex flex-col bg-cover bg-center bg-no-repeat transition-opacity duration-500"
       style={{ backgroundImage }}
     >
-      {!isAuthPage && <Navbar />}
+      {!isAuthPage  && <Navbar />}
 
       <main className="flex-1 pt-20">{children}</main>
 
