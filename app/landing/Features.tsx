@@ -9,20 +9,20 @@ const features = [
   },
   {
     title: "Dashboard",
-    desc: "Accède à ton prochain shooting en un clic",
+    desc: "Accède à tes prochain shooting en un clic et visualise tes stats",
   },
 
   {
-    title: "Inventaire personnel",
-    desc: "Gagne du temps pour organiser tes sessions",
+    title: "Inventaire",
+    desc: "Gagne du temps pour organiser ton matériel",
   },
   {
     title: "Clarté",
-    desc: "Centralise tes idées et tes projets dans un seul outil",
+    desc: "Centralise tes idées et tes projets en un seul outil",
   },
   {
-    title: "Personnalisation",
-    desc: "Suggère des modifications pour adapter l'application à tes besoins",
+    title: "Suggestions",
+    desc: "Propose des modifications pour adapter l'application à tes besoins",
   },
 ];
 

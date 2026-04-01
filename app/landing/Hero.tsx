@@ -6,6 +6,8 @@ export default function Hero() {
   const router = useRouter()
   return (
     <section className="flex flex-col items-center justify-center text-center py-20 px-6">
+       <img src="/icons/logo2.png" alt="logo" className="w-70 mb-10" />
+      
       <h1 className="text-4xl font-bold mb-4">
         Organise tes shootings simplement
       </h1>
@@ -14,7 +16,7 @@ export default function Hero() {
         Gère ton matériel, tes actions et tes projets en un seul endroit.
       </p>
 
-    <img src="/icons/logo2.png" alt="logo" className="w-50" />
+   
     </section>
   );
 }
