@@ -259,6 +259,7 @@ export default function InventoryPage() {
               <Select
                 value={newType}
                 onValueChange={(value) => {
+                  if (!value) return;
                   setNewType(value);
                   setTypeError("");
                   setSuccess("");
