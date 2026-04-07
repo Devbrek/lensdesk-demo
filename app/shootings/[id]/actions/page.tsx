@@ -37,6 +37,7 @@ export default function ActionPage() {
   const [newItemPriority, setNewItemPriority] = useState<Priority>(3);
 
   const fetchChecklist = async () => {
+    setLoading(true);
     try {
       const res = await fetch(`/api/shootings/${id}/checklist?type=action`);
       const data = await res.json();
@@ -119,14 +120,16 @@ export default function ActionPage() {
     return 0;
   });
 
-  const remainingItems = loading
-    ? null
-    : items.filter((item) => !item.checked).length;
+  // ✅ TOUJOURS number (jamais null)
+  const remainingItems = items.filter((item) => !item.checked).length;
+
+  const isEmpty = !loading && sortedItems.length === 0;
+  const isDone = !loading && remainingItems === 0 && items.length > 0;
 
   return (
     <div className="min-h-screen flex justify-center pt-10">
       <div className="w-full max-w-md space-y-6">
-        {/* HEADER (toujours visible) */}
+        {/* HEADER */}
         <Card className="bg-background text-white text-center">
           <CardHeader>
             <CardTitle>Actions</CardTitle>
@@ -135,10 +138,12 @@ export default function ActionPage() {
 
           <CardContent className="pt-0 pb-5 flex flex-col items-center gap-2">
             <span className="text-xs px-2 py-1 rounded-md bg-white/5 border border-white/10 text-muted-foreground">
-              {remainingItems} restant{remainingItems > 1 ? "s" : ""}
+              {loading
+                ? "Chargement..."
+                : `${remainingItems} restant${remainingItems > 1 ? "s" : ""}`}
             </span>
 
-            {remainingItems === 0 && (
+            {isDone && (
               <p className="text-green-400 text-xs">
                 ✔ Toutes les actions sont terminées
               </p>
@@ -146,10 +151,10 @@ export default function ActionPage() {
           </CardContent>
         </Card>
 
-        {/* LIST CARD */}
+        {/* LIST */}
         <Card className="bg-background text-white">
           <CardContent className="flex flex-col gap-3">
-            {/* LOADING LOCAL (dans la carte uniquement) */}
+            {/* LOADING (local only) */}
             {loading && (
               <div className="space-y-2">
                 <div className="h-10 bg-white/5 animate-pulse rounded-md" />
@@ -159,7 +164,7 @@ export default function ActionPage() {
             )}
 
             {/* EMPTY */}
-            {!loading && sortedItems.length === 0 && (
+            {isEmpty && (
               <p className="text-sm text-muted-foreground text-center">
                 Aucune action pour le moment
               </p>
@@ -275,6 +280,7 @@ export default function ActionPage() {
           </CardContent>
         </Card>
 
+        {/* BACK */}
         <div className="flex justify-center pb-5">
           <Button onClick={() => router.push(`/shootings/${id}`)}>
             Retour
