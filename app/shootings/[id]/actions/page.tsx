@@ -22,7 +22,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { Check, Plus } from "lucide-react";
+import { Check, Plus, X } from "lucide-react";
 
 type Priority = 1 | 2 | 3 | 4 | 5;
 
@@ -32,6 +32,12 @@ export default function ActionPage() {
 
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [deleteTarget, setDeleteTarget] = useState<any | null>(null);
+
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingLabel, setEditingLabel] = useState("");
+  const [editingPriority, setEditingPriority] = useState<Priority>(3);
 
   const [newItemLabel, setNewItemLabel] = useState("");
   const [newItemPriority, setNewItemPriority] = useState<Priority>(3);
@@ -61,12 +67,40 @@ export default function ActionPage() {
     fetchChecklist();
   };
 
-  const handleDelete = async (itemId: string) => {
-    await fetch(`/api/shootings/${id}/checklist/${itemId}`, {
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+
+    await fetch(`/api/shootings/${id}/checklist/${deleteTarget}`, {
       method: "DELETE",
     });
 
+    setDeleteTarget(null);
     fetchChecklist();
+  };
+
+  const handleEdit = async (itemId: string) => {
+    if (!editingLabel.trim()) return;
+
+    await fetch(`/api/shootings/${id}/checklist/${itemId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        label: editingLabel,
+        priority: editingPriority,
+      }),
+    });
+
+    setEditingId(null);
+    setEditingLabel("");
+    setEditingPriority(3);
+
+    fetchChecklist();
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditingLabel("");
+    setEditingPriority(3);
   };
 
   const handleAddManual = async () => {
@@ -120,7 +154,6 @@ export default function ActionPage() {
     return 0;
   });
 
-  // ✅ TOUJOURS number (jamais null)
   const remainingItems = items.filter((item) => !item.checked).length;
 
   const isEmpty = !loading && sortedItems.length === 0;
@@ -154,7 +187,6 @@ export default function ActionPage() {
         {/* LIST */}
         <Card className="bg-background text-white">
           <CardContent className="flex flex-col gap-3">
-            {/* LOADING (local only) */}
             {loading && (
               <div className="space-y-2">
                 <div className="h-10 bg-white/5 animate-pulse rounded-md" />
@@ -163,18 +195,17 @@ export default function ActionPage() {
               </div>
             )}
 
-            {/* EMPTY */}
             {isEmpty && (
               <p className="text-sm text-muted-foreground text-center">
                 Aucune action pour le moment
               </p>
             )}
 
-            {/* LIST */}
             {!loading &&
               sortedItems.map((item) => {
                 const done = item.checked;
                 const priority = getPriority(item);
+                const isEditing = editingId === item.id;
 
                 return (
                   <Item
@@ -185,19 +216,47 @@ export default function ActionPage() {
                     }`}
                   >
                     <ItemContent>
-                      <ItemTitle
-                        className={done ? "line-through opacity-60" : ""}
-                      >
-                        {item.label}
-                      </ItemTitle>
+                      {isEditing ? (
+                        <div className="flex flex-col gap-2 w-full">
+                          <Input
+                            value={editingLabel}
+                            onChange={(e) => setEditingLabel(e.target.value)}
+                            className="h-8"
+                          />
 
-                      <ItemDescription>
-                        {done ? (
-                          <span className="text-green-400">Terminé</span>
-                        ) : (
-                          "En attente"
-                        )}
-                      </ItemDescription>
+                          <select
+                            value={editingPriority}
+                            onChange={(e) =>
+                              setEditingPriority(
+                                Number(e.target.value) as Priority,
+                              )
+                            }
+                            className="bg-background border border-white/10 rounded-md px-2 py-1 text-sm w-fit"
+                          >
+                            <option value={1}>P1 (critique)</option>
+                            <option value={2}>P2</option>
+                            <option value={3}>P3</option>
+                            <option value={4}>P4</option>
+                            <option value={5}>P5 (faible)</option>
+                          </select>
+                        </div>
+                      ) : (
+                        <>
+                          <ItemTitle
+                            className={done ? "line-through opacity-60" : ""}
+                          >
+                            {item.label}
+                          </ItemTitle>
+
+                          <ItemDescription>
+                            {done ? (
+                              <span className="text-green-400">Terminé</span>
+                            ) : (
+                              "En attente"
+                            )}
+                          </ItemDescription>
+                        </>
+                      )}
                     </ItemContent>
 
                     <div className="flex items-center gap-3">
@@ -211,26 +270,65 @@ export default function ActionPage() {
 
                       <ItemActions>
                         <div className="flex gap-2 items-center">
-                          <Button
-                            size="icon"
-                            variant={done ? "default" : "outline"}
-                            onClick={() => handleToggle(item.id, item.checked)}
-                            className={
-                              done
-                                ? "bg-green-500 text-black hover:bg-green-400"
-                                : ""
-                            }
-                          >
-                            <Check className="size-4" />
-                          </Button>
+                          {/* MODE NORMAL */}
+                          {!isEditing && (
+                            <>
+                              <Button
+                                size="icon"
+                                variant={done ? "default" : "outline"}
+                                onClick={() =>
+                                  handleToggle(item.id, item.checked)
+                                }
+                              >
+                                <Check className="size-4" />
+                              </Button>
 
-                          <Button
-                            size="icon"
-                            variant="destructive"
-                            onClick={() => handleDelete(item.id)}
-                          >
-                            <img src="/icons/del.svg" className="w-4 h-4" />
-                          </Button>
+                              <Button
+                                size="icon"
+                                variant="outline"
+                                onClick={() => {
+                                  setEditingId(item.id);
+                                  setEditingLabel(item.label);
+                                  setEditingPriority(getPriority(item));
+                                }}
+                              >
+                                <img
+                                  src="/icons/pencilW.svg"
+                                  alt="edit"
+                                  className="w-5"
+                                />
+                              </Button>
+
+                              <Button
+                                size="icon"
+                                variant="destructive"
+                                onClick={() => setDeleteTarget(item.id)}
+                              >
+                                <img src="/icons/del.svg" className="w-4 h-4" />
+                              </Button>
+                            </>
+                          )}
+
+                          {/* MODE EDIT */}
+                          {isEditing && (
+                            <>
+                              <Button
+                                size="icon"
+                                variant="default"
+                                onClick={() => handleEdit(item.id)}
+                              >
+                                <Check className="size-4" />
+                              </Button>
+
+                              <Button
+                                size="icon"
+                                variant="outline"
+                                onClick={cancelEdit}
+                              >
+                                <X className="size-4" />
+                              </Button>
+                            </>
+                          )}
                         </div>
                       </ItemActions>
                     </div>
@@ -279,6 +377,31 @@ export default function ActionPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* DELETE CONFIRM */}
+        {deleteTarget && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+            <div className="w-full max-w-sm bg-background border border-white/10 rounded-xl p-5 space-y-4">
+              <h2 className="text-lg font-semibold">
+                Confirmer la suppression
+              </h2>
+
+              <p className="text-sm text-muted-foreground">
+                Cette action est irréversible.
+              </p>
+
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setDeleteTarget(null)}>
+                  Annuler
+                </Button>
+
+                <Button variant="destructive" onClick={confirmDelete}>
+                  Supprimer
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* BACK */}
         <div className="flex justify-center pb-5">
