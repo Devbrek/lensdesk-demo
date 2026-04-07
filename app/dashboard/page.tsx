@@ -14,7 +14,6 @@ const Dashboard = () => {
   const [inventory, setInventory] = useState<any[]>([]);
   const [nextChecklist, setNextChecklist] = useState<any[]>([]);
 
-  // INVENTAIRE
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,7 +30,7 @@ const Dashboard = () => {
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false); // 🔥 clé du système
+        setLoading(false);
       }
     };
 
@@ -44,7 +43,6 @@ const Dashboard = () => {
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   )[0];
 
-  // CHECKLIST DU NEXT SHOOTING
   useEffect(() => {
     if (!nextShooting?.id) return;
 
@@ -58,27 +56,28 @@ const Dashboard = () => {
 
   const actionItems = nextChecklist.filter((i) => i.type === "action");
 
+  // =========================
+  // 🔥 NEW LOGIC (done / total)
+  // =========================
+
+  const getDoneCount = (items: any[]) => items.filter((i) => i.checked).length;
+
+  const getTotalCount = (items: any[]) => items.length;
+
   const getProgress = (items: any[]) => {
     if (!items.length) return 0;
-    const done = items.filter((i) => i.checked).length;
+    const done = getDoneCount(items);
     return Math.round((done / items.length) * 100);
   };
 
-  const getScoreOutOf10 = (items: any[]) => {
-    if (!items.length) return 0;
+  const materialDone = getDoneCount(materialItems);
+  const materialTotal = getTotalCount(materialItems);
 
-    const done = items.filter((i) => i.checked).length;
-
-    return Math.round((done / items.length) * 10);
-  };
+  const actionDone = getDoneCount(actionItems);
+  const actionTotal = getTotalCount(actionItems);
 
   const materialProgress = getProgress(materialItems);
   const actionProgress = getProgress(actionItems);
-  const materialRemaining = materialItems.filter((i) => !i.checked).length;
-  const materialTotal = materialItems.length;
-
-  const actionRemaining = actionItems.filter((i) => !i.checked).length;
-  const actionTotal = actionItems.length;
 
   const inventoryCount = inventory.length;
 
@@ -94,6 +93,7 @@ const Dashboard = () => {
       route: "/shootings",
     },
   ];
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white">
@@ -101,8 +101,9 @@ const Dashboard = () => {
       </div>
     );
   }
+
   return (
-    <div className=" min-h-screen flex flex-col items-center justify-center gap-6 p-4 text-foreground ">
+    <div className="min-h-screen flex flex-col items-center justify-center gap-6 p-4 text-foreground">
       {/* HEADER */}
       <h1 className="text-xl font-bold">Dashboard</h1>
 
@@ -130,11 +131,9 @@ const Dashboard = () => {
         <Card className="w-full max-w-sm text-white">
           <CardContent className="p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <p className="text-sm underline">Prochain shooting : </p>
-              <Button
-                className="  hover:bg-white/10 transition bg-black/20 border border-white"
-                title="Voir le shooting"
-              >
+              <p className="text-sm underline">Prochain shooting :</p>
+
+              <Button className="hover:bg-white/10 transition bg-black/20 border border-white">
                 <img
                   src="/icons/eyeW.svg"
                   className="w-4 h-4"
@@ -143,6 +142,7 @@ const Dashboard = () => {
                 />
               </Button>
             </div>
+
             <p className="font-semibold text-sm">{nextShooting.title}</p>
 
             <p className="text-sm text-muted-foreground">
@@ -150,29 +150,29 @@ const Dashboard = () => {
               {nextShooting.location}
             </p>
 
-            {/* PROGRESS MATERIEL */}
+            {/* MATERIEL */}
             <div className="space-y-1 pt-2">
-              <span className="text-xs text-muted-foreground">restant :</span>
               <div className="flex justify-between text-xs">
                 <span>Matériel</span>
                 <span>
-                  {materialRemaining} / {materialTotal}
+                  {materialDone} / {materialTotal}
                 </span>
                 <span>{materialProgress}%</span>
               </div>
+
               <Progress value={materialProgress} />
             </div>
 
-            {/* PROGRESS ACTIONS */}
+            {/* ACTIONS */}
             <div className="space-y-1">
               <div className="flex justify-between text-xs">
                 <span>Actions</span>
                 <span>
-                  {" "}
-                  {actionRemaining} / {actionTotal}
+                  {actionDone} / {actionTotal}
                 </span>
                 <span>{actionProgress}%</span>
               </div>
+
               <Progress value={actionProgress} />
             </div>
           </CardContent>
