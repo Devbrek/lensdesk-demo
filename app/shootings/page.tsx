@@ -58,13 +58,7 @@ export default function ShootingsPage() {
 
     setShootings((prev) => prev.filter((s) => s.id !== id));
   };
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-white">
-        Chargement...
-      </div>
-    );
-  }
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-md bg-background text-white">
@@ -84,19 +78,39 @@ export default function ShootingsPage() {
 
           {/* CONTENT */}
           {loading ? (
-            <p className="text-muted-foreground">Chargement...</p>
+            <div className="flex flex-col gap-3">
+              <p>Chargement...</p>
+              {[1, 2, 3].map((i) => (
+                <Item key={i} variant="outline">
+                  <ItemMedia>
+                    <div className="w-5 h-5 bg-gray-600 rounded animate-pulse" />
+                  </ItemMedia>
+
+                  <ItemContent>
+                    <div className="h-3 bg-gray-600 rounded w-2/3 mb-2 animate-pulse" />
+                    <div className="h-3 bg-gray-700 rounded w-1/2 animate-pulse" />
+                  </ItemContent>
+
+                  <ItemActions>
+                    <div className="flex gap-2">
+                      <div className="w-8 h-8 bg-gray-700 rounded animate-pulse" />
+                      <div className="w-8 h-8 bg-gray-700 rounded animate-pulse" />
+                      <div className="w-8 h-8 bg-gray-700 rounded animate-pulse" />
+                    </div>
+                  </ItemActions>
+                </Item>
+              ))}
+            </div>
           ) : shootings.length === 0 ? (
-            <p className="text-muted-foreground">Aucun shooting</p>
+            <p className="text-muted-foreground text-center">Aucun shooting</p>
           ) : (
             <div className="flex flex-col gap-3">
               {shootings.map((shooting) => (
                 <Item key={shooting.id} variant="outline">
-                  {/* ICON */}
                   <ItemMedia>
                     <Calendar className="size-5" />
                   </ItemMedia>
 
-                  {/* CONTENT */}
                   <ItemContent>
                     <ItemTitle>{shooting.title}</ItemTitle>
 
@@ -105,7 +119,6 @@ export default function ShootingsPage() {
                     )}
                   </ItemContent>
 
-                  {/* ACTIONS */}
                   <ItemActions>
                     <div className="flex gap-2">
                       <Button

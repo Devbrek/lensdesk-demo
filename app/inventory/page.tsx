@@ -15,8 +15,8 @@ import {
   Item,
   ItemActions,
   ItemContent,
-  ItemDescription,
   ItemTitle,
+  ItemDescription,
   ItemMedia,
 } from "@/components/ui/item";
 
@@ -188,8 +188,6 @@ export default function InventoryPage() {
 
       setItems((prev) => prev.filter((i) => i.id !== deleteId));
       setDeleteId(null);
-    } catch {
-      // optionnel : gérer erreur
     } finally {
       setIsDeleting(false);
     }
@@ -218,16 +216,8 @@ export default function InventoryPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-white">
-        Chargement...
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen flex items-center justify-center ">
+    <div className="min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-md bg-background text-white">
         <CardHeader>
           <CardTitle>Inventaire</CardTitle>
@@ -235,6 +225,7 @@ export default function InventoryPage() {
         </CardHeader>
 
         <CardContent className="flex flex-col gap-6">
+          {/* FORM */}
           <form onSubmit={handleAddItem} className="flex flex-col gap-4">
             <div className="grid gap-2">
               <Label>Nom de l’item</Label>
@@ -246,7 +237,6 @@ export default function InventoryPage() {
                   setSuccess("");
                 }}
                 className={labelError ? "border-red-500" : ""}
-                placeholder="Ex: Sony A7III"
               />
               {labelError && (
                 <p className="text-red-400 text-xs">{labelError}</p>
@@ -294,8 +284,31 @@ export default function InventoryPage() {
             )}
           </form>
 
-          {items.length === 0 ? (
-            <p className="text-muted-foreground">Aucun item</p>
+          {/* LIST + SKELETON */}
+          {loading ? (
+            <div className="flex flex-col gap-3">
+              {[1, 2, 3].map((i) => (
+                <Item key={i} variant="outline">
+                  <ItemMedia>
+                    <div className="w-5 h-5 bg-gray-600 rounded animate-pulse" />
+                  </ItemMedia>
+
+                  <ItemContent>
+                    <div className="h-3 bg-gray-600 rounded w-2/3 mb-2 animate-pulse" />
+                    <div className="h-3 bg-gray-700 rounded w-1/2 animate-pulse" />
+                  </ItemContent>
+
+                  <ItemActions>
+                    <div className="flex gap-2">
+                      <div className="w-8 h-8 bg-gray-700 rounded animate-pulse" />
+                      <div className="w-8 h-8 bg-gray-700 rounded animate-pulse" />
+                    </div>
+                  </ItemActions>
+                </Item>
+              ))}
+            </div>
+          ) : items.length === 0 ? (
+            <p className="text-muted-foreground text-center">Aucun item</p>
           ) : (
             <div className="flex flex-col gap-3">
               {items.map((item) => (
@@ -313,7 +326,8 @@ export default function InventoryPage() {
                         <Select
                           value={editType}
                           onValueChange={(value) => {
-                            if (value) setEditType(value);
+                            if (!value) return;
+                            setEditType(value);
                           }}
                         >
                           <SelectTrigger>
@@ -388,9 +402,12 @@ export default function InventoryPage() {
             </div>
           )}
 
+          {/* FOOTER */}
           <Button variant="outline" onClick={() => router.push("/dashboard")}>
             Retour
           </Button>
+
+          {/* MODAL DELETE */}
           {deleteId && (
             <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
               <div className="bg-background p-6 rounded-lg w-full max-w-sm space-y-4 text-white">
