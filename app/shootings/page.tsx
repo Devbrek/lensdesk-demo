@@ -58,7 +58,13 @@ export default function ShootingsPage() {
 
     setShootings((prev) => prev.filter((s) => s.id !== id));
   };
-
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        Chargement...
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-md bg-background text-white">
