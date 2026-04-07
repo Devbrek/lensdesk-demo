@@ -97,7 +97,10 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white">
-        Chargement...
+        <div className="animate-pulse">
+          <div className="h-16 bg-gray-700 rounded mb-2"></div>
+          <div className="h-16 bg-gray-700 rounded"></div>
+        </div>
       </div>
     );
   }
