@@ -68,6 +68,12 @@ export default function InventoryPage() {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [adding, setAdding] = useState(false);
+  const [success, setSuccess] = useState("");
+
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editLabel, setEditLabel] = useState("");
   const [editType, setEditType] = useState("");
@@ -75,11 +81,17 @@ export default function InventoryPage() {
   const [newLabel, setNewLabel] = useState("");
   const [newType, setNewType] = useState("");
 
+  const [labelError, setLabelError] = useState("");
+  const [typeError, setTypeError] = useState("");
+  const [globalError, setGlobalError] = useState("");
+
   const fetchInventory = async () => {
     try {
       const res = await fetch("/api/inventory");
       const data = await res.json();
       setItems(data);
+    } catch {
+      setGlobalError("Erreur chargement inventaire");
     } finally {
       setLoading(false);
     }
@@ -92,20 +104,50 @@ export default function InventoryPage() {
   const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!newLabel || !newType) return;
+    setSuccess("");
+    setGlobalError("");
 
-    const res = await fetch("/api/inventory", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ label: newLabel, type: newType }),
-    });
+    let hasError = false;
 
-    const newItem = await res.json();
+    if (!newLabel.trim()) {
+      setLabelError("Le nom est requis");
+      hasError = true;
+    } else {
+      setLabelError("");
+    }
 
-    setItems((prev) => [...prev, newItem]);
+    if (!newType) {
+      setTypeError("Le type est requis");
+      hasError = true;
+    } else {
+      setTypeError("");
+    }
 
-    setNewLabel("");
-    setNewType("");
+    if (hasError) return;
+
+    setAdding(true);
+
+    try {
+      const res = await fetch("/api/inventory", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ label: newLabel, type: newType }),
+      });
+
+      if (!res.ok) throw new Error();
+
+      const newItem = await res.json();
+
+      setItems((prev) => [...prev, newItem]);
+
+      setNewLabel("");
+      setNewType("");
+      setSuccess("Item ajouté avec succès ✔");
+    } catch {
+      setGlobalError("Erreur lors de l'ajout");
+    } finally {
+      setAdding(false);
+    }
   };
 
   const startEditing = (item: InventoryItem) => {
@@ -136,42 +178,46 @@ export default function InventoryPage() {
     cancelEditing();
   };
 
-  const handleDelete = async (id: string) => {
-    await fetch(`/api/inventory/${id}`, { method: "DELETE" });
-    setItems((prev) => prev.filter((i) => i.id !== id));
+  const handleDelete = async () => {
+    if (!deleteId) return;
+
+    setIsDeleting(true);
+
+    try {
+      await fetch(`/api/inventory/${deleteId}`, { method: "DELETE" });
+
+      setItems((prev) => prev.filter((i) => i.id !== deleteId));
+      setDeleteId(null);
+    } catch {
+      // optionnel : gérer erreur
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
-  // 🎯 ICON SYSTEM COMPLET
   const getIconByType = (type: string) => {
     switch (type.toLowerCase()) {
       case "camera":
         return <Camera className="size-5" />;
-
       case "lumiere":
         return <Lightbulb className="size-5" />;
-
       case "electrique":
         return <Zap className="size-5" />;
-
       case "micro":
         return <Mic className="size-5" />;
-
       case "outil":
         return <Wrench className="size-5" />;
-
       case "stockage":
         return <HardDrive className="size-5" />;
-
       case "batterie":
         return <Battery className="size-5" />;
-
       case "decors":
         return <Clapperboard className="size-5" />;
-
       default:
         return <Package className="size-5" />;
     }
   };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white">
@@ -179,6 +225,7 @@ export default function InventoryPage() {
       </div>
     );
   }
+
   return (
     <div className="min-h-screen flex items-center justify-center ">
       <Card className="w-full max-w-md bg-background text-white">
@@ -188,15 +235,22 @@ export default function InventoryPage() {
         </CardHeader>
 
         <CardContent className="flex flex-col gap-6">
-          {/* FORMULAIRE */}
           <form onSubmit={handleAddItem} className="flex flex-col gap-4">
             <div className="grid gap-2">
               <Label>Nom de l’item</Label>
               <Input
                 value={newLabel}
-                onChange={(e) => setNewLabel(e.target.value)}
+                onChange={(e) => {
+                  setNewLabel(e.target.value);
+                  setLabelError("");
+                  setSuccess("");
+                }}
+                className={labelError ? "border-red-500" : ""}
                 placeholder="Ex: Sony A7III"
               />
+              {labelError && (
+                <p className="text-red-400 text-xs">{labelError}</p>
+              )}
             </div>
 
             <div className="grid gap-2">
@@ -205,10 +259,12 @@ export default function InventoryPage() {
               <Select
                 value={newType}
                 onValueChange={(value) => {
-                  if (value) setNewType(value);
+                  setNewType(value);
+                  setTypeError("");
+                  setSuccess("");
                 }}
               >
-                <SelectTrigger>
+                <SelectTrigger className={typeError ? "border-red-500" : ""}>
                   <SelectValue placeholder="Type d’équipement" />
                 </SelectTrigger>
 
@@ -220,15 +276,24 @@ export default function InventoryPage() {
                   ))}
                 </SelectContent>
               </Select>
+
+              {typeError && <p className="text-red-400 text-xs">{typeError}</p>}
             </div>
 
-            <Button type="submit">Ajouter</Button>
+            <Button type="submit" disabled={adding}>
+              {adding ? "Ajout..." : "Ajouter"}
+            </Button>
+
+            {globalError && (
+              <p className="text-red-400 text-sm text-center">{globalError}</p>
+            )}
+
+            {success && (
+              <p className="text-green-400 text-sm text-center">{success}</p>
+            )}
           </form>
 
-          {/* LISTE */}
-          {loading ? (
-            <p className="text-xl text-white">Chargement...</p>
-          ) : items.length === 0 ? (
+          {items.length === 0 ? (
             <p className="text-muted-foreground">Aucun item</p>
           ) : (
             <div className="flex flex-col gap-3">
@@ -306,7 +371,7 @@ export default function InventoryPage() {
                         <Button
                           size="icon"
                           variant="destructive"
-                          onClick={() => handleDelete(item.id)}
+                          onClick={() => setDeleteId(item.id)}
                         >
                           <img
                             src="/icons/del.svg"
@@ -322,10 +387,39 @@ export default function InventoryPage() {
             </div>
           )}
 
-          {/* FOOTER */}
           <Button variant="outline" onClick={() => router.push("/dashboard")}>
             Retour
           </Button>
+          {deleteId && (
+            <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+              <div className="bg-background p-6 rounded-lg w-full max-w-sm space-y-4 text-white">
+                <h2 className="text-lg font-semibold">Supprimer cet item ?</h2>
+
+                <p className="text-sm text-muted-foreground">
+                  Cette action est irréversible. L'item sera définitivement
+                  supprimé de votre inventaire.
+                </p>
+
+                <div className="flex justify-end gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setDeleteId(null)}
+                    disabled={isDeleting}
+                  >
+                    Annuler
+                  </Button>
+
+                  <Button
+                    variant="destructive"
+                    onClick={handleDelete}
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? "Suppression..." : "Supprimer"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
