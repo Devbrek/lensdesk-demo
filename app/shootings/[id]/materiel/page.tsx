@@ -24,7 +24,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { Package, Check, ChevronDown } from "lucide-react";
-import ScrollToTopBottom from "@/components/ui/ScrollToTopBottom";
 
 export default function MaterielPage() {
   const router = useRouter();
@@ -32,31 +31,51 @@ export default function MaterielPage() {
 
   const [items, setItems] = useState<any[]>([]);
   const [inventory, setInventory] = useState<any[]>([]);
+
+  const [loadingChecklist, setLoadingChecklist] = useState(true);
+  const [loadingInventory, setLoadingInventory] = useState(true);
+
   const [newItemLabel, setNewItemLabel] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const remainingItems = items.filter((item) => !item.checked).length;
-
-  const getChecklistItem = (inventoryItemId: string) => {
-    return items.find((item) => item.inventoryItemId === inventoryItemId);
-  };
-
   const fetchChecklist = async () => {
-    const res = await fetch(`/api/shootings/${id}/checklist?type=materiel`);
-    const data = await res.json();
-    setItems(data);
+    setLoadingChecklist(true);
+    try {
+      const res = await fetch(`/api/shootings/${id}/checklist?type=materiel`);
+      const data = await res.json();
+      setItems(data);
+    } finally {
+      setLoadingChecklist(false);
+    }
   };
 
   const fetchInventory = async () => {
-    const res = await fetch("/api/inventory");
-    const data = await res.json();
-    setInventory(data);
+    setLoadingInventory(true);
+    try {
+      const res = await fetch("/api/inventory");
+      const data = await res.json();
+      setInventory(data);
+    } finally {
+      setLoadingInventory(false);
+    }
   };
 
   useEffect(() => {
     fetchChecklist();
     fetchInventory();
-  }, []);
+  }, [id]);
+
+  const getChecklistItem = (inventoryItemId: string) =>
+    items.find((item) => item.inventoryItemId === inventoryItemId);
+
+  const isSelected = (inventoryItemId: string) =>
+    items.some((item) => item.inventoryItemId === inventoryItemId);
+
+  const remainingItems = items.filter((item) => !item.checked).length;
+
+  const isChecklistEmpty = !loadingChecklist && items.length === 0;
+  const isChecklistDone =
+    !loadingChecklist && items.length > 0 && remainingItems === 0;
 
   const handleToggleInventory = async (inventoryItemId: string) => {
     const existingItem = getChecklistItem(inventoryItemId);
@@ -113,9 +132,6 @@ export default function MaterielPage() {
     fetchChecklist();
   };
 
-  const isSelected = (inventoryItemId: string) =>
-    items.some((item) => item.inventoryItemId === inventoryItemId);
-
   return (
     <div className="min-h-screen flex items-center justify-center pt-10">
       <div className="w-full max-w-md space-y-6">
@@ -129,10 +145,9 @@ export default function MaterielPage() {
           </CardHeader>
         </Card>
 
-        {/* INVENTAIRE DROPDOWN */}
+        {/* INVENTAIRE */}
         <Card className="bg-background text-white">
-          <CardContent className="flex flex-col g">
-            {/* HEADER CLICKABLE */}
+          <CardContent className="flex flex-col">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="flex items-center justify-between w-full"
@@ -144,64 +159,99 @@ export default function MaterielPage() {
               />
             </button>
 
-            {/* DROPDOWN */}
-            <div
-              className={`overflow-hidden transition-all duration-300 ${
-                isOpen ? " opacity-100" : "max-h-0 opacity-0"
-              }`}
-            >
-              <div className="flex flex-col gap-2 pt-2">
-                {inventory.map((item) => (
-                  <Item
-                    key={item.id}
-                    variant="outline"
-                    className="cursor-pointer"
-                    onClick={() => handleToggleInventory(item.id)}
-                  >
-                    <ItemMedia>
-                      {isSelected(item.id) ? (
-                        <Check className="size-5" />
-                      ) : (
-                        <Package className="size-5" />
-                      )}
-                    </ItemMedia>
-
-                    <ItemContent>
-                      <ItemTitle>{item.label}</ItemTitle>
-                      <ItemDescription>
-                        {isSelected(item.id) ? "Sélectionné" : "Disponible"}
-                      </ItemDescription>
-                    </ItemContent>
-
-                    <ItemActions />
-                  </Item>
-                ))}
+            {/* LOADING INVENTAIRE */}
+            {loadingInventory && (
+              <div className="space-y-2 pt-3">
+                <div className="h-10 bg-white/5 animate-pulse rounded-md" />
+                <div className="h-10 bg-white/5 animate-pulse rounded-md" />
               </div>
-            </div>
+            )}
+
+            {/* LIST INVENTAIRE */}
+            {!loadingInventory && (
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  isOpen ? "opacity-100 mt-3" : "max-h-0 opacity-0"
+                }`}
+              >
+                <div className="flex flex-col gap-2">
+                  {inventory.map((item) => (
+                    <Item
+                      key={item.id}
+                      variant="outline"
+                      className="cursor-pointer"
+                      onClick={() => handleToggleInventory(item.id)}
+                    >
+                      <ItemMedia>
+                        {isSelected(item.id) ? (
+                          <Check className="size-5" />
+                        ) : (
+                          <Package className="size-5" />
+                        )}
+                      </ItemMedia>
+
+                      <ItemContent>
+                        <ItemTitle>{item.label}</ItemTitle>
+                        <ItemDescription>
+                          {isSelected(item.id) ? "Sélectionné" : "Disponible"}
+                        </ItemDescription>
+                      </ItemContent>
+
+                      <ItemActions />
+                    </Item>
+                  ))}
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
         {/* CHECKLIST */}
         <Card className="bg-background text-white">
           <CardContent className="flex flex-col gap-4">
+            {/* HEADER */}
             <div className="flex items-center justify-between">
               <h2 className="font-semibold">Checklist</h2>
 
               <span className="text-xs text-muted-foreground">
-                {remainingItems} restant
-                {remainingItems > 1 ? "s" : ""}
+                {loadingChecklist
+                  ? "Chargement..."
+                  : `${remainingItems} restant${remainingItems > 1 ? "s" : ""}`}
               </span>
             </div>
 
-            <div className="flex flex-col gap-2">
-              {items.map((item) => {
+            {/* LOADING CHECKLIST */}
+            {loadingChecklist && (
+              <div className="space-y-2">
+                <div className="h-10 bg-white/5 animate-pulse rounded-md" />
+                <div className="h-10 bg-white/5 animate-pulse rounded-md" />
+              </div>
+            )}
+
+            {/* EMPTY */}
+            {isChecklistEmpty && (
+              <p className="text-sm text-muted-foreground text-center">
+                Aucun matériel ajouté
+              </p>
+            )}
+
+            {/* DONE STATE */}
+            {isChecklistDone && (
+              <p className="text-green-400 text-xs">
+                ✔ Tout le matériel est prêt
+              </p>
+            )}
+
+            {/* LIST */}
+            {!loadingChecklist &&
+              items.map((item) => {
                 const done = item.checked;
 
                 return (
                   <Item
                     key={item.id}
                     variant="outline"
-                    className={`transition-all ${
+                    className={`transition ${
                       done ? "bg-green-500/10 border-green-500/40" : ""
                     }`}
                   >
@@ -262,31 +312,28 @@ export default function MaterielPage() {
                   </Item>
                 );
               })}
-            </div>
 
             {/* INPUT */}
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <Input
-                  value={newItemLabel}
-                  onChange={(e) => setNewItemLabel(e.target.value)}
-                  placeholder="Ex : 2 batteries, trépied..."
-                  onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
-                />
+            <div className="flex gap-2">
+              <Input
+                value={newItemLabel}
+                onChange={(e) => setNewItemLabel(e.target.value)}
+                placeholder="Ex : 2 batteries..."
+                onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
+              />
 
-                <Button
-                  onClick={handleAddManual}
-                  size="icon"
-                  disabled={!newItemLabel.trim()}
-                >
-                  +
-                </Button>
-              </div>
-
-              <p className="text-xs text-muted-foreground">
-                Entre du texte puis clique sur + pour ajouter
-              </p>
+              <Button
+                onClick={handleAddManual}
+                size="icon"
+                disabled={!newItemLabel.trim()}
+              >
+                +
+              </Button>
             </div>
+
+            <p className="text-xs text-muted-foreground">
+              Entre du texte puis clique sur +
+            </p>
           </CardContent>
         </Card>
 
