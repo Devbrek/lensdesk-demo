@@ -120,7 +120,7 @@ export default function AProposPage() {
 
         {/* FOOTER */}
         <div className="text-center text-sm text-muted-foreground pt-4">
-          Version 2.0 • Devbrek
+          Version 2.1 • Devbrek
         </div>
 
         {/* BACK BUTTON */}
