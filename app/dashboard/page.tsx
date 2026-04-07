@@ -9,25 +9,33 @@ import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const router = useRouter();
-
+  const [loading, setLoading] = useState(true);
   const [shootings, setShootings] = useState<any[]>([]);
   const [inventory, setInventory] = useState<any[]>([]);
   const [nextChecklist, setNextChecklist] = useState<any[]>([]);
 
   // INVENTAIRE
   useEffect(() => {
-    fetch("/api/inventory")
-      .then((res) => res.json())
-      .then(setInventory)
-      .catch(console.error);
-  }, []);
+    const fetchData = async () => {
+      try {
+        const [invRes, shootRes] = await Promise.all([
+          fetch("/api/inventory"),
+          fetch("/api/shootings"),
+        ]);
 
-  // SHOOTINGS
-  useEffect(() => {
-    fetch("/api/shootings")
-      .then((res) => res.json())
-      .then(setShootings)
-      .catch(console.error);
+        const inventoryData = await invRes.json();
+        const shootingsData = await shootRes.json();
+
+        setInventory(inventoryData);
+        setShootings(shootingsData);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false); // 🔥 clé du système
+      }
+    };
+
+    fetchData();
   }, []);
 
   const upcoming = shootings.filter((s) => new Date(s.date) > new Date());
@@ -86,7 +94,13 @@ const Dashboard = () => {
       route: "/shootings",
     },
   ];
-
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        Chargement...
+      </div>
+    );
+  }
   return (
     <div className=" min-h-screen flex flex-col items-center justify-center gap-6 p-4 text-foreground ">
       {/* HEADER */}
