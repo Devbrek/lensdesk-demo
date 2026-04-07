@@ -227,7 +227,7 @@ export default function InventoryPage() {
 
           {/* LISTE */}
           {loading ? (
-            <p className="text-muted-foreground">Chargement...</p>
+            <p className="text-xl text-white">Chargement...</p>
           ) : items.length === 0 ? (
             <p className="text-muted-foreground">Aucun item</p>
           ) : (
