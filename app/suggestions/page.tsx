@@ -127,13 +127,16 @@ export default function SuggestionsPage() {
             <label className="text-sm text-white">Description</label>
             <textarea
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                setSent(false); // 🔥 important
+              }}
               placeholder="Explique ton idée, bug ou amélioration..."
               className="w-full min-h-[120px] p-3  bg-background border text-white resize-none"
             />
 
             {/* VALIDATION MESSAGE */}
-            {validationMessage && (
+            {validationMessage && !sent && (
               <p className="text-red-400 text-xs">{validationMessage}</p>
             )}
           </div>

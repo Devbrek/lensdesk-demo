@@ -1,9 +1,9 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+
+
 
 export default function Hero() {
-  const router = useRouter()
+ 
   return (
     <section className="flex flex-col items-center justify-center text-center py-20 px-6">
        <img src="/icons/logo2.png" alt="logo" className="w-70 mb-10" />
