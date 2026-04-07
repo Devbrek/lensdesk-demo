@@ -94,15 +94,15 @@ export default function ActionPage() {
   const getPriorityClass = (priority: Priority) => {
     switch (priority) {
       case 1:
-        return "text-blue-400 border-blue-500/40 bg-blue-500/10";
+        return "text-red-400 border-red-500/40 bg-red-500/10"; // critique
       case 2:
-        return "text-green-400 border-green-500/40 bg-green-500/10";
+        return "text-orange-400 border-orange-500/40 bg-orange-500/10";
       case 3:
         return "text-yellow-400 border-yellow-500/40 bg-yellow-500/10";
       case 4:
-        return "text-orange-400 border-orange-500/40 bg-orange-500/10";
+        return "text-green-400 border-green-500/40 bg-green-500/10";
       case 5:
-        return "text-red-400 border-red-500/40 bg-red-500/10";
+        return "text-blue-400 border-blue-500/40 bg-blue-500/10"; // faible
       default:
         return "text-yellow-400 border-yellow-500/40 bg-yellow-500/10";
     }
