@@ -32,6 +32,7 @@ export default function ActionPage() {
 
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
   const [newItemLabel, setNewItemLabel] = useState("");
   const [newItemPriority, setNewItemPriority] = useState<Priority>(3);
 
@@ -94,7 +95,7 @@ export default function ActionPage() {
   const getPriorityClass = (priority: Priority) => {
     switch (priority) {
       case 1:
-        return "text-red-400 border-red-500/40 bg-red-500/10"; // critique
+        return "text-red-400 border-red-500/40 bg-red-500/10";
       case 2:
         return "text-orange-400 border-orange-500/40 bg-orange-500/10";
       case 3:
@@ -102,36 +103,30 @@ export default function ActionPage() {
       case 4:
         return "text-green-400 border-green-500/40 bg-green-500/10";
       case 5:
-        return "text-blue-400 border-blue-500/40 bg-blue-500/10"; // faible
+        return "text-blue-400 border-blue-500/40 bg-blue-500/10";
       default:
         return "text-yellow-400 border-yellow-500/40 bg-yellow-500/10";
     }
   };
 
-  // 🔥 TRI FINAL : priorité DESC + non faits en premier
   const sortedItems = [...items].sort((a, b) => {
     const pa = getPriority(a);
     const pb = getPriority(b);
 
-    if (pb !== pa) return pb - pa; // P5 → P1
-
+    if (pb !== pa) return pb - pa;
     if (a.checked !== b.checked) return a.checked ? 1 : -1;
 
     return 0;
   });
 
-  const remainingItems = items.filter((item) => !item.checked).length;
-
-  if (loading) {
-    return (
-      <p className="text-muted-foreground text-center mt-10">Chargement...</p>
-    );
-  }
+  const remainingItems = loading
+    ? null
+    : items.filter((item) => !item.checked).length;
 
   return (
     <div className="min-h-screen flex justify-center pt-10">
       <div className="w-full max-w-md space-y-6">
-        {/* HEADER */}
+        {/* HEADER (toujours visible) */}
         <Card className="bg-background text-white text-center">
           <CardHeader>
             <CardTitle>Actions</CardTitle>
@@ -151,88 +146,92 @@ export default function ActionPage() {
           </CardContent>
         </Card>
 
-        {/* LIST */}
+        {/* LIST CARD */}
         <Card className="bg-background text-white">
           <CardContent className="flex flex-col gap-3">
-            {sortedItems.length === 0 && (
+            {/* LOADING LOCAL (dans la carte uniquement) */}
+            {loading && (
+              <div className="space-y-2">
+                <div className="h-10 bg-white/5 animate-pulse rounded-md" />
+                <div className="h-10 bg-white/5 animate-pulse rounded-md" />
+                <div className="h-10 bg-white/5 animate-pulse rounded-md" />
+              </div>
+            )}
+
+            {/* EMPTY */}
+            {!loading && sortedItems.length === 0 && (
               <p className="text-sm text-muted-foreground text-center">
                 Aucune action pour le moment
               </p>
             )}
 
-            {sortedItems.map((item) => {
-              const done = item.checked;
-              const priority = getPriority(item);
+            {/* LIST */}
+            {!loading &&
+              sortedItems.map((item) => {
+                const done = item.checked;
+                const priority = getPriority(item);
 
-              return (
-                <Item
-                  key={item.id}
-                  variant="outline"
-                  className={`flex items-center justify-between transition ${
-                    done ? "bg-green-500/10 border-green-500/40" : ""
-                  }`}
-                >
-                  {/* CONTENT */}
-                  <ItemContent>
-                    <ItemTitle
-                      className={done ? "line-through opacity-60" : ""}
-                    >
-                      {item.label}
-                    </ItemTitle>
+                return (
+                  <Item
+                    key={item.id}
+                    variant="outline"
+                    className={`flex items-center justify-between transition ${
+                      done ? "bg-green-500/10 border-green-500/40" : ""
+                    }`}
+                  >
+                    <ItemContent>
+                      <ItemTitle
+                        className={done ? "line-through opacity-60" : ""}
+                      >
+                        {item.label}
+                      </ItemTitle>
 
-                    <ItemDescription>
-                      {done ? (
-                        <span className="text-green-400">Terminé</span>
-                      ) : (
-                        "En attente"
-                      )}
-                    </ItemDescription>
-                  </ItemContent>
+                      <ItemDescription>
+                        {done ? (
+                          <span className="text-green-400">Terminé</span>
+                        ) : (
+                          "En attente"
+                        )}
+                      </ItemDescription>
+                    </ItemContent>
 
-                  {/* RIGHT SIDE */}
-                  <div className="flex items-center gap-3">
-                    {/* PRIORITY */}
-                    <span
-                      className={`text-xs px-2 py-1 rounded-md border ${getPriorityClass(
-                        priority,
-                      )}`}
-                    >
-                      P{priority}
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <span
+                        className={`text-xs px-2 py-1 rounded-md border ${getPriorityClass(
+                          priority,
+                        )}`}
+                      >
+                        P{priority}
+                      </span>
 
-                    {/* ACTIONS */}
-                    <ItemActions>
-                      <div className="flex gap-2 items-center">
-                        <Button
-                          size="icon"
-                          variant={done ? "default" : "outline"}
-                          onClick={() => handleToggle(item.id, item.checked)}
-                          className={
-                            done
-                              ? "bg-green-500 text-black hover:bg-green-400"
-                              : ""
-                          }
-                        >
-                          <Check className="size-4" />
-                        </Button>
+                      <ItemActions>
+                        <div className="flex gap-2 items-center">
+                          <Button
+                            size="icon"
+                            variant={done ? "default" : "outline"}
+                            onClick={() => handleToggle(item.id, item.checked)}
+                            className={
+                              done
+                                ? "bg-green-500 text-black hover:bg-green-400"
+                                : ""
+                            }
+                          >
+                            <Check className="size-4" />
+                          </Button>
 
-                        <Button
-                          size="icon"
-                          variant="destructive"
-                          onClick={() => handleDelete(item.id)}
-                        >
-                          <img
-                            src="/icons/del.svg"
-                            className="w-4 h-4"
-                            alt="delete"
-                          />
-                        </Button>
-                      </div>
-                    </ItemActions>
-                  </div>
-                </Item>
-              );
-            })}
+                          <Button
+                            size="icon"
+                            variant="destructive"
+                            onClick={() => handleDelete(item.id)}
+                          >
+                            <img src="/icons/del.svg" className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </ItemActions>
+                    </div>
+                  </Item>
+                );
+              })}
 
             {/* INPUT */}
             <div className="flex flex-col pt-2 items-center justify-center">
@@ -276,7 +275,6 @@ export default function ActionPage() {
           </CardContent>
         </Card>
 
-        {/* BACK */}
         <div className="flex justify-center pb-5">
           <Button onClick={() => router.push(`/shootings/${id}`)}>
             Retour
