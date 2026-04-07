@@ -64,13 +64,16 @@ export default function ShootingDetailPage() {
       <Card className="w-full max-w-md bg-background text-white">
         {/* HEADER */}
         <CardHeader>
-          <CardTitle>{shooting.title}</CardTitle>
+          <CardTitle>
+            Shooting : <br /> {shooting.title}
+          </CardTitle>
 
           <CardDescription>
+            {" "}
             {shooting.date
               ? new Date(shooting.date).toLocaleDateString()
               : "Pas de date"}{" "}
-            • {shooting.location || "Pas de lieu"}
+            <br /> {shooting.location || "Pas de lieu"}
           </CardDescription>
         </CardHeader>
 
