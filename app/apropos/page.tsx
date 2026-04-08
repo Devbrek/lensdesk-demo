@@ -89,7 +89,7 @@ export default function AProposPage() {
 
             <li>
               Confirmation obligatoire avant suppression d’éléments sensibles
-              (actions, données critiques)
+              (actions, matériels, données critiques)
             </li>
 
             <li>
@@ -120,7 +120,7 @@ export default function AProposPage() {
 
         {/* FOOTER */}
         <div className="text-center text-sm text-muted-foreground pt-4">
-          Version 2.1 • Devbrek
+          Version 2.2 • Devbrek
         </div>
 
         {/* BACK BUTTON */}
