@@ -132,7 +132,7 @@ const Dashboard = () => {
                 <div
                   key={s.id}
                   onClick={() => router.push(`/shootings/${s.id}`)}
-                  className="flex justify-between items-center text-xs p-2 rounded bg-white/10 cursor-pointer transition"
+                  className="flex justify-between items-center text-xs p-2  bg-white/10 cursor-pointer transition"
                 >
                   <span className="truncate max-w-[60%]">{s.title}</span>
                   <span className="opacity-60">
@@ -208,24 +208,6 @@ const Dashboard = () => {
         <Card className="w-full max-w-sm">
           <CardContent className="p-6 text-center">
             Aucun shooting prévu
-          </CardContent>
-        </Card>
-      )}
-
-      {/* ========================= */}
-      {/* FOCUS TASKS */}
-      {/* ========================= */}
-      {focusTasks.length > 0 && (
-        <Card className="w-full max-w-sm text-white">
-          <CardContent className="p-4 space-y-2">
-            <p className="text-sm font-semibold">À faire</p>
-
-            {focusTasks.map((task) => (
-              <div key={task.id} className="text-xs flex justify-between">
-                <span>{task.label}</span>
-                <span className="opacity-60">P{task.priority}</span>
-              </div>
-            ))}
           </CardContent>
         </Card>
       )}
