@@ -141,6 +141,7 @@ export default function Navbar() {
           <button onClick={() => handleNav("/dashboard")}>Dashboard</button>
           <button onClick={() => handleNav("/inventory")}>Inventaire</button>
           <button onClick={() => handleNav("/shootings")}>Shootings</button>
+          <button onClick={() => handleNav("/apropos")}>A propos</button>
         </div>
 
         <div className="mt-auto pt-6 border-t flex flex-col gap-3">
