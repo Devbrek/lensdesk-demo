@@ -224,7 +224,7 @@ const Dashboard = () => {
             Inventaire <img src="/icons/materiel.svg" className="w-5" />
           </Button>
           <Button onClick={() => router.push("/shootings")}>
-            Shootings <img src="/icons/inventory.svg" className="w-5" />
+            Shootings <img src="/icons/inventory.svg" className="w-4" />
           </Button>
         </CardContent>
       </Card>
