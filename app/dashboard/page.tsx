@@ -220,11 +220,11 @@ const Dashboard = () => {
       {/* ========================= */}
       <Card className="w-full max-w-sm">
         <CardContent className="flex flex-col gap-3 p-4">
-          <p className="text-muted-foreground text-xs text-center">
-            Pour le matériel réccurent lors de tes shootings :
-          </p>
           <Button onClick={() => router.push("/inventory")}>
             Inventaire <img src="/icons/materiel.svg" className="w-5" />
+          </Button>
+          <Button onClick={() => router.push("/shootings")}>
+            Shootings <img src="/icons/inventory.svg" className="w-5" />
           </Button>
         </CardContent>
       </Card>
