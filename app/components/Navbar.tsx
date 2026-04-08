@@ -141,7 +141,7 @@ export default function Navbar() {
 
       {/* MOBILE MENU */}
       <div
-        className={`fixed top-0 left-0 z-50 h-full w-80 bg-background border-r p-6 flex flex-col gap-4 transition-transform ${
+        className={`fixed top-0 left-0 z-50 h-full w-80 bg-background  p-6 flex flex-col gap-4 transition-transform ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
