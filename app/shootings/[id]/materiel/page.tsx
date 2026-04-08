@@ -38,6 +38,9 @@ export default function MaterielPage() {
   const [newItemLabel, setNewItemLabel] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const fetchChecklist = async () => {
     setLoadingChecklist(true);
     try {
@@ -124,12 +127,21 @@ export default function MaterielPage() {
     fetchChecklist();
   };
 
-  const handleDeleteItem = async (itemId: string) => {
-    await fetch(`/api/shootings/${id}/checklist/${itemId}`, {
-      method: "DELETE",
-    });
+  const handleDeleteItem = async () => {
+    if (!deleteTargetId) return;
 
-    fetchChecklist();
+    setIsDeleting(true);
+
+    try {
+      await fetch(`/api/shootings/${id}/checklist/${deleteTargetId}`, {
+        method: "DELETE",
+      });
+
+      await fetchChecklist();
+    } finally {
+      setIsDeleting(false);
+      setDeleteTargetId(null);
+    }
   };
 
   return (
@@ -299,7 +311,7 @@ export default function MaterielPage() {
                         <Button
                           size="icon"
                           variant="destructive"
-                          onClick={() => handleDeleteItem(item.id)}
+                          onClick={() => setDeleteTargetId(item.id)}
                         >
                           <img
                             src="/icons/del.svg"
@@ -344,6 +356,35 @@ export default function MaterielPage() {
           </Button>
         </div>
       </div>
+      {deleteTargetId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-lg bg-background p-5 space-y-4 border border-white/10">
+            <h2 className="text-sm font-semibold">Supprimer cet élément ?</h2>
+
+            <p className="text-xs text-muted-foreground">
+              Cette action est irréversible.
+            </p>
+
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setDeleteTargetId(null)}
+                disabled={isDeleting}
+              >
+                Annuler
+              </Button>
+
+              <Button
+                variant="destructive"
+                onClick={handleDeleteItem}
+                disabled={isDeleting}
+              >
+                {isDeleting ? "Suppression..." : "Supprimer"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

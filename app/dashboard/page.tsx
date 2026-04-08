@@ -180,7 +180,10 @@ const Dashboard = () => {
             )}
 
             <div className="text-sm">
-              Préparation : <span className="font-bold">{score}/10</span>
+              Préparation :{" "}
+              <span className="font-bold">
+                {score}/{totalItems}
+              </span>
             </div>
 
             {urgentItems.length > 0 && (
