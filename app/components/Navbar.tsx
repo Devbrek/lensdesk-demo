@@ -71,13 +71,22 @@ export default function Navbar() {
 
               {/* LINKS */}
               <div className="hidden md:flex gap-3 text-sm uppercase text-muted-foreground">
-                <button onClick={() => handleNav("/dashboard")}>
+                <button
+                  onClick={() => handleNav("/dashboard")}
+                  className="hover:text-white"
+                >
                   Dashboard
                 </button>
-                <button onClick={() => handleNav("/inventory")}>
+                <button
+                  onClick={() => handleNav("/inventory")}
+                  className="hover:text-white"
+                >
                   Inventaire
                 </button>
-                <button onClick={() => handleNav("/shootings")}>
+                <button
+                  onClick={() => handleNav("/shootings")}
+                  className="hover:text-white"
+                >
                   Shootings
                 </button>
               </div>
@@ -86,7 +95,7 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
-                  className="hidden md:flex"
+                  className="hidden md:flex hover:text-black"
                   onClick={() => handleNav("/apropos")}
                 >
                   A propos
@@ -94,7 +103,7 @@ export default function Navbar() {
 
                 <Button
                   variant="outline"
-                  className="hidden md:block border-sky-800 text-sky-500"
+                  className="hidden md:block border-sky-800 text-sky-500 hover:text-sky-500"
                   onClick={() => handleNav("/suggestions")}
                 >
                   Suggestions
