@@ -9,11 +9,15 @@ import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const [shootings, setShootings] = useState<any[]>([]);
   const [inventory, setInventory] = useState<any[]>([]);
   const [nextChecklist, setNextChecklist] = useState<any[]>([]);
 
+  // =========================
+  // FETCH DATA
+  // =========================
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,11 +26,8 @@ const Dashboard = () => {
           fetch("/api/shootings"),
         ]);
 
-        const inventoryData = await invRes.json();
-        const shootingsData = await shootRes.json();
-
-        setInventory(inventoryData);
-        setShootings(shootingsData);
+        setInventory(await invRes.json());
+        setShootings(await shootRes.json());
       } catch (err) {
         console.error(err);
       } finally {
@@ -37,12 +38,15 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  const upcoming = shootings.filter((s) => new Date(s.date) > new Date());
+  const upcoming = shootings.filter(
+    (s) => new Date(s.date).getTime() > Date.now(),
+  );
 
-  const nextShooting = upcoming.sort(
+  const nextShooting = [...upcoming].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   )[0];
 
+  // checklist next shooting
   useEffect(() => {
     if (!nextShooting?.id) return;
 
@@ -52,47 +56,41 @@ const Dashboard = () => {
       .catch(console.error);
   }, [nextShooting]);
 
-  const materialItems = nextChecklist.filter((i) => i.type === "materiel");
-
-  const actionItems = nextChecklist.filter((i) => i.type === "action");
-
   // =========================
-  // 🔥 NEW LOGIC (done / total)
+  // DATA PROCESSING
   // =========================
+  const doneCount = (arr: any[]) => arr.filter((i) => i.checked).length;
 
-  const getDoneCount = (items: any[]) => items.filter((i) => i.checked).length;
-
-  const getTotalCount = (items: any[]) => items.length;
-
-  const getProgress = (items: any[]) => {
-    if (!items.length) return 0;
-    const done = getDoneCount(items);
-    return Math.round((done / items.length) * 100);
+  const getProgress = (arr: any[]) => {
+    if (!arr.length) return 0;
+    return Math.round((doneCount(arr) / arr.length) * 100);
   };
 
-  const materialDone = getDoneCount(materialItems);
-  const materialTotal = getTotalCount(materialItems);
-
-  const actionDone = getDoneCount(actionItems);
-  const actionTotal = getTotalCount(actionItems);
+  const materialItems = nextChecklist.filter((i) => i.type === "materiel");
+  const actionItems = nextChecklist.filter((i) => i.type === "action");
 
   const materialProgress = getProgress(materialItems);
   const actionProgress = getProgress(actionItems);
 
-  const inventoryCount = inventory.length;
+  const totalItems = nextChecklist.length;
+  const doneItems = doneCount(nextChecklist);
+  const score = totalItems ? Math.round((doneItems / totalItems) * 10) : 0;
 
-  const items = [
-    {
-      title: "Inventaire",
-      icon: "/icons/inventory.svg",
-      route: "/inventory",
-    },
-    {
-      title: "Shootings",
-      icon: "/icons/shootings.svg",
-      route: "/shootings",
-    },
-  ];
+  const urgentItems = nextChecklist.filter(
+    (i) => !i.checked && Number(i.priority) <= 2,
+  );
+
+  const focusTasks = nextChecklist
+    .filter((i) => !i.checked)
+    .sort((a, b) => Number(b.priority) - Number(a.priority))
+    .slice(0, 3);
+
+  const daysLeft = nextShooting
+    ? Math.ceil(
+        (new Date(nextShooting.date).getTime() - Date.now()) /
+          (1000 * 60 * 60 * 24),
+      )
+    : null;
 
   if (loading) {
     return (
@@ -103,113 +101,146 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-6 p-4 text-foreground">
-      {/* HEADER */}
+    <div className="min-h-screen flex flex-col items-center gap-6 p-4 text-white">
       <h1 className="text-xl font-bold">Dashboard</h1>
 
-      {/* STATS */}
-      <div className="max-w-sm w-full grid grid-cols-2 gap-3">
-        <Card className="bg-background">
-          <CardContent className="p-3 text-center text-white">
-            <p className="text-xs text-muted-foreground">Shootings à venir</p>
-            <p className="text-lg font-bold pt-2">{upcoming.length}</p>
-          </CardContent>
-        </Card>
+      {/* ========================= */}
+      {/* SHOOTINGS LIST (NEW UX) */}
+      {/* ========================= */}
+      <Card className="w-full max-w-sm text-white">
+        <CardContent className="p-4 space-y-3">
+          <div className="flex justify-between items-center">
+            <p className="text-sm font-semibold">Shootings</p>
+            <span className="text-xs text-muted-foreground">
+              {upcoming.length} à venir
+            </span>
+          </div>
 
-        <Card className="bg-background">
-          <CardContent className="p-3 text-center text-white">
-            <p className="text-xs text-muted-foreground">
-              Objets dans l&apos;inventaire
-            </p>
-            <p className="text-lg font-bold pt-2">{inventoryCount}</p>
-          </CardContent>
-        </Card>
-      </div>
+          <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
+            {upcoming.length === 0 && (
+              <p className="text-xs text-muted-foreground text-center">
+                Aucun shooting prévu
+              </p>
+            )}
 
+            {upcoming
+              .sort(
+                (a, b) =>
+                  new Date(a.date).getTime() - new Date(b.date).getTime(),
+              )
+              .map((s) => (
+                <div
+                  key={s.id}
+                  onClick={() => router.push(`/shootings/${s.id}`)}
+                  className="flex justify-between items-center text-xs p-2 rounded bg-white/10 cursor-pointer transition"
+                >
+                  <span className="truncate max-w-[60%]">{s.title}</span>
+                  <span className="opacity-60">
+                    {new Date(s.date).toLocaleDateString()}
+                  </span>
+                  <span>
+                    <img src="/icons/eyeW.svg" alt="eye" className="w-5" />
+                  </span>
+                </div>
+              ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* ========================= */}
       {/* NEXT SHOOTING */}
+      {/* ========================= */}
       {nextShooting ? (
         <Card className="w-full max-w-sm text-white">
-          <CardContent className="p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <p className="text-sm underline">Prochain shooting :</p>
+          <CardContent className="p-4 space-y-4">
+            <div className="flex justify-between items-center">
+              <p className="text-sm underline">Prochain shooting</p>
 
-              <Button className="hover:bg-white/10 transition bg-black/20 border border-white">
-                <img
-                  src="/icons/eyeW.svg"
-                  className="w-4 h-4"
-                  alt="voir shooting"
-                  onClick={() => router.push(`/shootings/${nextShooting.id}`)}
-                />
+              <Button
+                size="icon"
+                onClick={() => router.push(`/shootings/${nextShooting.id}`)}
+              >
+                <img src="/icons/eyeW.svg" className="w-4 h-4" />
               </Button>
             </div>
 
-            <p className="font-semibold text-sm">{nextShooting.title}</p>
+            <p className="font-semibold">{nextShooting.title}</p>
 
-            <p className="text-sm text-muted-foreground">
-              Le {new Date(nextShooting.date).toLocaleDateString()} à{" "}
+            <p className="text-xs text-muted-foreground">
+              {new Date(nextShooting.date).toLocaleDateString()} —{" "}
               {nextShooting.location}
             </p>
 
-            {/* MATERIEL */}
-            <div className="space-y-1 pt-2">
-              <div className="flex justify-between text-xs">
-                <span>Matériel</span>
-                <span>
-                  {materialDone} / {materialTotal}
-                </span>
-                <span>{materialProgress}%</span>
-              </div>
+            {daysLeft !== null && (
+              <p className="text-xs text-blue-400">
+                {daysLeft >= 0
+                  ? `J-${daysLeft} avant shooting`
+                  : "Shooting passé"}
+              </p>
+            )}
 
-              <Progress value={materialProgress} />
+            <div className="text-sm">
+              Préparation : <span className="font-bold">{score}/10</span>
             </div>
 
-            {/* ACTIONS */}
-            <div className="space-y-1">
-              <div className="flex justify-between text-xs">
+            {urgentItems.length > 0 && (
+              <div className="text-red-400 text-xs">
+                ⚠ {urgentItems.length} tâches urgentes
+              </div>
+            )}
+
+            <div className="space-y-2">
+              <div className="text-xs flex justify-between">
+                <span>Matériel</span>
+                <span>{materialProgress}%</span>
+              </div>
+              <Progress value={materialProgress} />
+
+              <div className="text-xs flex justify-between">
                 <span>Actions</span>
-                <span>
-                  {actionDone} / {actionTotal}
-                </span>
                 <span>{actionProgress}%</span>
               </div>
-
               <Progress value={actionProgress} />
             </div>
           </CardContent>
         </Card>
       ) : (
-        <Card className="w-full max-w-sm text-white">
-          <CardContent className="p-6 text-center space-y-2">
-            <p className="text-sm text-muted-foreground">Prochain shooting</p>
-
-            <p className="text-base font-semibold">Aucun shooting de prévu</p>
-
-            <p className="text-xs text-muted-foreground">
-              Planifie un nouveau shooting pour commencer
-            </p>
+        <Card className="w-full max-w-sm">
+          <CardContent className="p-6 text-center">
+            Aucun shooting prévu
           </CardContent>
         </Card>
       )}
 
-      {/* NAVIGATION */}
-      <Card className="w-full max-w-sm text-white">
-        <CardContent className="flex flex-col gap-4 p-4">
-          <p className="text-xs text-muted-foreground text-center">
-            Gère ton inventaire et tes prochains shootings
-          </p>
+      {/* ========================= */}
+      {/* FOCUS TASKS */}
+      {/* ========================= */}
+      {focusTasks.length > 0 && (
+        <Card className="w-full max-w-sm text-white">
+          <CardContent className="p-4 space-y-2">
+            <p className="text-sm font-semibold">À faire</p>
 
-          {items.map((item) => (
-            <Card
-              key={item.route}
-              onClick={() => router.push(item.route)}
-              className="cursor-pointer transition-all hover:scale-[1.02] hover:shadow-lg bg-white/30"
-            >
-              <CardContent className="flex items-center gap-4 p-4 text-white justify-center">
-                <img src={item.icon} className="w-8 h-8" alt={item.title} />
-                <p className="text-sm font-semibold uppercase">{item.title}</p>
-              </CardContent>
-            </Card>
-          ))}
+            {focusTasks.map((task) => (
+              <div key={task.id} className="text-xs flex justify-between">
+                <span>{task.label}</span>
+                <span className="opacity-60">P{task.priority}</span>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* ========================= */}
+      {/* NAV */}
+      {/* ========================= */}
+      <Card className="w-full max-w-sm">
+        <CardContent className="flex flex-col gap-3 p-4">
+          <p className="text-muted-foreground text-xs text-center">
+            Pour le matériel réccurent lors de tes shootings :
+          </p>
+          <Button onClick={() => router.push("/inventory")}>
+            Inventaire <img src="/icons/materiel.svg" className="w-5" />
+          </Button>
         </CardContent>
       </Card>
     </div>
