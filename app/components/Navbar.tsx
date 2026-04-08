@@ -66,26 +66,29 @@ export default function Navbar() {
             <div className="flex items-center justify-between gap-3">
               {/* LOGO */}
               <button onClick={() => handleNav("/dashboard")}>
-                <img src="/icons/logo2.png" className="w-20" />
+                <img
+                  src="/icons/logo2.png"
+                  className="w-20 hover:cursor-pointer"
+                />
               </button>
 
               {/* LINKS */}
               <div className="hidden md:flex gap-3 text-sm uppercase text-muted-foreground">
                 <button
                   onClick={() => handleNav("/dashboard")}
-                  className="hover:text-white"
+                  className="hover:text-white hover:cursor-pointer"
                 >
                   Dashboard
                 </button>
                 <button
                   onClick={() => handleNav("/inventory")}
-                  className="hover:text-white"
+                  className="hover:text-white hover:cursor-pointer"
                 >
                   Inventaire
                 </button>
                 <button
                   onClick={() => handleNav("/shootings")}
-                  className="hover:text-white"
+                  className="hover:text-white hover:cursor-pointer"
                 >
                   Shootings
                 </button>
@@ -95,7 +98,7 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
-                  className="hidden md:flex hover:text-black"
+                  className="hidden md:flex hover:text-black hover:cursor-pointer"
                   onClick={() => handleNav("/apropos")}
                 >
                   A propos
@@ -103,7 +106,7 @@ export default function Navbar() {
 
                 <Button
                   variant="outline"
-                  className="hidden md:block border-sky-800 text-sky-500 hover:text-sky-500"
+                  className="hidden md:block border-sky-800 text-sky-500 hover:text-sky-500 hover:cursor-pointer"
                   onClick={() => handleNav("/suggestions")}
                 >
                   Suggestions
@@ -114,6 +117,7 @@ export default function Navbar() {
                   variant="destructive"
                   disabled={loggingOut}
                   onClick={() => setConfirmLogout(true)}
+                  className="hover:cursor-pointer"
                 >
                   Logout
                 </Button>
