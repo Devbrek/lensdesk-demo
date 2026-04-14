@@ -60,9 +60,9 @@ export default function Navbar() {
   return (
     <>
       {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 w-full z-40 border-b border-white/10 bg-background/80 backdrop-blur-md">
+      <nav className="fixed top-0 left-0 w-full z-40 border-b border-white/10 bg-card backdrop-blur-md">
         <div className="w-full px-4 py-2">
-          <Card className="w-full bg-background text-white px-3 py-2">
+          <Card className="w-full bg-card text-white px-3 py-2">
             <div className="flex items-center justify-between gap-3">
               {/* LOGO */}
               <button onClick={() => handleNav("/dashboard")}>

@@ -163,7 +163,7 @@ export default function ActionPage() {
     <div className="min-h-screen flex justify-center pt-10">
       <div className="w-full max-w-md space-y-6">
         {/* HEADER */}
-        <Card className="bg-background text-white text-center">
+        <Card className="bg-card text-white text-center">
           <CardHeader>
             <CardTitle>Actions</CardTitle>
             <CardDescription>Organise les tâches du shooting</CardDescription>
@@ -185,7 +185,7 @@ export default function ActionPage() {
         </Card>
 
         {/* LIST */}
-        <Card className="bg-background text-white">
+        <Card className="bg-card text-white">
           <CardContent className="flex flex-col gap-3">
             {loading && (
               <div className="space-y-2">
@@ -231,7 +231,7 @@ export default function ActionPage() {
                                 Number(e.target.value) as Priority,
                               )
                             }
-                            className="bg-background border border-white/10 rounded-md px-2 py-1 text-sm w-fit"
+                            className="bg-card border border-white/10 rounded-md px-2 py-1 text-sm w-fit"
                           >
                             <option value={1}>P1 (critique)</option>
                             <option value={2}>P2</option>

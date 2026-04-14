@@ -218,7 +218,7 @@ export default function InventoryPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <Card className="w-full max-w-md bg-background text-white">
+      <Card className="w-full max-w-md bg-card text-white">
         <CardHeader>
           <CardTitle>Inventaire</CardTitle>
           <CardDescription>Gère ton matériel simplement</CardDescription>

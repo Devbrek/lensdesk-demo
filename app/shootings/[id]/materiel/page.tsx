@@ -148,7 +148,7 @@ export default function MaterielPage() {
     <div className="min-h-screen flex items-center justify-center pt-10">
       <div className="w-full max-w-md space-y-6">
         {/* HEADER */}
-        <Card className="bg-background text-white text-center">
+        <Card className="bg-card text-white text-center">
           <CardHeader>
             <CardTitle>Matériel</CardTitle>
             <CardDescription>
@@ -158,7 +158,7 @@ export default function MaterielPage() {
         </Card>
 
         {/* INVENTAIRE */}
-        <Card className="bg-background text-white">
+        <Card className="bg-card text-white">
           <CardContent className="flex flex-col">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -219,7 +219,7 @@ export default function MaterielPage() {
         </Card>
 
         {/* CHECKLIST */}
-        <Card className="bg-background text-white">
+        <Card className="bg-card text-white">
           <CardContent className="flex flex-col gap-4">
             {/* HEADER */}
             <div className="flex items-center justify-between">

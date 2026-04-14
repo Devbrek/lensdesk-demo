@@ -48,7 +48,7 @@
 }
 
 :root {
-  --card: oklch(33.289% 0.00004 271.152);
+  --card: oklch(21.455% 0.00156 16.419);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);

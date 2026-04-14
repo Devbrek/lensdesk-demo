@@ -61,7 +61,7 @@ export default function ShootingDetailPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <Card className="w-full max-w-md bg-background text-white">
+      <Card className="w-full max-w-md bg-card text-white">
         {/* HEADER */}
         <CardHeader>
           <CardTitle>
