@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 
-import "./globals.css";
+import "./globals.css"
 
-import LayoutWrapper from "./components/LayoutWrapper";
+import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import { Poppins } from "next/font/google";
 import { cn } from "@/app/lib/utils";
 
-import RouteLoader from "./components/RouteLoader";
+import RouteLoader from "@/components/routeLoader/RouteLoader";
 
 const poppins = Poppins({
   subsets: ["latin"],

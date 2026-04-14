@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Message } from "@/types/chat";
+import { Message } from "@/types/chat"
 import { streamMessage } from "@/lib/chat/streamMessage";
 import { rerunFromMessage } from "@/lib/chat/rerunFromMessage";
 import { stopGeneration, setController } from "@/lib/chat/stopGeneration";

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Card, CardContent } from "@/components/ui/card";
+import ChatWidget from "@/components/chat/ChatWidget";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 
@@ -104,6 +105,8 @@ const Dashboard = () => {
     <div className="min-h-screen flex flex-col items-center gap-6 p-4 text-white">
       <h1 className="text-xl font-bold">Dashboard</h1>
 
+      {/* CHATBOT*/}
+      <ChatWidget />
       {/* ========================= */}
       {/* SHOOTINGS LIST (NEW UX) */}
       {/* ========================= */}
