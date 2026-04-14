@@ -65,7 +65,7 @@ export default function ChatWidget() {
         backdrop-blur-2xl text-zinc-100 border bg-black/50 border-zinc-800
         shadow-2xl overflow-hidden rounded-2xl
         transition-all duration-500 ease-in-out
-        ${open ? "h-[500px]" : "h-[56px]"}
+        ${open ? "h-[500px]" : "h-[53px]"}
       `}
     >
       {/* HEADER (TOGGLE BAR) */}
@@ -81,7 +81,7 @@ export default function ChatWidget() {
           size={18}
           className={`
             text-zinc-400 transition-transform duration-300
-            ${open ? "rotate-0" : "-rotate-90"}
+            ${open ? "rotate-0" : "-rotate-180"}
           `}
         />
       </div>
