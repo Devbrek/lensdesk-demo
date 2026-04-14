@@ -1,31 +1,40 @@
 export async function streamMessage({
   message,
+  userId,
   signal,
   onChunk,
 }: {
   message: string;
+  userId: string;
   signal: AbortSignal;
   onChunk: (chunk: string) => void;
 }) {
   const res = await fetch("/api/chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({ message, userId }),
     signal,
   });
 
-  if (!res.body) throw new Error("No stream");
+  // ❌ erreur API (non stream)
+  if (!res.ok) {
+    const data = await res.json().catch(() => null);
+    throw new Error(data?.error || "Erreur API");
+  }
+
+  // ❌ pas de stream
+  if (!res.body) {
+    throw new Error("No stream returned by server");
+  }
 
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
 
-  let done = false;
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
 
-  while (!done) {
-    const { value, done: d } = await reader.read();
-    done = d;
-
-    const chunk = decoder.decode(value);
+    const chunk = decoder.decode(value, { stream: true });
     onChunk(chunk);
   }
 }

@@ -1,10 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Message } from "@/types/chat"
+import { Message } from "@/types/chat";
 import { streamMessage } from "@/lib/chat/streamMessage";
-import { rerunFromMessage } from "@/lib/chat/rerunFromMessage";
 import { stopGeneration, setController } from "@/lib/chat/stopGeneration";
+
+const USER_ID = "83a83cf9-9ced-478b-9edb-b05042845329";
 
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -14,7 +15,6 @@ export function useChat() {
 
   const abortRef = useRef<AbortController | null>(null);
 
-  // 🧠 SEND MESSAGE
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -42,6 +42,7 @@ export function useChat() {
 
       await streamMessage({
         message: input,
+        userId: USER_ID, // 👈 IMPORTANT
         signal: controller.signal,
         onChunk: (chunk) => {
           setMessages((prev) =>
@@ -61,17 +62,16 @@ export function useChat() {
     }
   };
 
-  // 🛑 STOP
   const stop = () => {
     stopGeneration();
     abortRef.current?.abort();
     setLoading(false);
   };
 
-  // 🔁 RERUN (edit + regen)
   const rerunWithEdit = async (id: string, newContent: string) => {
     setLoading(true);
     setError(null);
+
     const index = messages.findIndex((m) => m.id === id);
 
     const updatedMessages = messages.map((m) =>
@@ -86,10 +86,11 @@ export function useChat() {
 
     const controller = new AbortController();
     abortRef.current = controller;
-    setController(controller); // ✅ important
+    setController(controller);
 
     await streamMessage({
       message: newContent,
+      userId: USER_ID, // 👈 IMPORTANT aussi ici
       signal: controller.signal,
       onChunk: (chunk) => {
         setMessages((prev) =>
@@ -99,6 +100,7 @@ export function useChat() {
         );
       },
     });
+
     setLoading(false);
   };
 

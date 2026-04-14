@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@/hooks/useChat";
+import { useEffect, useRef } from "react";
 
 export default function ChatWidget() {
   const {
@@ -16,15 +17,30 @@ export default function ChatWidget() {
     error,
   } = useChat();
 
+  const chatRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = chatRef.current;
+    if (!el) return;
+
+    el.scrollTo({
+      top: el.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages, loading]);
+
   return (
-    <main className="w-full max-w-4xl mx-auto flex flex-col h-[400px] p-4  text-foreground">
+    <main className="w-full max-w-4xl mx-auto flex flex-col h-[400px] p-4 text-foreground">
       {/* HEADER */}
+      <h1 className="text-xl font-semibold mb-4 tracking-tight">
+        Assistant IA
+      </h1>
 
       {/* CHAT AREA */}
-      <div className="flex-1 overflow-y-auto space-y-4 p-4 rounded-xl border bg-muted/20">
-        <h1 className="text-xl font-semibold mb-4 tracking-tight text-muted-foreground/20">
-          Assistant IA
-        </h1>
+      <div
+        ref={chatRef}
+        className="flex-1 overflow-y-auto space-y-4 p-4 rounded-xl border bg-muted/20"
+      >
         {messages.map((msg) => {
           const isUser = msg.role === "user";
 
@@ -80,6 +96,12 @@ export default function ChatWidget() {
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
           placeholder="Écris ton message..."
           className="flex-1"
         />
