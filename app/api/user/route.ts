@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/app/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 // ID unique de ton frère
 const userId = "b225a7f0-93fe-491a-a907-08b83e27178e";
