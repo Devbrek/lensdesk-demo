@@ -76,12 +76,12 @@ export default function SuggestionsPage() {
   const validationMessage = isValidMessage();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex items-center justify-center  px-4">
       <div className="w-full max-w-2xl space-y-6">
         {/* HEADER */}
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold text-white">Suggestions</h1>
-          <p className="text-muted-foreground">
+          <p className="text-white">
             Propose une amélioration, signale un bug ou une modification.
           </p>
         </div>
