@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 export default function AProposPage() {
   const router = useRouter();
 
-  // stable rendering (évite mismatch SSR/CSR)
   const today = new Date().toLocaleDateString("fr-FR", {
     day: "2-digit",
     month: "long",
@@ -24,8 +23,8 @@ export default function AProposPage() {
             À propos de l’application
           </h1>
           <p className="text-muted-foreground">
-            Une application simple pour organiser, gérer et suivre tes
-            shootings.
+            Une application d’assistance intelligente pour organiser et gérer
+            tes shootings photo.
           </p>
         </div>
 
@@ -33,8 +32,8 @@ export default function AProposPage() {
         <Card className="p-6 space-y-3">
           <h2 className="text-xl font-bold text-white">Objectif</h2>
           <p className="text-white/80">
-            Cette application centralise la gestion de tes shootings photo ou
-            vidéo : organisation, matériel, actions et suivi en temps réel.
+            Centraliser toute la gestion d’un photographe : shootings, matériel,
+            checklist, notes et assistance IA connectée à tes données réelles.
           </p>
         </Card>
 
@@ -43,22 +42,41 @@ export default function AProposPage() {
           <h2 className="text-xl font-bold text-white">Fonctionnalités</h2>
 
           <ul className="space-y-2 text-white/80 list-disc pl-5">
-            <li>Création et gestion de shootings</li>
-            <li>Ajout de détails : date, lieu, description</li>
-            <li>Organisation du matériel nécessaire</li>
-            <li>Liste d’actions à effectuer pendant le shooting</li>
-            <li>Interface simple, rapide et intuitive</li>
+            <li>Gestion complète des shootings (création, suivi, statut)</li>
+            <li>Organisation du matériel via inventaire connecté</li>
+            <li>Checklists dynamiques par shooting</li>
+            <li>Notes associées aux projets</li>
+            <li>
+              Assistant IA connecté à la base de données (Prisma + Postgres)
+            </li>
+            <li>
+              Chat intelligent capable d’exploiter tes shootings et ton matériel
+            </li>
+            <li>Streaming temps réel des réponses IA (Mistral AI)</li>
+            <li>Interface moderne, sombre et optimisée UX</li>
           </ul>
+        </Card>
+
+        {/* IA */}
+        <Card className="p-6 space-y-3">
+          <h2 className="text-xl font-bold text-white">Assistant IA</h2>
+          <p className="text-white/80">
+            L’assistant peut interroger directement tes données : shootings à
+            venir, checklist, matériel disponible, et contexte global. Il agit
+            comme un véritable copilote pour ton activité photo.
+          </p>
         </Card>
 
         {/* VISION */}
         <Card className="p-6 space-y-3">
           <h2 className="text-xl font-bold text-white">Vision</h2>
           <p className="text-white/80">
-            Remplacer les notes dispersées et outils complexes par une interface
-            claire, structurée et efficace.
+            Remplacer les outils dispersés par un système unique : une
+            application + un assistant intelligent capable de comprendre ton
+            workflow réel.
           </p>
         </Card>
+
         {/* CHANGELOG */}
         <Card className="p-6 space-y-3">
           <div className="space-y-1">
@@ -73,54 +91,41 @@ export default function AProposPage() {
 
           <ul className="space-y-2 text-white/80 list-disc pl-5">
             <li>
-              Ajout d’un système de priorités (P1 → P5) avec inversion logique :
-              P1 = critique (rouge), P5 = faible priorité (bleu)
+              Ajout d’un assistant IA connecté à la base de données (shootings,
+              inventory, checklist)
             </li>
-
             <li>
-              Correction des états de chargement (loading state) pour éviter
-              l’affichage incorrect de données avant récupération des actions
+              Intégration Prisma + Postgres pour fournir un contexte réel au
+              chatbot
             </li>
-
             <li>
-              Ajout d’un état "chargement" dans les composants critiques pour
-              éviter les valeurs nulles ou incohérentes à l’initialisation
+              Streaming des réponses IA en temps réel (Mistral AI + LangChain)
             </li>
-
             <li>
-              Confirmation obligatoire avant suppression d’éléments sensibles
-              (actions, matériels, données critiques)
+              Interface chat modernisée (dark UI, UX optimisée, auto-scroll)
             </li>
-
+            <li>Support édition de message + régénération de réponse IA</li>
             <li>
-              Ajout d’un système de confirmation de déconnexion avec message
-              explicite avant logout utilisateur
+              Gestion du userId côté API pour contextualisation utilisateur
             </li>
-
             <li>
-              Logout sécurisé : suppression du token, nettoyage du stockage local et redirection forcée vers la page de connexion
+              Correction des flux chat (stream stable + gestion abort
+              controller)
             </li>
-
             <li>
-              Tri automatique des tâches par priorité et statut (non réalisées
-              affichées en premier)
+              Amélioration de la structure des données shootings (location,
+              checklist, notes)
             </li>
-
-            <li>Accès rapide au prochain shooting depuis le dashboard</li>
-
-            <li>Correction du calendrier (blocage des dates passées)</li>
-
             <li>
-              Correction de l’édition du type de matériel dans l’inventaire
+              Optimisation du rendu UI et suppression des comportements de
+              scroll global
             </li>
-
-            <li>Ajout de la page suggestions</li>
           </ul>
         </Card>
 
-        {/* FOOTER */}
+        {/* VERSION */}
         <div className="text-center text-sm text-muted-foreground pt-4">
-          Version 2.2 • Devbrek
+          Version 3.0 • Devbrek
         </div>
 
         {/* BACK BUTTON */}
