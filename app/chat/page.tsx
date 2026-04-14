@@ -1,8 +1,10 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useChat } from "@/hooks/useChat";
 
-export default function ChatPage() {
+export default function Home() {
   const {
     messages,
     input,
@@ -15,18 +17,18 @@ export default function ChatPage() {
   } = useChat();
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h1 className="text-xl font-bold mb-4">Chat</h1>
+    <main className="max-w-xl mx-auto p-4 min-h-screen flex flex-col w-2xl">
+      <h1 className="text-2xl font-bold mb-4">Chatbot</h1>
 
-      <div className="h-[500px] overflow-y-auto border p-3 mb-4">
+      <div className=" p-4 h-96 overflow-y-auto mb-4 space-y-2 bg-black/10 border-2 border-black">
         {messages.map((msg) => (
-          <div key={msg.id} className="mb-2">
-            <b>{msg.role}:</b> {msg.content}
+          <div key={msg.id}>
+            <strong>{msg.role}:</strong> {msg.content}
             {msg.role === "user" && (
               <button
-                className="ml-2 text-blue-500"
+                className="text-xs underline ml-2"
                 onClick={() => {
-                  const newText = prompt("Edit message:", msg.content);
+                  const newText = prompt("Modifier :", msg.content);
                   if (!newText) return;
 
                   rerunWithEdit(msg.id, newText);
@@ -39,24 +41,18 @@ export default function ChatPage() {
         ))}
       </div>
 
-      {loading && <p>Bot is typing...</p>}
+      {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
       <div className="flex gap-2">
-        <input
-          className="border p-2 w-full"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
+        <Input value={input} onChange={(e) => setInput(e.target.value)} />
 
-        <button className="bg-black text-white px-4" onClick={sendMessage}>
-          send
-        </button>
+        <Button onClick={sendMessage}>Send</Button>
 
-        <button className="bg-red-500 text-white px-4" onClick={stop}>
-          stop
-        </button>
+        <Button variant="destructive" onClick={stop}>
+          Stop
+        </Button>
       </div>
-    </div>
+    </main>
   );
 }

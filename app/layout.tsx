@@ -4,7 +4,7 @@ import "./globals.css";
 
 import LayoutWrapper from "./components/LayoutWrapper";
 import { Poppins } from "next/font/google";
-import { cn } from "@/lib/utils";
+import { cn } from "@/app/lib/utils";
 
 import RouteLoader from "./components/RouteLoader";
 
