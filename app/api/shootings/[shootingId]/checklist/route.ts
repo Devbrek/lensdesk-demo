@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/app/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 // GET → lister tous les items d'une checklist, optionnellement filtrés par type
 export async function GET(

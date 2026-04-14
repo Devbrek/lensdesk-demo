@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { prisma } from "@/app/lib/prisma"; // ok, ça fonctionne maintenant
+import { prisma } from "@/lib/prisma";// ok, ça fonctionne maintenant
 
 const userId = "b225a7f0-93fe-491a-a907-08b83e27178e";
 

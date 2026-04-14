@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/app/lib/prisma";
-import { verifyPassword } from "@/app/lib/auth"; // à adapter selon ton chemin
-import { generateToken } from "@/app/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { verifyPassword } from "@/lib/auth"; // à adapter selon ton chemin
+import { generateToken } from "@/lib/auth";
 import z from "zod";
 
 const LoginSchema = z.object({

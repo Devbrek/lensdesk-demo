@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/app/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 // GET /api/inventory → récupérer tous les items d'un utilisateur
 export async function GET(req: NextRequest) {
