@@ -106,6 +106,7 @@ export function useChat() {
 
   return {
     messages,
+    setMessages,
     input,
     setInput,
     sendMessage,

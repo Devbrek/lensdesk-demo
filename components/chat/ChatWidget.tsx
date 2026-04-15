@@ -9,6 +9,7 @@ import { ChevronDown } from "lucide-react";
 export default function ChatWidget() {
   const {
     messages,
+    setMessages,
     input,
     setInput,
     sendMessage,
@@ -22,6 +23,23 @@ export default function ChatWidget() {
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    const alreadyShown = localStorage.getItem("welcome_shown");
+
+    if (!alreadyShown && messages.length === 0) {
+      setMessages([
+        {
+          id: "welcome-" + Date.now(),
+          role: "assistant",
+          content:
+            "Bienvenue Abuzone 👋\n\nJoyeux anniversaire 🎉\n\nJe peux t’aider à organiser tes shootings, ton matériel et tes checklists.\n\nPar quoi on commence ?",
+        },
+      ]);
+
+      localStorage.setItem("welcome_shown", "true");
+    }
+  }, [messages]);
 
   useEffect(() => {
     if (!open) return;
@@ -74,7 +92,7 @@ export default function ChatWidget() {
         className="px-5 py-4 border-b border-zinc-800 bg-zinc-950/60 backdrop-blur flex items-center justify-between cursor-pointer"
       >
         <h1 className="text-sm font-medium tracking-wide text-zinc-300">
-          Assistant IA
+          Manuc IA
         </h1>
 
         <ChevronDown
@@ -95,6 +113,20 @@ export default function ChatWidget() {
           ${open ? "opacity-100" : "opacity-0 pointer-events-none"}
         `}
       >
+        {messages.length === 0 && (
+          <div className="flex justify-start">
+            <div className="max-w-[75%] px-4 py-3 rounded-2xl text-sm bg-zinc-800 text-zinc-100 border border-zinc-700">
+              <div className="whitespace-pre-wrap">
+                Salut Abuzone 👋 !{"\n\n"}
+                Tout d'abord... Joyeux anniversaire 🎉{"\n\n"}
+                Je peux t’aider à organiser tes shootings, ton matériel et tes
+                checklists.
+                {"\n\n"}
+                Par quoi on commence ?
+              </div>
+            </div>
+          </div>
+        )}
         {messages.map((msg) => {
           const isUser = msg.role === "user";
 
