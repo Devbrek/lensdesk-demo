@@ -7,11 +7,15 @@ export default function CTA() {
 
   return (
     <section className="py-20 text-center ">
-      <h2 className="text-2xl font-bold mb-4">
+      <h2 className="text-2xl font-bold mb-4 px-5">
         Prêt à organiser tes shootings ?
       </h2>
-      <p className="text-muted-foreground">Scan ce QR code</p>
-      <img src="/qr/qr-abz-W.png" alt="qr" className="w-50  mx-auto" />
+      <Button
+        onClick={() => router.push("/")}
+        className="bg-foreground text-black px-10 py-8 text-xl hover:bg-muted-foreground"
+      >
+        Clique ici
+      </Button>
     </section>
   );
 }
