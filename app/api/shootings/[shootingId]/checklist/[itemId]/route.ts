@@ -1,30 +1,31 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { mockChecklistItems, mockInventoryItems } from "@/lib/mock-data";
 
-// GET → récupérer un item précis
 export async function GET(
   _req: NextRequest,
-  context: { params: Promise<{ shootingId: string; itemId: string }> },
+  context: { params: Promise<{ itemId: string }> },
 ) {
   try {
-    const { shootingId, itemId } = await context.params;
+    const { itemId } = await context.params;
 
-    const item = await prisma.checklistItem.findUnique({
-      where: { id: itemId },
-      include: { inventoryItem: true }, // inclut l’inventaire
-    });
+    const item = mockChecklistItems.find((c) => c.id === itemId);
 
-    if (!item)
+    if (!item) {
       return NextResponse.json({ error: "Item non trouvé" }, { status: 404 });
+    }
 
-    return NextResponse.json(item);
+    return NextResponse.json({
+      ...item,
+      inventoryItem: item.inventoryItemId
+        ? (mockInventoryItems.find((i) => i.id === item.inventoryItemId) ?? null)
+        : null,
+    });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
 
-// PATCH → modifier label ou cocher/décocher
 export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ itemId: string }> },
@@ -34,47 +35,41 @@ export async function PATCH(
     const body = await req.json();
     const { label, checked, priority } = body;
 
-    const data: any = {};
-    if (label !== undefined) data.label = label;
-    if (checked !== undefined) data.checked = checked;
-    if (priority !== undefined) data.priority = priority;
+    const item = mockChecklistItems.find((c) => c.id === itemId);
 
-    const updatedItem = await prisma.checklistItem.update({
-      where: { id: itemId },
-      data,
-    });
+    if (!item) {
+      return NextResponse.json({ error: "Item non trouvé" }, { status: 404 });
+    }
 
-    return NextResponse.json({
-      message: "Checklist item mis à jour ✅",
-      item: updatedItem,
-    });
+    if (label !== undefined) item.label = label;
+    if (checked !== undefined) item.checked = checked;
+    if (priority !== undefined) item.priority = priority;
+
+    return NextResponse.json({ message: "Checklist item mis à jour", item });
   } catch (err) {
     console.error(err);
-    return NextResponse.json(
-      { error: "Erreur serveur ou item non trouvé" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Erreur serveur ou item non trouvé" }, { status: 500 });
   }
 }
 
-// DELETE → supprimer un item
 export async function DELETE(
   _req: NextRequest,
-  context: { params: Promise<{ shootingId: string; itemId: string }> },
+  context: { params: Promise<{ itemId: string }> },
 ) {
   try {
     const { itemId } = await context.params;
 
-    const deleted = await prisma.checklistItem.delete({
-      where: { id: itemId },
-    });
+    const idx = mockChecklistItems.findIndex((c) => c.id === itemId);
 
-    return NextResponse.json({ message: "Item supprimé ✅", item: deleted });
+    if (idx === -1) {
+      return NextResponse.json({ error: "Item non trouvé" }, { status: 404 });
+    }
+
+    const [deleted] = mockChecklistItems.splice(idx, 1);
+
+    return NextResponse.json({ message: "Item supprimé", item: deleted });
   } catch (err) {
     console.error(err);
-    return NextResponse.json(
-      { error: "Erreur serveur ou item non trouvé" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Erreur serveur ou item non trouvé" }, { status: 500 });
   }
 }

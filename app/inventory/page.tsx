@@ -91,7 +91,7 @@ export default function InventoryPage() {
       const data = await res.json();
       setItems(data);
     } catch {
-      setGlobalError("Erreur chargement inventaire");
+      setGlobalError("Error loading inventory");
     } finally {
       setLoading(false);
     }
@@ -110,14 +110,14 @@ export default function InventoryPage() {
     let hasError = false;
 
     if (!newLabel.trim()) {
-      setLabelError("Le nom est requis");
+      setLabelError("Name is required");
       hasError = true;
     } else {
       setLabelError("");
     }
 
     if (!newType) {
-      setTypeError("Le type est requis");
+      setTypeError("Type is required");
       hasError = true;
     } else {
       setTypeError("");
@@ -142,9 +142,9 @@ export default function InventoryPage() {
 
       setNewLabel("");
       setNewType("");
-      setSuccess("Item ajouté avec succès ✔");
+      setSuccess("Item added successfully ✔");
     } catch {
-      setGlobalError("Erreur lors de l'ajout");
+      setGlobalError("Error adding item");
     } finally {
       setAdding(false);
     }
@@ -220,15 +220,15 @@ export default function InventoryPage() {
     <div className="min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-md bg-card text-white">
         <CardHeader>
-          <CardTitle>Inventaire</CardTitle>
-          <CardDescription>Gère ton matériel simplement</CardDescription>
+          <CardTitle>Inventory</CardTitle>
+          <CardDescription>Manage your gear</CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col gap-6">
           {/* FORM */}
           <form onSubmit={handleAddItem} className="flex flex-col gap-4">
             <div className="grid gap-2">
-              <Label>Nom de l’item</Label>
+              <Label>Item name</Label>
               <Input
                 value={newLabel}
                 onChange={(e) => {
@@ -256,7 +256,7 @@ export default function InventoryPage() {
                 }}
               >
                 <SelectTrigger className={typeError ? "border-red-500" : ""}>
-                  <SelectValue placeholder="Type d’équipement" />
+                  <SelectValue placeholder="Equipment type" />
                 </SelectTrigger>
 
                 <SelectContent>
@@ -272,7 +272,7 @@ export default function InventoryPage() {
             </div>
 
             <Button type="submit" disabled={adding}>
-              {adding ? "Ajout..." : "Ajouter"}
+              {adding ? "Adding..." : "Add"}
             </Button>
 
             {globalError && (
@@ -308,7 +308,7 @@ export default function InventoryPage() {
               ))}
             </div>
           ) : items.length === 0 ? (
-            <p className="text-muted-foreground text-center">Aucun item</p>
+            <p className="text-muted-foreground text-center">No items</p>
           ) : (
             <div className="flex flex-col gap-3">
               {items.map((item) => (
@@ -404,18 +404,18 @@ export default function InventoryPage() {
 
           {/* FOOTER */}
           <Button variant="outline" onClick={() => router.push("/dashboard")}>
-            Retour
+            Back
           </Button>
 
           {/* MODAL DELETE */}
           {deleteId && (
             <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
               <div className="bg-background p-6 rounded-lg w-full max-w-sm space-y-4 text-white">
-                <h2 className="text-lg font-semibold">Supprimer cet item ?</h2>
+                <h2 className="text-lg font-semibold">Delete this item?</h2>
 
                 <p className="text-sm text-muted-foreground">
-                  Cette action est irréversible. L'item sera définitivement
-                  supprimé de votre inventaire.
+                  This action is irreversible. The item will be permanently
+                  removed from your inventory.
                 </p>
 
                 <div className="flex justify-end gap-2">
@@ -424,7 +424,7 @@ export default function InventoryPage() {
                     onClick={() => setDeleteId(null)}
                     disabled={isDeleting}
                   >
-                    Annuler
+                    Cancel
                   </Button>
 
                   <Button
@@ -432,7 +432,7 @@ export default function InventoryPage() {
                     onClick={handleDelete}
                     disabled={isDeleting}
                   >
-                    {isDeleting ? "Suppression..." : "Supprimer"}
+                    {isDeleting ? "Deleting..." : "Delete"}
                   </Button>
                 </div>
               </div>

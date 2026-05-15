@@ -40,7 +40,7 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Erreur de connexion");
+        throw new Error(data.error || "Login error");
       }
 
       localStorage.setItem("user", JSON.stringify(data.user));
@@ -59,15 +59,14 @@ export default function LoginPage() {
         onSubmit={handleLogin}
       >
         <CardHeader>
-          <img
-            src="/icons/logo2.png"
-            alt="logo"
-            className="w-45  mx-auto pt-5"
-          />
-          <CardTitle>Connexion</CardTitle>
-          <CardDescription>
-            Saisis ton email et ton mot de passe
-          </CardDescription>
+          <h1>LENSDESK</h1>
+          <CardTitle>
+            Sign in <br />{" "}
+            <span className="text-sm text-amber-500">
+              Email : lens@mail.com <br /> pass : lens123
+            </span>
+          </CardTitle>
+          <CardDescription></CardDescription>
         </CardHeader>
         <form className="flex flex-col gap-4 " onSubmit={handleLogin}>
           <CardContent>
@@ -91,7 +90,7 @@ export default function LoginPage() {
                   id="password"
                   type="password"
                   required
-                  placeholder="Mot de passe"
+                  placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -100,7 +99,7 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="flex-col gap-2">
             <Button type="submit" disabled={loading}>
-              {loading ? "Connexion..." : "Se connecter"}
+              {loading ? "Signing in..." : "Sign in"}
             </Button>
           </CardFooter>
         </form>

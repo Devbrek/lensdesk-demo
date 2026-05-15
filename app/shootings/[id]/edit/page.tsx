@@ -47,7 +47,7 @@ export default function EditShootingPage() {
 
   if (loading || !shooting) {
     return (
-      <p className="text-muted-foreground text-center mt-10">Chargement...</p>
+      <p className="text-muted-foreground text-center mt-10">Loading...</p>
     );
   }
 
@@ -57,9 +57,9 @@ export default function EditShootingPage() {
         {/* HEADER */}
         <Card className="bg-background text-white text-center">
           <CardHeader>
-            <CardTitle>Modifier le shooting</CardTitle>
+            <CardTitle>Edit shoot</CardTitle>
             <CardDescription>
-              Mets à jour les informations du projet
+              Update project information
             </CardDescription>
           </CardHeader>
         </Card>
@@ -69,7 +69,7 @@ export default function EditShootingPage() {
           <CardContent className="flex flex-col gap-5 pt-6">
             {/* TITLE */}
             <div className="space-y-2">
-              <label className="text-sm text-muted-foreground">Titre</label>
+              <label className="text-sm text-muted-foreground">Title</label>
 
               <Input
                 value={shooting.title}
@@ -115,7 +115,7 @@ export default function EditShootingPage() {
             {/* LOCATION */}
             <div className="space-y-2">
               <label className="text-sm text-muted-foreground text-sm">
-                Lieu
+                Location
               </label>
 
               <Input
@@ -135,10 +135,10 @@ export default function EditShootingPage() {
         {/* ACTIONS */}
         <Card className="bg-background text-black">
           <CardContent className="flex flex-col gap-3 ">
-            <Button onClick={handleUpdate}>Valider les modifications</Button>
+            <Button onClick={handleUpdate}>Save changes</Button>
 
             <Button variant="destructive" onClick={() => router.push("/shootings")}>
-              Annuler
+              Cancel
             </Button>
           </CardContent>
         </Card>

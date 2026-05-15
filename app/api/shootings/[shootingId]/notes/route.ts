@@ -1,10 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { mockShootings, mockNotes, uuid, DEMO_USER_ID } from "@/lib/mock-data";
 
-import { prisma } from "@/lib/prisma";// ok, ça fonctionne maintenant
-
-const userId = "b225a7f0-93fe-491a-a907-08b83e27178e";
-
-// POST /api/shootings/[shootingId]/notes
 export async function POST(
   req: NextRequest,
   context: { params: Promise<{ shootingId: string }> },
@@ -14,22 +10,20 @@ export async function POST(
     const body = await req.json();
     const { content } = body;
 
-    if (!content)
+    if (!content) {
       return NextResponse.json({ error: "Content requis" }, { status: 400 });
+    }
 
-    // Vérifier que le shooting appartient à l'utilisateur
-    const shooting = await prisma.shooting.findFirst({
-      where: { id: shootingId, userId },
-    });
-    if (!shooting)
-      return NextResponse.json(
-        { error: "Shooting non trouvé" },
-        { status: 404 },
-      );
+    const shooting = mockShootings.find(
+      (s) => s.id === shootingId && s.userId === DEMO_USER_ID,
+    );
 
-    const note = await prisma.note.create({
-      data: { content, shootingId },
-    });
+    if (!shooting) {
+      return NextResponse.json({ error: "Shooting non trouvé" }, { status: 404 });
+    }
+
+    const note = { id: uuid(), content, shootingId };
+    mockNotes.push(note);
 
     return NextResponse.json(note, { status: 201 });
   } catch (err) {

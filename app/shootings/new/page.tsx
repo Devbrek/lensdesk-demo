@@ -57,9 +57,9 @@ export default function NewShootingPage() {
         {/* HEADER */}
         <Card className="bg-card text-white text-center">
           <CardHeader>
-            <CardTitle>Nouveau shooting</CardTitle>
+            <CardTitle>New shoot</CardTitle>
             <CardDescription>
-              Crée un nouveau projet de shooting
+              Create a new shoot project
             </CardDescription>
           </CardHeader>
         </Card>
@@ -69,10 +69,10 @@ export default function NewShootingPage() {
           <CardContent className="flex flex-col gap-5 pt-6">
             {/* TITLE */}
             <div className="space-y-2">
-              <label className="text-sm text-muted-foreground">Titre</label>
+              <label className="text-sm text-muted-foreground">Title</label>
 
               <Input
-                placeholder="Ex : Shooting studio Paris"
+                placeholder="E.g. Studio shoot Paris"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="bg-white text-black"
@@ -86,7 +86,7 @@ export default function NewShootingPage() {
               </label>
 
               <Input
-                placeholder="Ex : Session portrait client"
+                placeholder="E.g. Client portrait session"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="bg-white text-black"
@@ -108,10 +108,10 @@ export default function NewShootingPage() {
 
             {/* LOCATION */}
             <div className="space-y-2">
-              <label className="text-sm text-muted-foreground">Lieu</label>
+              <label className="text-sm text-muted-foreground">Location</label>
 
               <Input
-                placeholder="Ex : Montpellier"
+                placeholder="E.g. Paris"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 className="bg-white text-black"
@@ -124,11 +124,11 @@ export default function NewShootingPage() {
         <Card className="bg-background text-white">
           <CardContent className="flex flex-col gap-3 pt-6">
             <Button onClick={handleCreate} disabled={!title.trim() || loading}>
-              {loading ? "Création..." : "Créer le shooting"}
+              {loading ? "Creating..." : "Create shoot"}
             </Button>
 
             <Button variant="outline" onClick={() => router.push("/shootings")}>
-              Annuler
+              Cancel
             </Button>
           </CardContent>
         </Card>

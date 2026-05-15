@@ -165,20 +165,20 @@ export default function ActionPage() {
         {/* HEADER */}
         <Card className="bg-card text-white text-center">
           <CardHeader>
-            <CardTitle>Actions</CardTitle>
-            <CardDescription>Organise les tâches du shooting</CardDescription>
+            <CardTitle>Tasks</CardTitle>
+            <CardDescription>Manage shoot tasks</CardDescription>
           </CardHeader>
 
           <CardContent className="pt-0 pb-5 flex flex-col items-center gap-2">
             <span className="text-xs px-2 py-1 rounded-md bg-white/5 border border-white/10 text-muted-foreground">
               {loading
-                ? "Chargement..."
-                : `${remainingItems} restant${remainingItems > 1 ? "s" : ""}`}
+                ? "Loading..."
+                : `${remainingItems} remaining`}
             </span>
 
             {isDone && (
               <p className="text-green-400 text-xs">
-                ✔ Toutes les actions sont terminées
+                ✔ All tasks are done
               </p>
             )}
           </CardContent>
@@ -197,7 +197,7 @@ export default function ActionPage() {
 
             {isEmpty && (
               <p className="text-sm text-muted-foreground text-center">
-                Aucune action pour le moment
+                No tasks yet
               </p>
             )}
 
@@ -233,11 +233,11 @@ export default function ActionPage() {
                             }
                             className="bg-card border border-white/10 rounded-md px-2 py-1 text-sm w-fit"
                           >
-                            <option value={1}>P1 (critique)</option>
+                            <option value={1}>P1 (critical)</option>
                             <option value={2}>P2</option>
                             <option value={3}>P3</option>
                             <option value={4}>P4</option>
-                            <option value={5}>P5 (faible)</option>
+                            <option value={5}>P5 (low)</option>
                           </select>
                         </div>
                       ) : (
@@ -250,9 +250,9 @@ export default function ActionPage() {
 
                           <ItemDescription>
                             {done ? (
-                              <span className="text-green-400">Terminé</span>
+                              <span className="text-green-400">Done</span>
                             ) : (
-                              "En attente"
+                              "Pending"
                             )}
                           </ItemDescription>
                         </>
@@ -270,7 +270,7 @@ export default function ActionPage() {
 
                       <ItemActions>
                         <div className="flex gap-2 items-center">
-                          {/* MODE NORMAL */}
+                          {/* NORMAL MODE */}
                           {!isEditing && (
                             <>
                               <Button
@@ -309,7 +309,7 @@ export default function ActionPage() {
                             </>
                           )}
 
-                          {/* MODE EDIT */}
+                          {/* EDIT MODE */}
                           {isEditing && (
                             <>
                               <Button
@@ -342,13 +342,13 @@ export default function ActionPage() {
                 <Input
                   value={newItemLabel}
                   onChange={(e) => setNewItemLabel(e.target.value)}
-                  placeholder="Ajouter une action..."
+                  placeholder="Add a task..."
                   onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
                 />
 
                 <div className="flex flex-col">
                   <span className="text-xs text-muted-foreground">
-                    Priorité
+                    Priority
                   </span>
 
                   <select
@@ -383,20 +383,20 @@ export default function ActionPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
             <div className="w-full max-w-sm bg-background border border-white/10 rounded-xl p-5 space-y-4">
               <h2 className="text-lg font-semibold">
-                Confirmer la suppression
+                Confirm deletion
               </h2>
 
               <p className="text-sm text-muted-foreground">
-                Cette action est irréversible.
+                This action is irreversible.
               </p>
 
               <div className="flex justify-end gap-2">
                 <Button variant="outline" onClick={() => setDeleteTarget(null)}>
-                  Annuler
+                  Cancel
                 </Button>
 
                 <Button variant="destructive" onClick={confirmDelete}>
-                  Supprimer
+                  Delete
                 </Button>
               </div>
             </div>
@@ -406,7 +406,7 @@ export default function ActionPage() {
         {/* BACK */}
         <div className="flex justify-center pb-5">
           <Button onClick={() => router.push(`/shootings/${id}`)}>
-            Retour
+            Back
           </Button>
         </div>
       </div>

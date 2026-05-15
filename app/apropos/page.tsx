@@ -1,137 +1,66 @@
 "use client";
 
-import React from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
-export default function AProposPage() {
+export default function AboutPage() {
   const router = useRouter();
-
-  const today = new Date().toLocaleDateString("fr-FR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
       <div className="w-full max-w-3xl space-y-6 bg-background p-6">
-        {/* HEADER */}
+
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-white">
-            À propos de l’application
-          </h1>
+          <h1 className="text-3xl font-bold text-white">About Lensdesk</h1>
           <p className="text-muted-foreground">
-            Une application d’assistance intelligente pour organiser et gérer
-            tes shootings photo.
+            A smart management platform for professional photographers — built to simplify your workflow and keep you focused on what matters.
           </p>
         </div>
 
-        {/* OBJECTIF */}
         <Card className="p-6 space-y-3">
-          <h2 className="text-xl font-bold text-white">Objectif</h2>
+          <h2 className="text-xl font-bold text-white">What is Lensdesk?</h2>
           <p className="text-white/80">
-            Centraliser toute la gestion d’un photographe : shootings, matériel,
-            checklist, notes et assistance IA connectée à tes données réelles.
+            Lensdesk centralizes everything a photographer needs: shooting management, gear inventory, checklists, and an AI assistant connected to your real data. One place, one tool, zero context switching.
           </p>
         </Card>
 
-        {/* FEATURES */}
         <Card className="p-6 space-y-3">
-          <h2 className="text-xl font-bold text-white">Fonctionnalités</h2>
-
+          <h2 className="text-xl font-bold text-white">Features</h2>
           <ul className="space-y-2 text-white/80 list-disc pl-5">
-            <li>Gestion complète des shootings (création, suivi, statut)</li>
-            <li>Organisation du matériel via inventaire connecté</li>
-            <li>Checklists dynamiques par shooting</li>
-            <li>Notes associées aux projets</li>
-            <li>
-              Assistant IA connecté à la base de données (Prisma + Postgres)
-            </li>
-            <li>
-              Chat intelligent capable d’exploiter tes shootings et ton matériel
-            </li>
-            <li>Streaming temps réel des réponses IA (Mistral AI)</li>
-            <li>Interface moderne, sombre et optimisée UX</li>
+            <li>Full shooting management — create, track, and update status</li>
+            <li>Gear inventory with availability tracking</li>
+            <li>Dynamic checklists per shooting</li>
+            <li>Notes attached to each project</li>
+            <li>AI assistant with real-time streaming (Mistral AI + LangChain)</li>
+            <li>Dark UI, optimized for daily professional use</li>
           </ul>
         </Card>
 
-        {/* IA */}
         <Card className="p-6 space-y-3">
-          <h2 className="text-xl font-bold text-white">Assistant IA</h2>
+          <h2 className="text-xl font-bold text-white">AI Assistant</h2>
           <p className="text-white/80">
-            L’assistant peut interroger directement tes données : shootings à
-            venir, checklist, matériel disponible, et contexte global. Il agit
-            comme un véritable copilote pour ton activité photo.
+            The built-in AI assistant acts as a copilot for your photography business. Ask about upcoming shoots, gear availability, or checklists — it understands your workflow and responds in real time.
           </p>
         </Card>
 
-        {/* VISION */}
         <Card className="p-6 space-y-3">
           <h2 className="text-xl font-bold text-white">Vision</h2>
           <p className="text-white/80">
-            Remplacer les outils dispersés par un système unique : une
-            application + un assistant intelligent capable de comprendre ton
-            workflow réel.
+            Replace scattered tools — spreadsheets, notes apps, reminders — with a single intelligent system that understands your real workflow and helps you stay organized effortlessly.
           </p>
         </Card>
 
-        {/* CHANGELOG */}
-        <Card className="p-6 space-y-3">
-          <div className="space-y-1">
-            <h2 className="text-xl font-bold text-white">
-              Dernières mises à jour
-            </h2>
-
-            <p className="text-xs text-muted-foreground">
-              Mis à jour le {today}
-            </p>
-          </div>
-
-          <ul className="space-y-2 text-white/80 list-disc pl-5">
-            <li>
-              Ajout d’un assistant IA connecté à la base de données (shootings,
-              inventory, checklist)
-            </li>
-            <li>
-              Intégration Prisma + Postgres pour fournir un contexte réel au
-              chatbot
-            </li>
-            <li>
-              Streaming des réponses IA en temps réel (Mistral AI + LangChain)
-            </li>
-            <li>
-              Interface chat modernisée (dark UI, UX optimisée, auto-scroll)
-            </li>
-            <li>Support édition de message + régénération de réponse IA</li>
-            <li>
-              Gestion du userId côté API pour contextualisation utilisateur
-            </li>
-            <li>
-              Correction des flux chat (stream stable + gestion abort
-              controller)
-            </li>
-            <li>
-              Amélioration de la structure des données shootings (location,
-              checklist, notes)
-            </li>
-            <li>
-              Optimisation du rendu UI et suppression des comportements de
-              scroll global
-            </li>
-          </ul>
-        </Card>
-
-        {/* VERSION */}
         <div className="text-center text-sm text-muted-foreground pt-4">
-          Version 3.0 • Devbrek
+          Version 3.0 · Built by Devbrek
         </div>
 
-        {/* BACK BUTTON */}
         <div className="flex justify-center pt-2">
-          <Button onClick={() => router.push("/dashboard")}>Retour</Button>
+          <Button onClick={() => router.push("/dashboard")}>
+            Back to Dashboard
+          </Button>
         </div>
+
       </div>
     </div>
   );

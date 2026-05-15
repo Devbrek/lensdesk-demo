@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import "./globals.css"
+import "./globals.css";
 
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import { Poppins } from "next/font/google";
@@ -15,7 +15,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "AbuzOne Checker",
+  title: "LensDesk Demo",
   description: "An app to organize and schedule photo shootings sessions",
 };
 
@@ -29,11 +29,8 @@ export default function RootLayout({
       {/* IMPORTANT: permet dark mode + hydration stable */}
       <body
         className={cn(
-          " text-foreground  bg-center bg-no-repeat bg-cover bg-fixed min-h-dvh ",
+          " text-foreground  bg-center bg-no-repeat bg-cover bg-zinc-950 bg-fixed min-h-dvh ",
         )}
-        style={{
-          backgroundImage: "url('/abuzone2.jpg')",
-        }}
       >
         <LayoutWrapper>{children}</LayoutWrapper>
         <RouteLoader />

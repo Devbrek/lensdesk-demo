@@ -1,36 +1,32 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { mockShootings, mockChecklistItems, mockNotes, DEMO_USER_ID } from "@/lib/mock-data";
 
-// ID unique de ton frère
-const userId = "83a83cf9-9ced-478b-9edb-b05042845329";
-
-// GET /api/shootings/[shootingId] → récupérer un shooting précis
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   context: { params: Promise<{ shootingId: string }> },
 ) {
   try {
     const { shootingId } = await context.params;
 
-    const shooting = await prisma.shooting.findFirst({
-      where: { id: shootingId, userId },
-      include: { checklist: true, notes: true },
+    const shooting = mockShootings.find(
+      (s) => s.id === shootingId && s.userId === DEMO_USER_ID,
+    );
+
+    if (!shooting) {
+      return NextResponse.json({ error: "Shooting non trouvé" }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      ...shooting,
+      checklist: mockChecklistItems.filter((c) => c.shootingId === shootingId),
+      notes: mockNotes.filter((n) => n.shootingId === shootingId),
     });
-
-    if (!shooting)
-      return NextResponse.json(
-        { error: "Shooting non trouvé" },
-        { status: 404 },
-      );
-
-    return NextResponse.json(shooting);
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
 
-// PATCH /api/shootings/[shootingId] → mettre à jour un shooting
 export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ shootingId: string }> },
@@ -40,57 +36,56 @@ export async function PATCH(
     const body = await req.json();
     const { title, description, location, date, status } = body;
 
-    const data: any = {};
-    if (title !== undefined) data.title = title;
-    if (description !== undefined) data.description = description;
-    if (location !== undefined) data.location = location;
-    if (date !== undefined) data.date = new Date(date);
-    if (status !== undefined) data.status = status;
+    const shooting = mockShootings.find(
+      (s) => s.id === shootingId && s.userId === DEMO_USER_ID,
+    );
 
-    const updatedShooting = await prisma.shooting.updateMany({
-      where: { id: shootingId, userId },
-      data,
-    });
+    if (!shooting) {
+      return NextResponse.json({ error: "Shooting non trouvé" }, { status: 404 });
+    }
 
-    if (updatedShooting.count === 0)
-      return NextResponse.json(
-        { error: "Shooting non trouvé" },
-        { status: 404 },
-      );
+    if (title !== undefined) shooting.title = title;
+    if (description !== undefined) shooting.description = description;
+    if (location !== undefined) shooting.location = location;
+    if (date !== undefined) shooting.date = new Date(date);
+    if (status !== undefined) shooting.status = status;
 
-    return NextResponse.json({ message: "Shooting mis à jour ✅" });
+    return NextResponse.json({ message: "Shooting mis à jour" });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
 
-// DELETE /api/shootings/[shootingId] → supprimer un shooting
 export async function DELETE(
-  req: NextRequest,
+  _req: NextRequest,
   context: { params: Promise<{ shootingId: string }> },
 ) {
   try {
     const { shootingId } = await context.params;
 
-    const deleted = await prisma.shooting.deleteMany({
-      where: {
-        id: shootingId,
-        userId, // 🔒 sécurité
-      },
-    });
+    const idx = mockShootings.findIndex(
+      (s) => s.id === shootingId && s.userId === DEMO_USER_ID,
+    );
 
-    if (deleted.count === 0) {
-      return NextResponse.json(
-        { error: "Shooting non trouvé" },
-        { status: 404 },
-      );
+    if (idx === -1) {
+      return NextResponse.json({ error: "Shooting non trouvé" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("DELETE ERROR:", error);
+    mockShootings.splice(idx, 1);
 
+    // cascade
+    const ciIdx: number[] = [];
+    mockChecklistItems.forEach((c, i) => { if (c.shootingId === shootingId) ciIdx.unshift(i); });
+    ciIdx.forEach((i) => mockChecklistItems.splice(i, 1));
+
+    const nIdx: number[] = [];
+    mockNotes.forEach((n, i) => { if (n.shootingId === shootingId) nIdx.unshift(i); });
+    nIdx.forEach((i) => mockNotes.splice(i, 1));
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error(err);
     return NextResponse.json({ error: "Erreur suppression" }, { status: 500 });
   }
 }

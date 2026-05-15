@@ -1,13 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { mockInventoryItems, uuid, DEMO_USER_ID } from "@/lib/mock-data";
 
-// GET /api/inventory → récupérer tous les items d'un utilisateur
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const userId = "83a83cf9-9ced-478b-9edb-b05042845329"; // à remplacer par session/auth
-    const items = await prisma.inventoryItem.findMany({
-      where: { userId },
-    });
+    const items = [...mockInventoryItems]
+      .filter((i) => i.userId === DEMO_USER_ID)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
     return NextResponse.json(items);
   } catch (err) {
     console.error(err);
@@ -15,21 +14,26 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// POST /api/inventory → créer un nouvel item
 export async function POST(req: NextRequest) {
   try {
-    const userId = "83a83cf9-9ced-478b-9edb-b05042845329"; // à remplacer par session/auth
     const body = await req.json();
     const { label, type } = body;
 
-    if (!label)
+    if (!label) {
       return NextResponse.json({ error: "Label requis" }, { status: 400 });
+    }
 
-    const newItem = await prisma.inventoryItem.create({
-      data: { label, type, userId },
-    });
+    const newItem = {
+      id: uuid(),
+      label,
+      type: type ?? null,
+      createdAt: new Date(),
+      userId: DEMO_USER_ID,
+    };
 
-    return NextResponse.json(newItem);
+    mockInventoryItems.push(newItem);
+
+    return NextResponse.json({ message: "Item ajouté à l'inventaire", item: newItem });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });

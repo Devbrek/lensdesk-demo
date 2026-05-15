@@ -47,14 +47,14 @@ export default function ShootingDetailPage() {
 
   if (loading) {
     return (
-      <p className="text-muted-foreground text-center mt-10">Chargement...</p>
+      <p className="text-muted-foreground text-center mt-10">Loading...</p>
     );
   }
 
   if (!shooting) {
     return (
       <p className="text-muted-foreground text-center mt-10">
-        Shooting introuvable
+        Shoot not found
       </p>
     );
   }
@@ -65,22 +65,22 @@ export default function ShootingDetailPage() {
         {/* HEADER */}
         <CardHeader>
           <CardTitle>
-            Shooting : <br /> {shooting.title}
+            Shoot: <br /> {shooting.title}
           </CardTitle>
 
           <CardDescription>
             {" "}
             {shooting.date
               ? new Date(shooting.date).toLocaleDateString()
-              : "Pas de date"}{" "}
-            <br /> {shooting.location || "Pas de lieu"}
+              : "No date"}{" "}
+            <br /> {shooting.location || "No location"}
           </CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col gap-6">
           {/* NAVIGATION */}
           <div className="flex flex-col gap-3">
-            {/* MATERIEL */}
+            {/* GEAR */}
             <Item
               variant="outline"
               className="cursor-pointer bg-black/50"
@@ -91,16 +91,16 @@ export default function ShootingDetailPage() {
               </ItemMedia>
 
               <ItemContent>
-                <ItemTitle>Matériel</ItemTitle>
+                <ItemTitle>Gear</ItemTitle>
                 <ItemDescription>
-                  Gère les équipements du shooting
+                  Manage shoot equipment
                 </ItemDescription>
               </ItemContent>
 
               <ItemActions />
             </Item>
 
-            {/* ACTIONS */}
+            {/* TASKS */}
             <Item
               variant="outline"
               className="cursor-pointer bg-black/50"
@@ -111,8 +111,8 @@ export default function ShootingDetailPage() {
               </ItemMedia>
 
               <ItemContent>
-                <ItemTitle>Actions</ItemTitle>
-                <ItemDescription>Suivi des tâches et étapes</ItemDescription>
+                <ItemTitle>Tasks</ItemTitle>
+                <ItemDescription>Track steps and actions</ItemDescription>
               </ItemContent>
 
               <ItemActions />
@@ -120,7 +120,7 @@ export default function ShootingDetailPage() {
           </div>
 
           {/* FOOTER */}
-          <Button onClick={() => router.push("/shootings")}>Terminer</Button>
+          <Button onClick={() => router.push("/shootings")}>Done</Button>
         </CardContent>
       </Card>
     </div>

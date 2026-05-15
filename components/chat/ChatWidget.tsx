@@ -3,8 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@/hooks/useChat";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
+import { useState } from "react";
+
+const MAX_DEMO_MESSAGES = 10;
 
 export default function ChatWidget() {
   const {
@@ -20,37 +23,32 @@ export default function ChatWidget() {
   } = useChat();
 
   const chatRef = useRef<HTMLDivElement | null>(null);
-
   const [editingId, setEditingId] = useState<string | null>(null);
   const [open, setOpen] = useState(true);
 
+  const userMessages = messages.filter((m) => m.role === "user").length;
+  const isLimitReached = userMessages >= MAX_DEMO_MESSAGES;
+
   useEffect(() => {
     const alreadyShown = localStorage.getItem("welcome_shown");
-
     if (!alreadyShown && messages.length === 0) {
       setMessages([
         {
           id: "welcome-" + Date.now(),
           role: "assistant",
           content:
-            "Bienvenue Abuzone 👋\n\nJoyeux anniversaire 🎉\n\nJe peux t’aider à organiser tes shootings, ton matériel et tes checklists.\n\nPar quoi on commence ?",
+            "Hey! I can help you organize your shoots, manage your gear, and keep your checklists on track.\n\nWhat would you like to start with?",
         },
       ]);
-
       localStorage.setItem("welcome_shown", "true");
     }
   }, [messages]);
 
   useEffect(() => {
     if (!open) return;
-
     const el = chatRef.current;
     if (!el) return;
-
-    el.scrollTo({
-      top: el.scrollHeight,
-      behavior: "smooth",
-    });
+    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [messages, loading, open]);
 
   const startEdit = (id: string, content: string) => {
@@ -64,7 +62,7 @@ export default function ChatWidget() {
   };
 
   const handleSubmit = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isLimitReached) return;
 
     if (editingId) {
       rerunWithEdit(editingId, input);
@@ -86,21 +84,24 @@ export default function ChatWidget() {
         ${open ? "h-[500px]" : "h-[53px]"}
       `}
     >
-      {/* HEADER (TOGGLE BAR) */}
+      {/* HEADER */}
       <div
         onClick={() => setOpen((v) => !v)}
         className="px-5 py-4 border-b border-zinc-800 bg-zinc-950/60 backdrop-blur flex items-center justify-between cursor-pointer"
       >
-        <h1 className="text-sm font-medium tracking-wide text-zinc-300">
-          Manuc IA
-        </h1>
-
+        <div className="flex items-center gap-3">
+          <h1 className="text-sm font-medium tracking-wide text-zinc-300">
+            Lensdesk AI
+          </h1>
+          {!isLimitReached && (
+            <span className="text-xs text-zinc-500">
+              {MAX_DEMO_MESSAGES - userMessages} messages left
+            </span>
+          )}
+        </div>
         <ChevronDown
           size={18}
-          className={`
-            text-zinc-400 transition-transform duration-300
-            ${open ? "rotate-0" : "-rotate-180"}
-          `}
+          className={`text-zinc-400 transition-transform duration-300 ${open ? "rotate-0" : "-rotate-180"}`}
         />
       </div>
 
@@ -117,19 +118,16 @@ export default function ChatWidget() {
           <div className="flex justify-start">
             <div className="max-w-[75%] px-4 py-3 rounded-2xl text-sm bg-zinc-800 text-zinc-100 border border-zinc-700">
               <div className="whitespace-pre-wrap">
-                Salut Abuzone 👋 !{"\n\n"}
-                Tout d'abord... Joyeux anniversaire 🎉{"\n\n"}
-                Je peux t’aider à organiser tes shootings, ton matériel et tes
-                checklists.
-                {"\n\n"}
-                Par quoi on commence ?
+                Hey! I can help you organize your shoots, manage your gear, and
+                keep your checklists on track.{"\n\n"}
+                What would you like to start with?
               </div>
             </div>
           </div>
         )}
+
         {messages.map((msg) => {
           const isUser = msg.role === "user";
-
           return (
             <div
               key={msg.id}
@@ -137,8 +135,7 @@ export default function ChatWidget() {
             >
               <div
                 className={`
-                  max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed
-                  transition-colors
+                  max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed transition-colors
                   ${
                     isUser
                       ? "bg-indigo-600 text-white rounded-br-md shadow-md"
@@ -147,13 +144,12 @@ export default function ChatWidget() {
                 `}
               >
                 <div className="whitespace-pre-wrap">{msg.content}</div>
-
-                {isUser && (
+                {isUser && !isLimitReached && (
                   <button
                     className="text-[11px] mt-2 text-zinc-300 hover:text-white opacity-70 hover:opacity-100 transition"
                     onClick={() => startEdit(msg.id, msg.content)}
                   >
-                    modifier
+                    edit
                   </button>
                 )}
               </div>
@@ -163,7 +159,7 @@ export default function ChatWidget() {
 
         {loading && (
           <p className="text-xs text-zinc-500 animate-pulse">
-            Assistant en train de réfléchir...
+            Assistant is thinking...
           </p>
         )}
       </div>
@@ -174,53 +170,71 @@ export default function ChatWidget() {
       {/* INPUT */}
       <div
         className={`
-          p-4 border-t border-zinc-800 bg-zinc-950/80 backdrop-blur
+          border-t border-zinc-800 bg-zinc-950/80 backdrop-blur
           transition-all duration-300
           ${open ? "opacity-100" : "opacity-0 pointer-events-none"}
         `}
       >
-        <div className="flex gap-2 items-center">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSubmit();
-              }
-            }}
-            placeholder={
-              editingId ? "Modifier ton message..." : "Écris ton message..."
-            }
-            className="bg-zinc-900 border-zinc-700 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-indigo-500"
-          />
-
-          <Button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="bg-indigo-600 hover:bg-indigo-500 text-white"
-          >
-            {editingId ? "Modifier" : "Envoyer"}
-          </Button>
-
-          {editingId && (
-            <Button
-              variant="outline"
-              onClick={cancelEdit}
-              className="border-zinc-700 text-zinc-300"
-            >
-              Annuler
-            </Button>
-          )}
-
-          <Button
-            variant="destructive"
-            onClick={stop}
-            className="bg-red-600 hover:bg-red-500 text-white"
-          >
-            Stop
-          </Button>
-        </div>
+        {isLimitReached ? (
+          <div className="p-4 text-center space-y-1">
+            <p className="text-sm text-zinc-400">
+              You&apos;ve reached the demo limit.
+            </p>
+            <p className="text-xs text-zinc-500">
+              Interested in the full version?{" "}
+              <a
+                href="https://devbrek.fr/#contact"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-400 hover:text-indigo-300 transition-colors"
+              >
+                Contact Devbrek →
+              </a>
+            </p>
+          </div>
+        ) : (
+          <div className="p-4">
+            <div className="flex gap-2 items-center">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmit();
+                  }
+                }}
+                placeholder={
+                  editingId ? "Edit your message..." : "Type a message..."
+                }
+                className="bg-zinc-900 border-zinc-700 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-indigo-500"
+              />
+              <Button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="bg-indigo-600 hover:bg-indigo-500 text-white"
+              >
+                {editingId ? "Update" : "Send"}
+              </Button>
+              {editingId && (
+                <Button
+                  variant="outline"
+                  onClick={cancelEdit}
+                  className="border-zinc-700 text-zinc-300"
+                >
+                  Cancel
+                </Button>
+              )}
+              <Button
+                variant="destructive"
+                onClick={stop}
+                className="bg-red-600 hover:bg-red-500 text-white"
+              >
+                Stop
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

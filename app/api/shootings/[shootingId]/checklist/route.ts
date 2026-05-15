@@ -1,23 +1,24 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { mockChecklistItems, mockInventoryItems, uuid } from "@/lib/mock-data";
 
-// GET → lister tous les items d'une checklist, optionnellement filtrés par type
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   context: { params: Promise<{ shootingId: string }> },
 ) {
   try {
     const { shootingId } = await context.params;
-
-    // On peut ajouter un query param ?type=materiel ou ?type=action
-    const url = new URL(_req.url);
+    const url = new URL(req.url);
     const type = url.searchParams.get("type") || undefined;
 
-    const items = await prisma.checklistItem.findMany({
-      where: { shootingId, type }, // filtrage par type si précisé
-      include: { inventoryItem: true },
-      orderBy: { createdAt: "asc" }, // optionnel, pour l'ordre d'affichage
-    });
+    const items = mockChecklistItems
+      .filter((c) => c.shootingId === shootingId && (!type || c.type === type))
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+      .map((c) => ({
+        ...c,
+        inventoryItem: c.inventoryItemId
+          ? (mockInventoryItems.find((i) => i.id === c.inventoryItemId) ?? null)
+          : null,
+      }));
 
     return NextResponse.json(items);
   } catch (err) {
@@ -26,7 +27,6 @@ export async function GET(
   }
 }
 
-// POST → créer un item (soit ad hoc, soit depuis l’inventaire, avec type)
 export async function POST(
   req: NextRequest,
   context: { params: Promise<{ shootingId: string }> },
@@ -34,64 +34,51 @@ export async function POST(
   try {
     const { shootingId } = await context.params;
     const body = await req.json();
-
     const { label, inventoryItemId, priority, type } = body;
 
     if (!label && !inventoryItemId) {
       return NextResponse.json(
-        { error: "Le label ou l’inventoryItemId est obligatoire" },
+        { error: "Le label ou l'inventoryItemId est obligatoire" },
         { status: 400 },
       );
     }
 
     let finalPriority = Number(priority);
-
-    if (
-      !Number.isFinite(finalPriority) ||
-      finalPriority < 1 ||
-      finalPriority > 5
-    ) {
+    if (!Number.isFinite(finalPriority) || finalPriority < 1 || finalPriority > 5) {
       finalPriority = 3;
     }
 
-    const baseData: any = {
-      shooting: { connect: { id: shootingId } },
-      checked: false,
-      type: type || "action",
-      priority: finalPriority,
-    };
+    let finalLabel = label;
+    let finalType = type || "action";
+    let finalInventoryItemId: string | null = null;
 
-    // ITEM MANUEL
-    if (label) {
-      baseData.label = label;
-    }
-
-    // ITEM INVENTAIRE
     if (inventoryItemId) {
-      const inventoryItem = await prisma.inventoryItem.findUnique({
-        where: { id: inventoryItemId },
-      });
-
-      if (!inventoryItem) {
+      const inv = mockInventoryItems.find((i) => i.id === inventoryItemId);
+      if (!inv) {
         return NextResponse.json(
-          { error: "Item d’inventaire introuvable" },
+          { error: "Item d'inventaire introuvable" },
           { status: 404 },
         );
       }
-
-      baseData.inventoryItem = { connect: { id: inventoryItemId } };
-      baseData.label = inventoryItem.label;
-      baseData.type = "materiel";
+      finalLabel = inv.label;
+      finalType = "materiel";
+      finalInventoryItemId = inventoryItemId;
     }
 
-    const newItem = await prisma.checklistItem.create({
-      data: baseData,
-    });
+    const newItem = {
+      id: uuid(),
+      label: finalLabel,
+      checked: false,
+      type: finalType,
+      priority: finalPriority,
+      createdAt: new Date(),
+      shootingId,
+      inventoryItemId: finalInventoryItemId,
+    };
 
-    return NextResponse.json({
-      message: "Checklist item créé ✅",
-      item: newItem,
-    });
+    mockChecklistItems.push(newItem);
+
+    return NextResponse.json({ message: "Checklist item créé", item: newItem });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });

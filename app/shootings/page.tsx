@@ -50,7 +50,7 @@ export default function ShootingsPage() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Supprimer ce shooting ?")) return;
+    if (!confirm("Delete this shoot?")) return;
 
     await fetch(`/api/shootings/${id}`, {
       method: "DELETE",
@@ -65,21 +65,21 @@ export default function ShootingsPage() {
         {/* HEADER */}
         <CardHeader>
           <CardTitle>Shootings</CardTitle>
-          <CardDescription>Organise tes sessions photo</CardDescription>
+          <CardDescription>Manage your photo sessions</CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col gap-6">
           {/* ACTION TOP */}
           <div className="flex justify-end">
             <Button onClick={() => router.push("/shootings/new")}>
-              Nouveau
+              New
             </Button>
           </div>
 
           {/* CONTENT */}
           {loading ? (
             <div className="flex flex-col gap-3">
-              <p>Chargement...</p>
+              <p>Loading...</p>
               {[1, 2, 3].map((i) => (
                 <Item key={i} variant="outline">
                   <ItemMedia>
@@ -102,7 +102,7 @@ export default function ShootingsPage() {
               ))}
             </div>
           ) : shootings.length === 0 ? (
-            <p className="text-muted-foreground text-center">Aucun shooting</p>
+            <p className="text-muted-foreground text-center">No shoots</p>
           ) : (
             <div className="flex flex-col gap-3">
               {shootings.map((shooting) => (
@@ -155,7 +155,7 @@ export default function ShootingsPage() {
 
           {/* FOOTER */}
           <Button variant="outline" onClick={() => router.push("/dashboard")}>
-            Retour
+            Back
           </Button>
         </CardContent>
       </Card>

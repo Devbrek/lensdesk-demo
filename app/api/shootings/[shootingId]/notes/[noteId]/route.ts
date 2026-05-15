@@ -1,9 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // ok, ça fonctionne maintenant
+import { mockShootings, mockNotes, DEMO_USER_ID } from "@/lib/mock-data";
 
-const userId = "b225a7f0-93fe-491a-a907-08b83e27178e";
-
-// PATCH /api/shootings/[shootingId]/notes/[noteId]
 export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ shootingId: string; noteId: string }> },
@@ -13,28 +10,29 @@ export async function PATCH(
     const body = await req.json();
     const { content } = body;
 
-    if (!content)
+    if (!content) {
       return NextResponse.json({ error: "Content requis" }, { status: 400 });
+    }
 
-    // Vérifier que le shooting appartient à l'utilisateur
-    const shooting = await prisma.shooting.findFirst({
-      where: { id: shootingId, userId },
-    });
-    if (!shooting)
-      return NextResponse.json(
-        { error: "Shooting non trouvé" },
-        { status: 404 },
-      );
+    const shooting = mockShootings.find(
+      (s) => s.id === shootingId && s.userId === DEMO_USER_ID,
+    );
 
-    const updatedNote = await prisma.note.updateMany({
-      where: { id: noteId, shootingId },
-      data: { content },
-    });
+    if (!shooting) {
+      return NextResponse.json({ error: "Shooting non trouvé" }, { status: 404 });
+    }
 
-    if (updatedNote.count === 0)
+    const note = mockNotes.find(
+      (n) => n.id === noteId && n.shootingId === shootingId,
+    );
+
+    if (!note) {
       return NextResponse.json({ error: "Note non trouvée" }, { status: 404 });
+    }
 
-    return NextResponse.json({ message: "Note mise à jour ✅" });
+    note.content = content;
+
+    return NextResponse.json({ message: "Note mise à jour" });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
@@ -42,20 +40,23 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: NextRequest,
+  _req: NextRequest,
   context: { params: Promise<{ shootingId: string; noteId: string }> },
 ) {
   try {
     const { shootingId, noteId } = await context.params;
 
-    const deleted = await prisma.note.deleteMany({
-      where: { id: noteId, shootingId },
-    });
+    const idx = mockNotes.findIndex(
+      (n) => n.id === noteId && n.shootingId === shootingId,
+    );
 
-    if (deleted.count === 0)
+    if (idx === -1) {
       return NextResponse.json({ error: "Note non trouvée" }, { status: 404 });
+    }
 
-    return NextResponse.json({ message: "Note supprimée ✅" });
+    mockNotes.splice(idx, 1);
+
+    return NextResponse.json({ message: "Note supprimée" });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });

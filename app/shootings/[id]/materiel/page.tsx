@@ -150,28 +150,28 @@ export default function MaterielPage() {
         {/* HEADER */}
         <Card className="bg-card text-white text-center">
           <CardHeader>
-            <CardTitle>Matériel</CardTitle>
+            <CardTitle>Gear</CardTitle>
             <CardDescription>
-              Prépare ton équipement pour le shooting
+              Prepare your equipment for the shoot
             </CardDescription>
           </CardHeader>
         </Card>
 
-        {/* INVENTAIRE */}
+        {/* INVENTORY */}
         <Card className="bg-card text-white">
           <CardContent className="flex flex-col">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="flex items-center justify-between w-full"
             >
-              <h2 className="font-semibold">Ajouter depuis l’inventaire</h2>
+              <h2 className="font-semibold">Add from inventory</h2>
 
               <ChevronDown
                 className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
               />
             </button>
 
-            {/* LOADING INVENTAIRE */}
+            {/* LOADING INVENTORY */}
             {loadingInventory && (
               <div className="space-y-2 pt-3">
                 <div className="h-10 bg-white/5 animate-pulse rounded-md" />
@@ -179,7 +179,7 @@ export default function MaterielPage() {
               </div>
             )}
 
-            {/* LIST INVENTAIRE */}
+            {/* LIST INVENTORY */}
             {!loadingInventory && (
               <div
                 className={`overflow-hidden transition-all duration-300 ${
@@ -205,7 +205,7 @@ export default function MaterielPage() {
                       <ItemContent>
                         <ItemTitle>{item.label}</ItemTitle>
                         <ItemDescription>
-                          {isSelected(item.id) ? "Sélectionné" : "Disponible"}
+                          {isSelected(item.id) ? "Selected" : "Available"}
                         </ItemDescription>
                       </ItemContent>
 
@@ -227,8 +227,8 @@ export default function MaterielPage() {
 
               <span className="text-xs text-muted-foreground">
                 {loadingChecklist
-                  ? "Chargement..."
-                  : `${remainingItems} restant${remainingItems > 1 ? "s" : ""}`}
+                  ? "Loading..."
+                  : `${remainingItems} remaining`}
               </span>
             </div>
 
@@ -243,14 +243,14 @@ export default function MaterielPage() {
             {/* EMPTY */}
             {isChecklistEmpty && (
               <p className="text-sm text-muted-foreground text-center">
-                Aucun matériel ajouté
+                No gear added
               </p>
             )}
 
             {/* DONE STATE */}
             {isChecklistDone && (
               <p className="text-green-400 text-xs">
-                ✔ Tout le matériel est prêt
+                ✔ All gear is ready
               </p>
             )}
 
@@ -286,9 +286,9 @@ export default function MaterielPage() {
 
                       <ItemDescription>
                         {done ? (
-                          <span className="text-green-400">✓ Terminé</span>
+                          <span className="text-green-400">✓ Done</span>
                         ) : (
-                          "En attente"
+                          "Pending"
                         )}
                       </ItemDescription>
                     </ItemContent>
@@ -330,7 +330,7 @@ export default function MaterielPage() {
               <Input
                 value={newItemLabel}
                 onChange={(e) => setNewItemLabel(e.target.value)}
-                placeholder="Ex : 2 batteries..."
+                placeholder="E.g. 2 batteries..."
                 onKeyDown={(e) => e.key === "Enter" && handleAddManual()}
               />
 
@@ -344,7 +344,7 @@ export default function MaterielPage() {
             </div>
 
             <p className="text-xs text-muted-foreground">
-              Entre du texte puis clique sur +
+              Type then click +
             </p>
           </CardContent>
         </Card>
@@ -352,17 +352,17 @@ export default function MaterielPage() {
         {/* FOOTER */}
         <div className="flex justify-center pb-5">
           <Button onClick={() => router.push(`/shootings/${id}`)}>
-            Retour
+            Back
           </Button>
         </div>
       </div>
       {deleteTargetId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="w-full max-w-sm rounded-lg bg-background p-5 space-y-4 border border-white/10">
-            <h2 className="text-sm font-semibold">Supprimer cet élément ?</h2>
+            <h2 className="text-sm font-semibold">Delete this item?</h2>
 
             <p className="text-xs text-muted-foreground">
-              Cette action est irréversible.
+              This action is irreversible.
             </p>
 
             <div className="flex justify-end gap-2">
@@ -371,7 +371,7 @@ export default function MaterielPage() {
                 onClick={() => setDeleteTargetId(null)}
                 disabled={isDeleting}
               >
-                Annuler
+                Cancel
               </Button>
 
               <Button
@@ -379,7 +379,7 @@ export default function MaterielPage() {
                 onClick={handleDeleteItem}
                 disabled={isDeleting}
               >
-                {isDeleting ? "Suppression..." : "Supprimer"}
+                {isDeleting ? "Deleting..." : "Delete"}
               </Button>
             </div>
           </div>

@@ -1,13 +1,16 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { mockShootings, mockChecklistItems, mockNotes, uuid, DEMO_USER_ID } from "@/lib/mock-data";
 
-// GET /api/shootings → lister tous les shootings
 export async function GET() {
   try {
-    const shootings = await prisma.shooting.findMany({
-      include: { checklist: true, notes: true }, // on récupère aussi checklist et notes
-      orderBy: { createdAt: "desc" },
-    });
+    const shootings = [...mockShootings]
+      .filter((s) => s.userId === DEMO_USER_ID)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .map((s) => ({
+        ...s,
+        checklist: mockChecklistItems.filter((c) => c.shootingId === s.id),
+        notes: mockNotes.filter((n) => n.shootingId === s.id),
+      }));
 
     return NextResponse.json(shootings);
   } catch (err) {
@@ -16,38 +19,32 @@ export async function GET() {
   }
 }
 
-// POST /api/shootings → créer un nouveau shooting
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { title, description, location, date, status } = body;
 
     if (!title) {
-      return NextResponse.json(
-        { error: "Le titre est requis" },
-        { status: 400 },
-      );
-    }
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    if (date && new Date(date) < today) {
-      return NextResponse.json({ error: "Date invalide" }, { status: 400 });
+      return NextResponse.json({ error: "Le titre est requis" }, { status: 400 });
     }
 
-    const newShooting = await prisma.shooting.create({
-      data: {
-        title,
-        description,
-        location,
-        date: date ? new Date(date) : undefined,
-        status: status || "draft",
-        user: { connect: { id: "83a83cf9-9ced-478b-9edb-b05042845329" } }, // <- ici
-      },
-      include: { checklist: true, notes: true },
-    });
+    const newShooting = {
+      id: uuid(),
+      title,
+      description: description ?? null,
+      location: location ?? null,
+      date: date ? new Date(date) : null,
+      status: status || "draft",
+      createdAt: new Date(),
+      userId: DEMO_USER_ID,
+    };
 
-    return NextResponse.json(newShooting, { status: 201 });
+    mockShootings.push(newShooting);
+
+    return NextResponse.json(
+      { ...newShooting, checklist: [], notes: [] },
+      { status: 201 },
+    );
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });

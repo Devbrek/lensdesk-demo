@@ -96,7 +96,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white">
-        Chargement...
+        Loading...
       </div>
     );
   }
@@ -115,14 +115,14 @@ const Dashboard = () => {
           <div className="flex justify-between items-center">
             <p className="text-sm font-semibold">Shootings</p>
             <span className="text-xs text-muted-foreground">
-              {upcoming.length} à venir
+              {upcoming.length} upcoming
             </span>
           </div>
 
           <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
             {upcoming.length === 0 && (
               <p className="text-xs text-muted-foreground text-center">
-                Aucun shooting prévu
+                No upcoming shoots
               </p>
             )}
 
@@ -157,7 +157,7 @@ const Dashboard = () => {
         <Card className="w-full max-w-sm text-white">
           <CardContent className="p-4 space-y-4">
             <div className="flex justify-between items-center">
-              <p className="text-sm underline">Prochain shooting</p>
+              <p className="text-sm underline">Next shoot</p>
 
               <Button
                 size="icon"
@@ -177,13 +177,13 @@ const Dashboard = () => {
             {daysLeft !== null && (
               <p className="text-xs text-blue-400">
                 {daysLeft >= 0
-                  ? `J-${daysLeft} avant shooting`
-                  : "Shooting passé"}
+                  ? `${daysLeft} days left`
+                  : "Past shoot"}
               </p>
             )}
 
             <div className="text-sm">
-              Préparation :{" "}
+              Preparation:{" "}
               <span className="font-bold">
                 {score}/{totalItems}
               </span>
@@ -191,19 +191,19 @@ const Dashboard = () => {
 
             {urgentItems.length > 0 && (
               <div className="text-red-400 text-xs">
-                ⚠ {urgentItems.length} tâches urgentes
+                ⚠ {urgentItems.length} urgent tasks
               </div>
             )}
 
             <div className="space-y-2">
               <div className="text-xs flex justify-between">
-                <span>Matériel</span>
+                <span>Gear</span>
                 <span>{materialProgress}%</span>
               </div>
               <Progress value={materialProgress} />
 
               <div className="text-xs flex justify-between">
-                <span>Actions</span>
+                <span>Tasks</span>
                 <span>{actionProgress}%</span>
               </div>
               <Progress value={actionProgress} />
@@ -213,7 +213,7 @@ const Dashboard = () => {
       ) : (
         <Card className="w-full max-w-sm">
           <CardContent className="p-6 text-center">
-            Aucun shooting prévu
+            No upcoming shoots
           </CardContent>
         </Card>
       )}
@@ -224,7 +224,7 @@ const Dashboard = () => {
       <Card className="w-full max-w-sm">
         <CardContent className="flex flex-col gap-3 p-4">
           <Button onClick={() => router.push("/inventory")}>
-            Inventaire <img src="/icons/materiel.svg" className="w-5" />
+            Inventory <img src="/icons/materiel.svg" className="w-5" />
           </Button>
           <Button onClick={() => router.push("/shootings")}>
             Shootings <img src="/icons/inventory.svg" className="w-4" />

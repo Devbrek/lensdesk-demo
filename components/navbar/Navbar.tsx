@@ -65,11 +65,11 @@ export default function Navbar() {
           <Card className="w-full bg-card text-white px-3 py-2">
             <div className="flex items-center justify-between gap-3">
               {/* LOGO */}
-              <button onClick={() => handleNav("/dashboard")}>
-                <img
-                  src="/icons/logo2.png"
-                  className="w-20 hover:cursor-pointer"
-                />
+              <button
+                onClick={() => handleNav("/dashboard")}
+                className="hover:cursor-pointer text-2xl"
+              >
+                LensDesk
               </button>
 
               {/* LINKS */}
@@ -84,7 +84,7 @@ export default function Navbar() {
                   onClick={() => handleNav("/inventory")}
                   className="hover:text-white hover:cursor-pointer"
                 >
-                  Inventaire
+                  Inventory
                 </button>
                 <button
                   onClick={() => handleNav("/shootings")}
@@ -101,7 +101,7 @@ export default function Navbar() {
                   className="hidden md:flex hover:text-black hover:cursor-pointer"
                   onClick={() => handleNav("/apropos")}
                 >
-                  A propos
+                  About
                 </Button>
 
                 <Button
@@ -152,9 +152,9 @@ export default function Navbar() {
 
         <div className="flex flex-col gap-3 uppercase text-sm">
           <button onClick={() => handleNav("/dashboard")}>Dashboard</button>
-          <button onClick={() => handleNav("/inventory")}>Inventaire</button>
+          <button onClick={() => handleNav("/inventory")}>Inventory</button>
           <button onClick={() => handleNav("/shootings")}>Shootings</button>
-          <button onClick={() => handleNav("/apropos")}>A propos</button>
+          <button onClick={() => handleNav("/apropos")}>About</button>
         </div>
 
         <div className="mt-auto pt-6 border-t flex flex-col gap-3">
@@ -170,12 +170,12 @@ export default function Navbar() {
       {confirmLogout && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60">
           <div className="w-full max-w-sm bg-background border rounded-xl p-5 space-y-4">
-            <h2 className="text-lg font-semibold">Confirmer la déconnexion</h2>
+            <h2 className="text-lg font-semibold">Confirm logout</h2>
 
             <p className="text-sm text-muted-foreground">
-              Êtes-vous sûr de vouloir vous déconnecter ?<br />
-              Vous serez déconnecté de l’application et perdrez l’accès à vos
-              données.
+              Are you sure you want to log out?
+              <br />
+              You will lose access to your session data.
             </p>
 
             <div className="flex justify-end gap-2">
@@ -184,7 +184,7 @@ export default function Navbar() {
                 onClick={() => setConfirmLogout(false)}
                 disabled={loggingOut}
               >
-                Annuler
+                Cancel
               </Button>
 
               <Button
@@ -192,7 +192,7 @@ export default function Navbar() {
                 onClick={performLogout}
                 disabled={loggingOut}
               >
-                {loggingOut ? "Déconnexion..." : "Se déconnecter"}
+                {loggingOut ? "Logging out..." : "Log out"}
               </Button>
             </div>
           </div>

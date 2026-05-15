@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { verifyPassword } from "@/lib/auth"; // à adapter selon ton chemin
+import { mockUsers } from "@/lib/mock-data";
 import { generateToken } from "@/lib/auth";
 import z from "zod";
 
@@ -23,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     const { email, password } = validation.data;
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = mockUsers.find((u) => u.email === email);
 
     if (!user) {
       return NextResponse.json(
@@ -32,30 +31,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const isValidPassword = await verifyPassword(password, user.password);
-
-    if (!isValidPassword) {
+    if (password !== user.password) {
       return NextResponse.json(
         { error: "invalid email or password" },
         { status: 401 },
       );
     }
 
-    const token = generateToken(user.id);
+    const token = generateToken();
 
     const response = NextResponse.json({
       message: "login successful",
-      user: {
-        id: user.id,
-        email: user.email,
-      },
+      user: { id: user.id, email: user.email },
     });
 
     response.cookies.set({
       name: "token",
       value: token,
       httpOnly: true,
-      maxAge: 60 * 60 * 24 * 7, // 7 jours
+      maxAge: 60 * 60 * 24 * 7,
       path: "/",
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

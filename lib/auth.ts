@@ -1,47 +1,25 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+const DEMO_EMAIL = "lens@mail.com";
+const DEMO_PASSWORD = "lens123";
+const DEMO_TOKEN = "demo-token-lensdesk-2026";
 
-interface JwtPayload {
-  userId: string;
+export function verifyCredentials(email: string, password: string): boolean {
+  return email === DEMO_EMAIL && password === DEMO_PASSWORD;
 }
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
-
-export function generateToken(userId: string) {
-  return jwt.sign({ userId }, JWT_SECRET, { expiresIn: "7d" });
+export function generateToken(): string {
+  return DEMO_TOKEN;
 }
 
-export function verifyToken(token: string): JwtPayload | null {
-  const secret = process.env.JWT_SECRET;
-
-  if (!secret) {
-    throw new Error("JWT_SECRET is not defined");
+export function verifyToken(token: string): { userId: string } | null {
+  if (token === DEMO_TOKEN) {
+    return { userId: "demo-user" };
   }
-
-  try {
-    return jwt.verify(token, secret) as JwtPayload;
-  } catch {
-    return null;
-  }
+  return null;
 }
 
 export function extractTokenFromHeader(authHeader?: string): string | null {
   if (!authHeader) return null;
-
   const parts = authHeader.split(" ");
-
-  if (parts.length !== 2 || parts[0] !== "Bearer") {
-    return null;
-  }
-
+  if (parts.length !== 2 || parts[0] !== "Bearer") return null;
   return parts[1];
-}
-
-export async function hashPassword(password: string) {
-  const salt = await bcrypt.genSalt(12);
-  return await bcrypt.hash(password, salt);
-}
-
-export async function verifyPassword(hashedPassword: string, password: string) {
-  return bcrypt.compare(hashedPassword, password);
 }
