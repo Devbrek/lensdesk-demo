@@ -3,13 +3,7 @@ import { ChatMistralAI } from "@langchain/mistralai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { mockUsers, mockShootings, mockChecklistItems, mockInventoryItems } from "@/lib/mock-data";
 
-const model = new ChatMistralAI({
-  apiKey: process.env.MISTRAL_API_KEY!,
-  model: "mistral-large-latest",
-  temperature: 0.7,
-  maxTokens: 300,
-  streaming: true,
-});
+export const dynamic = "force-dynamic";
 
 type MemoryMessage = {
   role: "user" | "assistant";
@@ -47,6 +41,14 @@ Règles:
 
 export async function POST(req: Request) {
   try {
+    const model = new ChatMistralAI({
+      apiKey: process.env.MISTRAL_API_KEY!,
+      model: "mistral-large-latest",
+      temperature: 0.7,
+      maxTokens: 300,
+      streaming: true,
+    });
+
     const body = await req.json();
     const { message, userId } = body;
 
